@@ -48,7 +48,7 @@ const App: React.FC<IProps> = (props) => {
   }, []);
   return (
     <>
-      <main>
+      {/* <main>
         <h1>Create React App + Go API</h1>
         <h2>
           Deployed with{" "}
@@ -85,7 +85,7 @@ const App: React.FC<IProps> = (props) => {
         <br />
         <h2>The date according to Go is:</h2>
         <p>{date ? date : "Loading date..."}</p>
-      </main>
+      </main> */}
       <div style={{ overflow: "hidden", maxWidth: "100%" }}>
         <StyledContainer>
           <Header title="FuFu's Blog" />
@@ -138,6 +138,7 @@ const App: React.FC<IProps> = (props) => {
             <Skills id={"tab02"} visible={currentTabID} />
             <Profile id={"tab03"} visible={currentTabID} />
           </StyledContent>
+          <p>{date ? date : "Loading date..."}</p>
           <Footer />
         </StyledContainer>
       </div>
