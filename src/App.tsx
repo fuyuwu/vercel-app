@@ -94,7 +94,7 @@ const App: React.FC<IProps> = (props) => {
               <div className="me" />
               <StyledAboutMe>Front-end Engineer</StyledAboutMe>
               <StyledContact>
-                <StyledIcon href="callto:+886988611937">
+                <StyledIcon href="callto:+886988611937" rel="noreferrer noopener">
                   <CellPhone
                     width={24}
                     height={24}
@@ -112,7 +112,7 @@ const App: React.FC<IProps> = (props) => {
                   <a>Go to page</a>
                 </Link> */}
                 {/* ---------- */}
-                <StyledIcon href="mailto:fuyuwu041000@gamail.com">
+                <StyledIcon href="mailto:fuyuwu041000@gamail.com" rel="noreferrer noopener">
                   <Mail width={24} height={24} fill={`${theme.darkFont}`} />
                   fuyuwu041000@gamail.com
                 </StyledIcon>
@@ -138,7 +138,7 @@ const App: React.FC<IProps> = (props) => {
             <Skills id={"tab02"} visible={currentTabID} />
             <Profile id={"tab03"} visible={currentTabID} />
           </StyledContent>
-          <p>{date ? date : "Loading date..."}</p>
+          {/* <p>{date ? date : "Loading date..."}</p> */}
           <Footer />
         </StyledContainer>
       </div>

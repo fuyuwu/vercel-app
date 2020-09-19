@@ -6,10 +6,10 @@ import "./css.scss";
 
 import Card from "../Card";
 import Switch from "../Switch";
+import Collect from "../Collect";
 // import Weather from "../Weather";
 // import Progress from "../Progress";
 // import Pagination from "../Pagination";
-// import Collect from "../Collect";
 
 interface IProps {
   id: string;
@@ -103,16 +103,6 @@ export const AsyncAction = () => {
 
 // /** @summary 作品集tab */
 const Profile: React.FC<IProps> = (props) => {
-  const [isFavorite, setIsFavorite] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const onCollectBtn = () => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      setIsFavorite(!isFavorite);
-    }, 1000);
-  };
   return (
     <div
       id={props.id}
@@ -137,22 +127,9 @@ const Profile: React.FC<IProps> = (props) => {
                 <AsyncAction />
               </Card>
             </StyledBlock>
-
-            <div>
-              <StyledTag>Progress</StyledTag>
-              {/* <Progress type={"line"} percent={85} status={"active"} /> */}
-              <StyledTag>Collect Button</StyledTag>
-              {/* <Collect
-                onClick={onCollectBtn}
-                isFavorite={isFavorite}
-                isLoading={isLoading}
-              /> */}
-            </div>
           </div>
         </StyledFlex>
       </StyledBox>
-      <StyledTag>Pagination</StyledTag>
-      {/* <Pagination total={150} pageSize={20} /> */}
     </div>
   );
 };
