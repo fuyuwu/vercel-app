@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { StyledFlex, StyledTag } from "../../core/styles";
+import { StyledFlex, StyledLine, StyledSkillCard } from "../../core/styles";
 import { theme } from "../../core";
 import "./css.scss";
 
 import Card from "../Card";
 import Switch from "../Switch";
-import Collect from "../Collect";
-// import Weather from "../Weather";
+import Weather from "../Weather";
 // import Progress from "../Progress";
 // import Pagination from "../Pagination";
 
@@ -26,20 +25,6 @@ export const ControlBtn = () => {
   );
 };
 
-export const ControlBtnWithText = () => {
-  const [isOpen, setIsOpen] = React.useState<boolean>(false);
-
-  return (
-    <div style={{ position: "relative", zIndex: 1 }}>
-      <Switch
-        text={["關", "開"]}
-        onClick={() => setIsOpen(!isOpen)}
-        isOpen={isOpen}
-      />
-    </div>
-  );
-};
-
 export const Disabled = () => {
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -47,6 +32,7 @@ export const Disabled = () => {
   return (
     <div>
       <Switch
+        text={["關", "開"]}
         onClick={() => setIsOpen(!isOpen)}
         isOpen={isOpen}
         isDisabled={isDisabled}
@@ -109,41 +95,78 @@ const Profile: React.FC<IProps> = (props) => {
       className={`${props.visible === props.id ? "" : "hidden"}`}
     >
       <StyledBox>
-        <StyledFlex justContent={"flex-start"}>
-          <div style={{ flex: 1, marginRight: 15 }}>
-            <StyledTag>Weather</StyledTag>
-            {/* <Weather /> */}
-          </div>
-          <div style={{ flex: 1 }}>
-            <StyledTag>Switch</StyledTag>
-            <StyledBlock>
-              <Card cardTitle={"Switch Default"}>
-                <ControlBtnWithText />
-              </Card>
-              <Card cardTitle={"Switch Control"}>
-                <Disabled />
-              </Card>
-              <Card cardTitle={"Switch Call Api"}>
-                <AsyncAction />
-              </Card>
-            </StyledBlock>
-          </div>
+        <StyledFlex justContent={"space-between"}>
+          <Weather />
+          <StyledSkillCard style={{ padding: 5 }}>
+            <StyledContent>
+              <h3>Weather</h3>
+              <p>React, hooks, Typescript, web api</p>
+            </StyledContent>
+          </StyledSkillCard>
         </StyledFlex>
+        <StyledLine
+          marginTop={"10px"}
+          marginBottom={"10px"}
+          lineStyle={"solid"}
+          lineWeight={2}
+          borderColor={theme.darkFont}
+        />
+        <StyledFlex justContent={"space-around"}>
+          <StyledSkillCard style={{ padding: 5 }}>
+            <StyledContent>
+              <h3>Switch</h3>
+              <p>React, hooks, Typescript</p>
+            </StyledContent>
+          </StyledSkillCard>
+          <StyledBlock>
+            <Card>
+              <Disabled />
+            </Card>
+            <Card cardTitle={"Fetch Api"}>
+              <AsyncAction />
+            </Card>
+          </StyledBlock>
+        </StyledFlex>
+        <StyledLine
+          marginTop={"10px"}
+          marginBottom={"10px"}
+          lineStyle={"solid"}
+          lineWeight={2}
+          borderColor={theme.darkFont}
+        />
+        <StyledSkillCard padding={"10px 0"}>
+          <h3>新增中....</h3>
+        </StyledSkillCard>
+        {/* <StyledFlex justContent={"space-between"}>
+          <Weather />
+          <StyledSkillCard style={{ padding: 5 }}>
+            <StyledContent>
+              <h3>ReactNative App</h3>
+              <p>ReactNative, hooks, Typescript</p>
+            </StyledContent>
+          </StyledSkillCard>
+        </StyledFlex> */}
       </StyledBox>
     </div>
   );
 };
 const StyledBox = styled.div`
-  margin-top: 10px;
+  box-sizing: border-box;
+  margin: 0 auto;
+  max-width: 680px;
+  padding: 0;
+  text-align: center;
 `;
 const StyledBlock = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: stretch;
+  margin-left: 0px;
   margin-top: 20px;
-  margin-left: 10px;
-  @media screen and (min-width: 768px) {
+
+  @media screen and (min-width: 980px) {
     margin-top: 0px;
+    margin-left: 10px;
   }
   h1 {
     letter-spacing: 0.8px;
@@ -159,6 +182,12 @@ const StyledControlBtn = styled.div`
   border-color: #1890ff;
   color: #fff;
   cursor: pointer;
+`;
+const StyledContent = styled.div`
+  p {
+    letter-spacing: 1.5px;
+    color: ${theme.darkFont};
+  }
 `;
 
 export default Profile;

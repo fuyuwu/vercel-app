@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyledCard,
   StyledAbout,
@@ -10,9 +10,12 @@ import {
   StyledDivider,
   StyledListul,
   StyledAboutList,
+  StyledLanguage,
+  StyledLanguageBlock,
 } from "../../core/styles";
-import { ReactIcon, Coding, Git } from "../Icons";
+import { ReactIcon, Coding, Git, Japan, Taiwan, USA } from "../Icons";
 import { theme } from "../../core";
+import Progress from "../Progress";
 
 interface ISkillsProps {
   id: string;
@@ -22,6 +25,7 @@ const skillList = [
   "React, hooks",
   "Typescript",
   "JavaScript",
+  "web Api",
   "webpack",
   "Storybook",
   "css in js",
@@ -36,6 +40,19 @@ const uiList = [
   "Functional map",
 ];
 const Skills: React.FC<ISkillsProps> = (props) => {
+  // const [percent, setPercent] = useState<number>(0);
+
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setPercent((old: any): any => {
+  //       const newValue = old + 10;
+  //       if (newValue === 100) {
+  //         clearInterval(interval);
+  //       }
+  //       return interval;
+  //     });
+  //   }, 1000);
+  // }, []);
   return (
     <StyledCard id={props.id} visible={props.visible}>
       <StyledAbout>
@@ -116,6 +133,35 @@ const Skills: React.FC<ISkillsProps> = (props) => {
             <StyledAboutContent>github, gitKraken</StyledAboutContent>
           </StyledSkillCard>
         </StyledFlex>
+      </StyledAbout>
+      <StyledAbout>
+        <StyledAboutTitle fontSize={"25"}>Languages</StyledAboutTitle>
+        <StyledLanguageBlock>
+          <StyledSkillCard padding={"25px 0"}>
+            <StyledFlex alignItems={"center"} justContent={"space-between"}>
+              <StyledLanguage>
+                <Taiwan width={36} height={36} />
+              </StyledLanguage>
+              <Progress percent={100} color={"#111419"} font={"Native"} />
+            </StyledFlex>
+          </StyledSkillCard>
+          <StyledSkillCard padding={"25px 0"}>
+            <StyledFlex alignItems={"center"} justContent={"space-between"}>
+              <StyledLanguage>
+                <Japan width={36} height={36} />
+              </StyledLanguage>
+              <Progress percent={85} color={"#111419"} font={"JLPT N1"} />
+            </StyledFlex>
+          </StyledSkillCard>
+          <StyledSkillCard padding={"25px 0"}>
+            <StyledFlex alignItems={"center"} justContent={"space-between"}>
+              <StyledLanguage>
+                <USA width={36} height={36} />
+              </StyledLanguage>
+              <Progress percent={50} color={"#111419"} font={"Primary"} />
+            </StyledFlex>
+          </StyledSkillCard>
+        </StyledLanguageBlock>
       </StyledAbout>
     </StyledCard>
   );

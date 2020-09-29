@@ -7,7 +7,7 @@ export interface ILoadingProps extends ICommonProps {
   bgColor?: string;
   visible?: boolean;
   size?: "default" | "large";
-  style?: CSSStyleDeclaration;
+  style?: React.CSSProperties;
 }
 
 const Module: React.FC<ILoadingProps> = (props) => {
@@ -18,6 +18,7 @@ const Module: React.FC<ILoadingProps> = (props) => {
         bgColor={props.bgColor}
         visible={props.visible}
         size={props.size}
+        style={props.style}
       >
         <div className={cx("loading", props.className, props.size)}>
           <div />

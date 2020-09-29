@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { ISwitchProps } from "../Module";
 
 export const StyledSwitch = styled.div`
+  width: 100px;
   position: relative;
   margin-bottom: 5px;
   display: inline-block;

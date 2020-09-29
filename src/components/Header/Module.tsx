@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { device, theme } from "../../core";
-// import SlideMenu from "./SlideMenu";
-// import { MenuBtn, CloseBtn, Line, Mail, CellPhone } from "./Icons";
 import "./scss/styles.scss";
+
+// import SlideMenu from "../SlideMenu";
+// import { MenuBtn, CloseBtn, Line, Mail, CellPhone } from "../Icons";
+// import { BrowserRouter as Router, Link } from "react-router-dom";
 
 interface IHeaderProps {
   title: string;
@@ -11,10 +13,11 @@ interface IHeaderProps {
   isServer?: boolean;
   children?: React.ReactNode;
 }
-const linkTo = [
-  { name: "HOME", url: "#" },
-  { name: "PORTFOLIO", url: "#" },
-];
+// const linkTo = [
+//   { name: "ABOUT", url: "/about" },
+//   { name: "SKILL", url: "/skill" },
+//   { name: "SIDE PROJECT", url: "/sideProject" },
+// ];
 interface IMode {
   mode: "pc" | "m";
 }
@@ -23,7 +26,7 @@ const Header: React.FC<IHeaderProps> = (props) => {
   const [mode, setMode] = useState<IMode>({ mode: "m" }); // 偵測裝置
   const [isScroll, setIsScroll] = useState<boolean>(false);
   const currentY = useRef<number>(0);
-  const [rightVisible, setRightVisible] = useState<boolean>(false);
+  // const [rightVisible, setRightVisible] = useState<boolean>(false);
 
   // const openPageRight = () => setRightVisible(!rightVisible);
   // const closePageRight = () => setRightVisible(false);
@@ -43,7 +46,7 @@ const Header: React.FC<IHeaderProps> = (props) => {
       setMode({ mode: "m" });
       return;
     } else {
-      setRightVisible(false);
+      // setRightVisible(false);
       setMode({ mode: "pc" });
     }
   };
@@ -62,7 +65,10 @@ const Header: React.FC<IHeaderProps> = (props) => {
   }, []);
   const ScrollHeader = ({ children }: IHeaderProps) => {
     return (
-      <header className={`${isScroll ? "show" : ""}`} onScroll={handlerScroll}>
+      <header
+        className={`${isScroll ? "show" : ""}`}
+        onScroll={handlerScroll}
+      >
         {children}
       </header>
     );
@@ -72,22 +78,28 @@ const Header: React.FC<IHeaderProps> = (props) => {
     <ScrollHeader title={props.title}>
       <StyledBlock>
         <StyledTitle>{props.title}</StyledTitle>
+        {/* TODO: SlideMenu improvement */}
         {/* <div className={`hamburger_icon`} onClick={openPageRight}>
           <MenuBtn width={30} height={30} />
-        </div>
-        <SlideMenu visible={rightVisible}>
+        </div> */}
+        {/* <SlideMenu visible={rightVisible}>
           <StyledClosebtn onClick={closePageRight}>
             <CloseBtn width={24} height={24} fill={"#aaa"} />
           </StyledClosebtn>
 
           <StyledHeaderMenu>
-            {linkTo.map((item, i) => {
-              return (
-                <StyledHeaderLi key={i + 1}>
-                  <StyledMenu href={item.url}>{item.name}</StyledMenu>
-                </StyledHeaderLi>
-              );
-            })}
+            <Router>
+              {linkTo.map((item, i) => {
+                return (
+                  <StyledHeaderLi key={i + 1}>
+                    <Link to={item.url}>{item.name}</Link>
+                  </StyledHeaderLi>
+                );
+              })}
+            </Router>
+            <p style={{ textAlign: "center", fontSize: 20, color: "#fa8072" }}>
+              持續新增中....
+            </p>
           </StyledHeaderMenu>
 
           <StyledLine borderColor={"#fff"} lineStyle={"solid"} lineWeight={2} />
@@ -127,6 +139,20 @@ const StyledHeaderMenu = styled.ul`
 `;
 const StyledHeaderLi = styled.li`
   list-style: none;
+  link {
+    padding: 10px 15px;
+    transition: all 0.3s;
+    /* color: #212f3c; */
+    color: #fff;
+
+    &:hover {
+      transition: all 0.3s;
+      color: #fa8072;
+    }
+    @media ${device.tablet} {
+      display: inline-block;
+    }
+  }
 `;
 const StyledMenu = styled.a`
   display: none;

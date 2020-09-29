@@ -4,7 +4,7 @@ import { theme } from "../../core";
 import Collect from "../Collect";
 
 interface ICardProps {
-  cardTitle: string;
+  cardTitle?: string;
   cardId?: string;
 }
 
@@ -46,7 +46,7 @@ const StyledCard = styled.div<{ cardId?: string }>`
   flex: 1;
   border: 1px solid #fff;
   margin: 0 5px;
-  padding: 20px 0px;
+  padding: 15px 20px;
   box-shadow: 0 1px 3px 0 #999999;
   /* background-color: #f9f9f9; */
   background: ${theme.darkFont};

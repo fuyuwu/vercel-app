@@ -7,6 +7,7 @@ import WorkCard from "./components/WorkCard/Module";
 import Skills from "./components/Skills";
 import Tabs from "./components/Tabs";
 import Profile from "./components/Profile";
+import Loading from "./components/Loading";
 import { Mail, CellPhone } from "./components/Icons";
 
 import { theme } from "./core";
@@ -46,106 +47,105 @@ const App: React.FC<IProps> = (props) => {
     }
     getDate();
   }, []);
+  const [isLoad, setIsLoad] = useState(true);
+  useEffect(() => {
+    setIsLoad(false);
+  }, []);
   return (
     <>
-      {/* <main>
-        <h1>Create React App + Go API</h1>
-        <h2>
-          Deployed with{" "}
-          <a
-            href="https://vercel.com/docs"
-            target="_blank"
-            rel="noreferrer noopener"
-          >
-            Vercel
-          </a>
-          !
-        </h2>
-        <p>
-          <a
-            href="https://github.com/vercel/vercel/tree/master/examples/create-react-app"
-            target="_blank"
-            rel="noreferrer noopener"
-          >
-            This project
-          </a>{" "}
-          was bootstrapped with{" "}
-          <a href="https://facebook.github.io/create-react-app/">
-            Create React App
-          </a>{" "}
-          and contains three directories, <code>/public</code> for static
-          assets, <code>/src</code> for components and content, and{" "}
-          <code>/api</code> which contains a serverless{" "}
-          <a href="https://golang.org/">Go</a> function. See{" "}
-          <a href="/api/date">
-            <code>api/date</code> for the Date API with Go
-          </a>
-          .
-        </p>
-        <br />
-        <h2>The date according to Go is:</h2>
-        <p>{date ? date : "Loading date..."}</p>
-      </main> */}
-      <div style={{ overflow: "hidden", maxWidth: "100%" }}>
-        <StyledContainer>
-          <Header title="FuFu's Blog" />
-          <StyledContent>
-            <div className="animate-left" style={{ marginBottom: 15 }}>
-              <div className="me" />
-              <StyledAboutMe>Front-end Engineer</StyledAboutMe>
-              <StyledContact>
-                <StyledIcon href="callto:+886988611937" rel="noreferrer noopener">
-                  <CellPhone
-                    width={24}
-                    height={24}
-                    fill={`${theme.darkFont}`}
-                  />
-                  +886 988611937
-                </StyledIcon>
+      {/* <StyledLoad isLoad={isLoad}>{isLoad ? "頁面加載中...." : ""}</StyledLoad> */}
+      {isLoad ? (
+        <main>
+          <StyledLoad>
+            <Loading
+              visible={true}
+              bgColor={theme.darkFont}
+              style={{ top: -80 }}
+            />
+            <p>Loading ....</p>
+          </StyledLoad>
+        </main>
+      ) : (
+        <div style={{ overflow: "hidden", maxWidth: "100%" }}>
+          <StyledContainer>
+            <Header title="FuFu's Blog" />
+            <StyledContent>
+              <div className="animate-left flex" style={{ marginBottom: 15 }}>
+                <div className="me" />
+                <StyledAboutMe>Front-end Engineer</StyledAboutMe>
+                <StyledContact>
+                  <StyledIcon
+                    href="callto:+886988611937"
+                    rel="noreferrer noopener"
+                  >
+                    <CellPhone
+                      width={24}
+                      height={24}
+                      fill={`${theme.darkFont}`}
+                    />
+                    +886 988611937
+                  </StyledIcon>
 
-                {/* --example for next/Link-------- */}
-                {/* <Link
+                  {/* --example for next/Link-------- */}
+                  {/* <Link
                   prefetch
                   href="/page1"
                   as={`${process.env.ASSET_PREFIX}/page1`}
                 >
                   <a>Go to page</a>
                 </Link> */}
-                {/* ---------- */}
-                <StyledIcon href="mailto:fuyuwu041000@gamail.com" rel="noreferrer noopener">
-                  <Mail width={24} height={24} fill={`${theme.darkFont}`} />
-                  fuyuwu041000@gamail.com
-                </StyledIcon>
-              </StyledContact>
-              <StyledtagFlex>
-                <StyledTag># 好奇心旺盛</StyledTag>
-                <StyledTag># 擅長協作開發</StyledTag>
-                <StyledTag># 善於傾聽及溝通</StyledTag>
-              </StyledtagFlex>
-            </div>
-            <StyledLine lineWeight={3} />
-            {/* ---------------------------------------------- */}
-            <StyledNextStep>
-              <Tabs
-                data={tab}
-                currentTab={currentTabID}
-                onClick={tabOnClick}
-                tabRender={liRenderer}
-              />
-            </StyledNextStep>
+                  {/* ---------- */}
+                  <StyledIcon
+                    href="mailto:fuyuwu041000@gamail.com"
+                    rel="noreferrer noopener"
+                  >
+                    <Mail width={24} height={24} fill={`${theme.darkFont}`} />
+                    fuyuwu041000@gamail.com
+                  </StyledIcon>
+                </StyledContact>
+                <StyledtagFlex>
+                  <StyledTag># 好奇心旺盛</StyledTag>
+                  <StyledTag># 擅長協作開發</StyledTag>
+                  <StyledTag># 善於傾聽及溝通</StyledTag>
+                </StyledtagFlex>
+              </div>
+              <StyledLine lineWeight={3} />
+              {/* ---------------------------------------------- */}
+              <StyledNextStep>
+                <Tabs
+                  data={tab}
+                  currentTab={currentTabID}
+                  onClick={tabOnClick}
+                  tabRender={liRenderer}
+                />
+              </StyledNextStep>
 
-            <WorkCard id={"tab01"} visible={currentTabID} />
-            <Skills id={"tab02"} visible={currentTabID} />
-            <Profile id={"tab03"} visible={currentTabID} />
-          </StyledContent>
-          {/* <p>{date ? date : "Loading date..."}</p> */}
-          <Footer />
-        </StyledContainer>
-      </div>
+              <WorkCard id={"tab01"} visible={currentTabID} />
+              <Skills id={"tab02"} visible={currentTabID} />
+              <Profile id={"tab03"} visible={currentTabID} />
+            </StyledContent>
+            {/* <p>{date ? date : "Loading date..."}</p> */}
+            <Footer />
+          </StyledContainer>
+        </div>
+      )}
+      {/* <main>
+        <h2>The date according to Go is:</h2>
+        <p>{date ? date : "Loading date..."}</p>
+      </main> */}
     </>
   );
 };
-
+const StyledLoad = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  p {
+    text-align: center;
+    font-size: 20px;
+    color: ${theme.darkFont};
+  }
+`;
 const StyledtagFlex = styled.div`
   display: flex;
   align-items: center;

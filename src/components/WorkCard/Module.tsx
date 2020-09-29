@@ -54,8 +54,8 @@ const WorkCard: React.FC<IWorkCardProps> = (props) => {
                 <CollapseBlock title={"站長平台專案"} defaultState="open">
                   <StyledWorkBlock>
                     <p>
-                      主要工作為製作全公司共通的共用組件,templates。能夠讓UX快速套好樣板並使用其功能,
-                      以利後續有新需求方便討論和優化。
+                      主要工作為製作全公司共通的共用組件, templates。能夠讓 UX
+                      快速套好樣板並使用其功能, 以利後續有新需求方便討論和優化。
                     </p>
                     <p>
                       使用：React, hooks, Typescript, javascript, SCSS,
@@ -93,11 +93,11 @@ const WorkCard: React.FC<IWorkCardProps> = (props) => {
                 <CollapseBlock title={"搜尋引擎專案"}>
                   <StyledWorkBlock>
                     <p>
-                      1. 主要負責項目為, 旅遊-自由行,
-                      將舊有邏輯改版至react版本及優化及整理出共用邏輯。
+                      主要負責項目為, 旅遊-自由行, 將舊有邏輯改版至 React
+                      版本及優化及整理出共用邏輯。
                     </p>
                     <p>使用：React, hooks, Typescript, Redux, SCSS</p>
-                    <p>2. 套用共用模組至機票專案。</p>
+                    <p>套用共用模組至機票專案。</p>
                     <p>使用：React</p>
                   </StyledWorkBlock>
                 </CollapseBlock>
@@ -108,7 +108,7 @@ const WorkCard: React.FC<IWorkCardProps> = (props) => {
             <div style={{ padding: `5px 10px` }}>
               <StyledAboutTitle>日本 - Web Designer 2018-2019</StyledAboutTitle>
               <StyledAboutContent>
-                網頁程式設計, 設計廣告banner, 整合行銷策略, 製作行銷企劃簡報
+                網頁程式設計, 設計廣告 banner, 整合行銷策略, 製作行銷企劃簡報
               </StyledAboutContent>
             </div>
             <div>
@@ -150,6 +150,10 @@ const WorkCard: React.FC<IWorkCardProps> = (props) => {
                 <CollapseBlock title={"成果發表"} defaultState="open">
                   <StyledWorkBlock>
                     <p>主題：咖啡機電商網站</p>
+                    <p>
+                      主要負責：咖啡機電商網站-商品頁面(樣式切版,比較商品功能及頁面商業邏輯),
+                      購物流程
+                    </p>
                     <p>使用：css, html, javascript, php, MySQL </p>
                     <StyledNextStep padding={"5px"}>
                       <a

@@ -5,13 +5,14 @@ import { theme } from ".";
 export const StyledCard = styled.div<{ id: string; visible: string }>`
   display: ${(props) => (props.visible === props.id ? "block" : "none")};
 `;
+
 export const StyledFlex = styled.div<{
   alignItems?: string;
   justContent?: string;
   direction?: string;
 }>`
   display: flex;
-  align-items: stretch;
+  align-items: ${(props) => props.alignItems || "stretch"};
   flex-direction: ${(props) => props.direction || "column"};
   justify-content: ${(props) => props.justContent || "center"};
   @media screen and (min-width: 980px) {
@@ -22,17 +23,22 @@ export const StyledFlex = styled.div<{
 export const StyledAbout = styled.div`
   margin: 20px 0;
 `;
+
 export const StyledSkillCard = styled.div<{
+  padding?: string;
   showBg?: string;
   style?: CSSProperties;
 }>`
   flex: 1;
-  padding: 0px 10px 20px;
+  padding: ${(props) => (props.padding ? props.padding : "0px 10px 20px")};
   border-radius: 5px;
+  margin-top: 10px;
   margin-right: 5px;
   margin-bottom: 10px;
   background: ${(props) => props.showBg || "rgba(255, 255, 255, 0.5)"};
   @media screen and (min-width: 768px) {
+    margin-bottom: 0px;
+    margin-top: 0px;
     max-width: 100%;
   }
 `;
@@ -45,7 +51,12 @@ export const StyledLine = styled.div<{
   lineStyle?: string;
   lineWeight?: number;
   borderColor?: string;
+  marginTop?: string;
+  marginBottom?: string;
 }>`
+  margin-top: ${(props) => (props.marginTop ? props.marginTop : "0px")};
+  margin-bottom: ${(props) =>
+    props.marginBottom ? props.marginBottom : "0px"};
   height: 1px;
   border-bottom: ${(props) => (props.lineStyle ? props.lineStyle : "dashed")};
   border-color: ${(props) =>
@@ -83,6 +94,24 @@ export const StyledAboutTitle = styled.p<{ fontSize?: string }>`
     margin-right: 7px;
   }
 `;
+export const StyledLanguageBlock = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`;
+export const StyledLanguage = styled.a`
+  display: inline-block;
+  padding: 0;
+  margin: 0 auto;
+  line-height: 40px;
+  cursor: default;
+  position: relative;
+  /* flex: 1; */
+
+  svg {
+    vertical-align: middle;
+  }
+`;
+
 export const StyledAboutContent = styled.p`
   letter-spacing: 0.8px;
   margin: 0;
@@ -91,6 +120,7 @@ export const StyledAboutContent = styled.p`
   word-break: break-word;
 `;
 export const StyledListul = styled.ul`
+  margin-top: 8px;
   padding: 0;
 `;
 export const StyledAboutList = styled.li`

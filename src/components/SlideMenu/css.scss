@@ -1,0 +1,33 @@
+.slideBlock {
+  width: 30%;
+  height: 100vh;
+  overflow: hidden;
+  box-sizing: border-box;
+  z-index: 99;
+  background: #212f3c;
+  transition: all fadeIn 0.8s;
+  position: fixed;
+  top: 0;
+  right: 0;
+  transition: transform 0.8s ease-in-out;
+  transition-duration: 300ms;
+  &.open {
+    display: inline-block;
+    -webkit-transform: translateX(0px);
+    transform: translateX(0px);
+  }
+  &.close {
+    display: inline-block;
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
+  }
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+}
+.slideContent {
+  margin: 50px 10px 0;
+  padding: 10px 15px;
+  border-radius: 5px;
+  border-width: 5px;
+}
