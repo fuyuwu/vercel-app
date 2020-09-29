@@ -1,7 +1,28 @@
 import React, { useState, useEffect, useMemo } from "react";
+import styled, { ThemeProvider } from "styled-components";
 import WeatherCard from "./component/WeatherCard";
 import sunriseSunsetData from "./lib/sunrise-sunset.json";
 import useWeatherApi from "./lib/useWeatherApi";
+
+const theme = {
+  light: {
+    backgroundColor: "#f9f9f9",
+    foregroundColor: "#f9f9f9",
+    boxShadow: "0 1px 3px 0 #999999",
+    titleColor: "#212121",
+    temperatureColor: "#757575",
+    textColor: "#828282",
+  },
+  dark: {
+    backgroundColor: "#121416",
+    foregroundColor: "#121416",
+    boxShadow:
+      "0 1px 4px 0 rgba(12, 12, 13, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.15)",
+    titleColor: "#f9f9fa",
+    temperatureColor: "#dddddd",
+    textColor: "#cccccc",
+  },
+};
 
 const getMoment = (locationName) => {
   const location = sunriseSunsetData.find(
@@ -34,23 +55,37 @@ const getMoment = (locationName) => {
     : "night";
 };
 
+const StyledContainer = styled.div`
+  box-shadow: ${({ theme }) => theme.boxShadow};
+  background-color: ${({ theme }) => theme.backgroundColor};
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+`;
+
 const WeatherApp: React.FC = () => {
   const [weatherElement, fetchData] = useWeatherApi();
-  // const [currentTheme, setCurrentTheme] = useState("light");
+  const [currentTheme, setCurrentTheme] = useState("dark");
   const { locationName }: any = weatherElement;
 
   const moment = useMemo(() => getMoment(locationName), [locationName]);
 
-  // useEffect(() => {
-  //   setCurrentTheme(moment === "day" ? "light" : "dark");
-  // }, [moment]);
+  useEffect(() => {
+    setCurrentTheme(moment === "day" ? "light" : "dark");
+  }, [moment]);
 
   return (
-    <WeatherCard
-      weatherElement={weatherElemen}
-      moment={moment}
-      fetchData={() => fetchData}
-    />
+    <ThemeProvider theme={theme[currentTheme]}>
+      <StyledContainer>
+        <WeatherCard
+          weatherElement={weatherElement}
+          moment={moment}
+          fetchData={() => fetchData}
+        />
+      </StyledContainer>
+    </ThemeProvider>
   );
 };
 

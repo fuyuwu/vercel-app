@@ -13,11 +13,6 @@ import {
   NightRainy,
 } from "../../Icons";
 
-interface IWeatherIconsProps {
-  currentWeatherCode: number;
-  moment: "day" | "night";
-}
-
 const weatherTypes = {
   isThunderstorm: [15, 16, 17, 18, 21, 22, 33, 34, 35, 36, 41],
   isClear: [1],
@@ -28,18 +23,18 @@ const weatherTypes = {
 };
 const currentIcon = {
   day: {
-    isThunderstorm: <Thunderstrom />,
-    isCloudy: <Cloudy />,
-    isFog: <Fog />,
-    isSnowing: <Snowing />,
-    isRain: <Rainy />,
+    isThunderstorm: <Thunderstrom width={24} height={24} />,
+    isCloudy: <Cloudy width={24} height={24} />,
+    isFog: <Fog width={24} height={24} />,
+    isSnowing: <Snowing width={24} height={24} />,
+    isRain: <Rainy width={24} height={24} />,
   },
   night: {
-    isThunderstorm: <NightStorm />,
-    isCloudy: <NightCloud />,
-    isFog: <NightFog />,
-    isSnowing: <NightSnowing />,
-    isRain: <NightRainy />,
+    isThunderstorm: <NightStorm width={24} height={24} />,
+    isCloudy: <NightCloud width={24} height={24} />,
+    isFog: <NightFog width={24} height={24} />,
+    isSnowing: <NightSnowing width={24} height={24} />,
+    isRain: <NightRainy width={24} height={24} />,
   },
 };
 const weatherCode2Type = (weatherCode) =>
@@ -51,11 +46,8 @@ const weatherCode2Type = (weatherCode) =>
     ""
   );
 
-const WeatherIcons: React.FC<IWeatherIconsProps> = ({
-  currentWeatherCode,
-  moment,
-}) => {
-  const [currentWeatherIcon, setCurrentWeatherIcon] = useState("isCloudy");
+const WeatherIcons = ({ currentWeatherCode, moment }) => {
+  const [currentWeatherIcon, setCurrentWeatherIcon] = useState("isClear");
 
   const theWeatherIcon = useMemo(() => weatherCode2Type(currentWeatherCode), [
     currentWeatherCode,
@@ -69,6 +61,7 @@ const WeatherIcons: React.FC<IWeatherIconsProps> = ({
     <IconContainer>{currentIcon[moment][currentWeatherIcon]}</IconContainer>
   );
 };
+
 const IconContainer = styled.div`
   flex-basis: 30%;
 

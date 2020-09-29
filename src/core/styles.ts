@@ -37,7 +37,6 @@ export const StyledSkillCard = styled.div<{
   margin-bottom: 10px;
   background: ${(props) => props.showBg || "rgba(255, 255, 255, 0.5)"};
   @media screen and (min-width: 768px) {
-    margin-bottom: 0px;
     margin-top: 0px;
     max-width: 100%;
   }

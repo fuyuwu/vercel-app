@@ -1,50 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import { theme } from "../../../core";
-import { Rain, Air, Reload, Loader } from "../../Icons";
-// import { IWeatherProps } from "../lib/types";
+import { Rain, Air, Reload } from "../../Icons";
 import WeatherIcons from "../component/WeatherIcons";
+import Loading from "../../Loading";
 
-interface IWeatherCardProps {
-  fetchData: () => void;
-  weatherElement?: {
-    obsTime: Date;
-    locationName: string;
-    humid: number;
-    temperature: number;
-    windSpeed: number;
-    description: string;
-    weatherCode: number;
-    rainPossibility: number;
-    comfortability: string;
-    isLoading: boolean;
-  };
-  moment: "day" | "night";
-}
-
-const weatherTheme = {
-  light: {
-    backgroundColor: "#ededed",
-    boxShadow: "0 1px 3px 0 #999999",
-    titleColor: "#212121",
-    temperatureColor: "#757575",
-    textColor: "#828282",
-  },
-  dark: {
-    backgroundColor: "#1F2022",
-    boxShadow:
-      "0 1px 4px 0 rgba(12, 12, 13, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.15)",
-    titleColor: "#f9f9fa",
-    temperatureColor: "#dddddd",
-    textColor: "#cccccc",
-  },
-};
-
-const WeatherCard: React.FC<IWeatherCardProps> = ({
-  fetchData,
-  weatherElement,
-  moment,
-}) => {
+const WeatherCard = (props) => {
+  const { fetchData, weatherElement, moment } = props;
   const {
     obsTime,
     locationName,
@@ -58,52 +20,58 @@ const WeatherCard: React.FC<IWeatherCardProps> = ({
   } = weatherElement;
 
   return (
-    <StyledContainer>
-      <StyledWeatherCard theme={moment}>
-        <StyledLocation>{locationName}</StyledLocation>
-        <StyledDescription>
-          {description} {comfortability}
-        </StyledDescription>
+    <StyledWeatherCard>
+      <StyledLocation>{locationName}</StyledLocation>
+      <StyledDescription>
+        {description} {comfortability}
+      </StyledDescription>
 
-        <StyledweatherElement>
-          <StyledTemperature>
-            {temperature}
-            <StyledCelsius>°C</StyledCelsius>
-          </StyledTemperature>
-          <WeatherIcons
-            currentWeatherCode={weatherCode}
-            moment={moment || "day"}
-          />
-        </StyledweatherElement>
-        <StyledAirFlow>
-          <Air width={18} height={18} />
-          {windSpeed} m/h
-        </StyledAirFlow>
-        <StyledRain>
-          <Rain width={18} height={18} fill={"#00ACEA"} />
-          {Math.round(rainPossibility)} %
-        </StyledRain>
+      <StyledweatherElement>
+        <StyledTemperature>
+          {temperature}
+          <StyledCelsius>°C</StyledCelsius>
+        </StyledTemperature>
+        <WeatherIcons
+          currentWeatherCode={weatherCode}
+          moment={moment || "day"}
+        />
+      </StyledweatherElement>
+      <StyledAirFlow>
+        <Air width={18} height={18} />
+        {windSpeed} m/h
+      </StyledAirFlow>
+      <StyledRain>
+        <Rain width={18} height={18} fill={"#00ACEA"} />
+        {Math.round(rainPossibility)} %
+      </StyledRain>
+
+      {obsTime}
+      {isLoading ? (
+        <Loading visible={true} bgColor={theme.darkFont} />
+      ) : (
         <StyledReload onClick={fetchData} isLoading={isLoading}>
-          {obsTime}
-          {isLoading ? (
-            <Loader />
-          ) : (
-            <Reload width={16} height={16} fill={theme.darkFont} />
-          )}
+          <Reload width={16} height={16} fill={theme.darkFont} />
         </StyledReload>
-      </StyledWeatherCard>
-    </StyledContainer>
+      )}
+    </StyledWeatherCard>
   );
 };
+const StyledWeatherCard = styled.div`
+  background-color: ${({ theme }) => theme.foregroundColor};
+  border-radius: 5px;
+  box-sizing: border-box;
+  padding: 30px 15px;
+  font-family: "Mamelon";
+`;
 
 const StyledLocation = styled.div`
   font-size: 28px;
   margin-bottom: 20px;
-  color: ${theme.darkFont};
+  color: ${({ theme }) => theme.titleColor};
 `;
 const StyledDescription = styled.div`
   font-size: 16px;
-  color: ${theme.darkFont};
+  color: ${({ theme }) => theme.textColor};
   margin-bottom: 30px;
   span {
     font-family: Arial, sans-serif;
@@ -116,7 +84,7 @@ const StyledweatherElement = styled.div`
   margin-bottom: 30px;
 `;
 const StyledTemperature = styled.div`
-  color: ${theme.darkFont};
+  color: ${({ theme }) => theme.temperatureColor};
   font-size: 50px;
   font-weight: 300;
   display: flex;
@@ -130,11 +98,13 @@ const StyledReload = styled.div<{ isLoading: boolean }>`
   text-align: right;
   cursor: pointer;
   margin-bottom: -18px;
+  color: ${({ theme }) => theme.textColor};
   svg {
+    fill: ${({ theme }) => theme.textColor};
     margin-left: 10px;
     cursor: pointer;
-    animation-duration: ${({ isLoading }) => (isLoading ? "1.5s" : "0s")};
     animation: rotate infinite 1.5s linear;
+    animation-duration: ${(props) => (props.isLoading ? "1.5s" : "0s")};
   }
   @keyframes rotate {
     from {
@@ -151,7 +121,7 @@ const StyledAirFlow = styled.div`
   align-items: center;
   font-size: 16x;
   font-weight: 300;
-  color: ${theme.darkFont};
+  color: ${({ theme }) => theme.textColor};
   margin-bottom: 20px;
   svg {
     margin-right: 30px;
@@ -163,28 +133,10 @@ const StyledRain = styled.div`
   align-items: center;
   font-size: 16x;
   font-weight: 300;
-  color: ${theme.darkFont};
+  color: ${({ theme }) => theme.textColor};
   svg {
     margin-right: 30px;
   }
 `;
-const StyledContainer = styled.div`
-  font-family: "Mamelon";
-  display: flex;
-  align-items: center;
-  @media screen and (min-width: 980px) {
-    width: 360px;
-    margin: 0 10px 0 0;
-  }
-`;
 
-const StyledWeatherCard = styled.div`
-  position: relative;
-  flex: 1;
-  box-shadow: 0 1px 3px 0 #999999;
-  background-color: #f9f9f9;
-  border-radius: 5px;
-  box-sizing: border-box;
-  padding: 30px 15px;
-`;
 export default WeatherCard;
