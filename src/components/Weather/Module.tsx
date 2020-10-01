@@ -82,7 +82,7 @@ const WeatherApp: React.FC = () => {
         <WeatherCard
           weatherElement={weatherElement}
           moment={moment}
-          fetchData={() => fetchData}
+          fetchData={fetchData}
         />
       </StyledContainer>
     </ThemeProvider>

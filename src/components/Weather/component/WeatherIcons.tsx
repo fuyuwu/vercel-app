@@ -15,26 +15,26 @@ import {
 
 const weatherTypes = {
   isThunderstorm: [15, 16, 17, 18, 21, 22, 33, 34, 35, 36, 41],
-  isClear: [1],
-  isCloudy: [2, 3, 4, 5, 6, 7],
+  // isClear: [1],
+  isCloudy: [1, 2, 3, 4, 5, 6, 7],
   isFog: [24],
   isSnowing: [23, 37, 42],
   isRain: [37, 38, 39],
 };
 const currentIcon = {
   day: {
-    isThunderstorm: <Thunderstrom width={24} height={24} />,
-    isCloudy: <Cloudy width={24} height={24} />,
-    isFog: <Fog width={24} height={24} />,
-    isSnowing: <Snowing width={24} height={24} />,
-    isRain: <Rainy width={24} height={24} />,
+    isThunderstorm: <Thunderstrom />,
+    isCloudy: <Cloudy />,
+    isFog: <Fog />,
+    isSnowing: <Snowing />,
+    isRain: <Rainy />,
   },
   night: {
-    isThunderstorm: <NightStorm width={24} height={24} />,
-    isCloudy: <NightCloud width={24} height={24} />,
-    isFog: <NightFog width={24} height={24} />,
-    isSnowing: <NightSnowing width={24} height={24} />,
-    isRain: <NightRainy width={24} height={24} />,
+    isThunderstorm: <NightStorm />,
+    isCloudy: <NightCloud />,
+    isFog: <NightFog />,
+    isSnowing: <NightSnowing />,
+    isRain: <NightRainy />,
   },
 };
 const weatherCode2Type = (weatherCode) =>
@@ -47,7 +47,7 @@ const weatherCode2Type = (weatherCode) =>
   );
 
 const WeatherIcons = ({ currentWeatherCode, moment }) => {
-  const [currentWeatherIcon, setCurrentWeatherIcon] = useState("isClear");
+  const [currentWeatherIcon, setCurrentWeatherIcon] = useState("isCloudy");
 
   const theWeatherIcon = useMemo(() => weatherCode2Type(currentWeatherCode), [
     currentWeatherCode,
@@ -58,7 +58,9 @@ const WeatherIcons = ({ currentWeatherCode, moment }) => {
   }, [theWeatherIcon]);
 
   return (
-    <IconContainer>{currentIcon[moment][currentWeatherIcon]}</IconContainer>
+    <IconContainer>
+      <IconContainer>{currentIcon[moment][currentWeatherIcon]}</IconContainer>
+    </IconContainer>
   );
 };
 
@@ -66,6 +68,8 @@ const IconContainer = styled.div`
   flex-basis: 30%;
 
   svg {
+    margin-left: 10px;
+    max-width: 80px;
     max-height: 110px;
   }
 `;
