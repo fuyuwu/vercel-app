@@ -135,7 +135,7 @@ const Profile: React.FC<IProps> = (props) => {
           borderColor={theme.darkFont}
         />
         <StyledSkillCard padding={"10px 0"}>
-          <h3>新增中....</h3>
+          <h3>React-Native App 新增中....</h3>
         </StyledSkillCard>
         {/* <StyledFlex justContent={"space-between"}>
           <Weather />
