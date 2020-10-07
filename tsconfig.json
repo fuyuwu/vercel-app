@@ -3,6 +3,7 @@
     "target": "es5",
     "lib": ["es6", "DOM"],
     "allowJs": true,
+    "typeRoots": ["./node_modules/@types"],
     "skipLibCheck": false,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -17,5 +18,5 @@
     "types": ["react", "node"]
   },
   "include": ["src"],
-  "exclude": ["node-modules"]
+  "exclude": ["node-modules", "dist"]
 }
