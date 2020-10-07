@@ -124,11 +124,11 @@ const App: React.FC<IProps> = (props) => {
               <Skills id={"tab02"} visible={currentTabID} />
               <Profile id={"tab03"} visible={currentTabID} />
             </StyledContent>
-            {/* <p>{date ? date : "Loading date..."}</p> */}
             <Footer />
           </StyledContainer>
         </div>
       )}
+      {/* TEST */}
       {/* <main>
         <h2>The date according to Go is:</h2>
         <p>{date ? date : "Loading date..."}</p>
