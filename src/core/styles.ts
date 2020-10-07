@@ -34,9 +34,8 @@ export const StyledSkillCard = styled.div<{
   border-radius: 5px;
   margin-top: 10px;
   margin-right: 5px;
-  margin-bottom: 10px;
   background: ${(props) => props.showBg || "rgba(255, 255, 255, 0.5)"};
-  @media screen and (min-width: 768px) {
+  @media screen and (min-width: 980px) {
     margin-top: 0px;
     max-width: 100%;
   }
@@ -81,9 +80,14 @@ export const StyledTag = styled.a`
     font-size: 14px;
   }
 `;
-export const StyledAboutTitle = styled.p<{ fontSize?: string }>`
+export const StyledAboutTitle = styled.p<{
+  fontSize?: string;
+  fontWeight?: string;
+  fontAlign?: string;
+}>`
   font-size: ${(props) => props.fontSize || 20}px;
-  font-weight: bold;
+  font-weight: ${(props) => props.fontWeight || "bold"};
+  text-align: ${(props) => props.fontAlign || "left"};
   letter-spacing: 0.8px;
   color: ${theme.darkFont};
   margin-bottom: 8px;

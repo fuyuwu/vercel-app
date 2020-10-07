@@ -62,7 +62,11 @@ const StyledContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 10px;
+  margin-right: 0px;
+  @media screen and (min-width: 980px) {
+    margin-right: 10px;
+    width: 290px;
+  }
 `;
 
 const WeatherApp: React.FC = () => {

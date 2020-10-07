@@ -9,13 +9,13 @@ export const StyledLoading = styled.div<ILoadingProps>`
     display: inline-block;
     position: relative;
 
-    &.large {
+    &.newPos {
       top: -20px;
-      left: 50%;
+      left: 80px;
     }
     &.default {
       top: -30px;
-      left: -2px;
+      left: 5px;
     }
     div {
       position: relative;

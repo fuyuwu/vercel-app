@@ -47,7 +47,7 @@ const WeatherCard = (props) => {
 
       {obsTime}
       {isLoading ? (
-        <Loading visible={true} bgColor={theme.darkFont} />
+        <Loading className={"newPos"} visible={true} bgColor={theme.darkFont} />
       ) : (
         <StyledReload onClick={fetchData} isLoading={isLoading}>
           <Reload width={16} height={16} fill={theme.darkFont} />

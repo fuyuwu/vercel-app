@@ -35,7 +35,11 @@ const Module: React.FC<ISwitchProps> = (props) => {
         <button type="button" onClick={handlerClick}></button>
         {props.text && <StyledSwitchText>{props.text[1]}</StyledSwitchText>}
         {props.isLoading ? (
-          <Loading size={"default"} bgColor={"#fa8072"} visible={true} />
+          <Loading
+            className={"default"}
+            bgColor={"#fa8072"}
+            visible={true}
+          />
         ) : (
           ""
         )}

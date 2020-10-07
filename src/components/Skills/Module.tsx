@@ -25,7 +25,7 @@ const skillList = [
   "React, hooks",
   "Typescript",
   "JavaScript",
-  "web Api",
+  "Web Api",
   "webpack",
   "Storybook",
   "css in js",
@@ -66,7 +66,9 @@ const Skills: React.FC<ISkillsProps> = (props) => {
             <StyledLine lineStyle={"solid"} lineWeight={3} />
             <StyledFlex direction={"row"}>
               <div style={{ flex: 1, textAlign: "center" }}>
-                <StyledAboutTitle fontSize={"18"}>Web</StyledAboutTitle>
+                <StyledAboutTitle fontAlign={"center"} fontSize={"18"}>
+                  Web
+                </StyledAboutTitle>
                 <StyledListul>
                   {skillList.map((list, idx) => {
                     return (
@@ -79,10 +81,14 @@ const Skills: React.FC<ISkillsProps> = (props) => {
               </div>
               <StyledDivider />
               <div style={{ flex: 1, textAlign: "center" }}>
-                <StyledAboutTitle fontSize={"18"}>App</StyledAboutTitle>
+                <StyledAboutTitle fontAlign={"center"} fontSize={"18"}>
+                  App
+                </StyledAboutTitle>
                 <StyledAboutContent>React-Native</StyledAboutContent>
                 <div style={{ textAlign: "center" }}>
-                  <StyledAboutTitle fontSize={"18"}>Html/CSS</StyledAboutTitle>
+                  <StyledAboutTitle fontAlign={"center"} fontSize={"18"}>
+                    Html/CSS
+                  </StyledAboutTitle>
                   <StyledAboutContent>SCSS/SASS</StyledAboutContent>
                   <StyledAboutContent>Html5</StyledAboutContent>
                   <StyledAboutContent>CSS3</StyledAboutContent>
@@ -99,7 +105,9 @@ const Skills: React.FC<ISkillsProps> = (props) => {
             <StyledLine lineStyle={"solid"} lineWeight={3} />
             <StyledFlex direction={"row"}>
               <div style={{ flex: 1, textAlign: "center" }}>
-                <StyledAboutTitle fontSize={"18"}>UI Tools</StyledAboutTitle>
+                <StyledAboutTitle fontAlign={"center"} fontSize={"18"}>
+                  UI Tools
+                </StyledAboutTitle>
                 <StyledListul>
                   {uiList.map((list, idx) => {
                     return (
@@ -112,7 +120,9 @@ const Skills: React.FC<ISkillsProps> = (props) => {
               </div>
               <StyledDivider />
               <div style={{ flex: 1, textAlign: "center" }}>
-                <StyledAboutTitle fontSize={"18"}>Web Tools</StyledAboutTitle>
+                <StyledAboutTitle fontAlign={"center"} fontSize={"18"}>
+                  Web Tools
+                </StyledAboutTitle>
                 <StyledListul>
                   <StyledAboutList>
                     <StyledAboutContent>Google Analytics</StyledAboutContent>
@@ -121,16 +131,15 @@ const Skills: React.FC<ISkillsProps> = (props) => {
                     <StyledAboutContent>SEO</StyledAboutContent>
                   </StyledAboutList>
                 </StyledListul>
+
+                {/* <StyledLine lineStyle={"solid"} lineWeight={3} /> */}
+                <StyledAboutTitle fontAlign={"center"}>
+                  {/* <Git width={24} height={24} fill={`${theme.darkFont}`} /> */}
+                  GUI
+                </StyledAboutTitle>
+                <StyledAboutContent>github, gitKraken</StyledAboutContent>
               </div>
             </StyledFlex>
-          </StyledSkillCard>
-          <StyledSkillCard>
-            <StyledAboutTitle>
-              <Git width={24} height={24} fill={`${theme.darkFont}`} />
-              GUI
-            </StyledAboutTitle>
-            <StyledLine lineStyle={"solid"} lineWeight={3} />
-            <StyledAboutContent>github, gitKraken</StyledAboutContent>
           </StyledSkillCard>
         </StyledFlex>
       </StyledAbout>

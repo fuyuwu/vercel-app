@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { StyledFlex, StyledLine, StyledSkillCard } from "../../core/styles";
+import {
+  StyledFlex,
+  StyledLine,
+  StyledSkillCard,
+  StyledAboutTitle,
+} from "../../core/styles";
 import { theme } from "../../core";
 import "./css.scss";
-
+import { ReactIcon, Coding } from "../Icons";
 import Card from "../Card";
 import Switch from "../Switch";
 import Weather from "../Weather";
@@ -97,10 +102,36 @@ const Profile: React.FC<IProps> = (props) => {
       <StyledBox>
         <StyledFlex justContent={"space-between"}>
           <Weather />
-          <StyledSkillCard style={{ padding: 5 }}>
+          <StyledSkillCard
+            style={{
+              paddingLeft: 60,
+              paddingRight: 60,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
             <StyledContent>
-              <h3>Weather</h3>
-              <p>React, hooks, Typescript, web api</p>
+              <StyledAboutTitle fontAlign={"center"}>
+                Weather Forecast
+              </StyledAboutTitle>
+              <StyledAboutTitle
+                fontAlign={"center"}
+                fontSize={"18"}
+                fontWeight={"500"}
+              >
+                <ReactIcon width={30} height={30} fill={`${theme.darkFont}`} />
+                React, hooks, Typescript, Web Api, styled-components
+              </StyledAboutTitle>
+              <StyledAboutTitle
+                fontAlign={"center"}
+                fontSize={"18"}
+                fontWeight={"500"}
+              >
+                <Coding width={30} height={30} fill={`${theme.darkFont}`} />
+                Data: CWB Api
+              </StyledAboutTitle>
             </StyledContent>
           </StyledSkillCard>
         </StyledFlex>
@@ -112,10 +143,34 @@ const Profile: React.FC<IProps> = (props) => {
           borderColor={theme.darkFont}
         />
         <StyledFlex justContent={"space-around"}>
-          <StyledSkillCard style={{ padding: 5 }}>
+          <StyledSkillCard
+            style={{
+              paddingLeft: 60,
+              paddingRight: 60,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
             <StyledContent>
-              <h3>Switch</h3>
-              <p>React, hooks, Typescript</p>
+              <StyledAboutTitle fontAlign={"center"}>Switch</StyledAboutTitle>
+              <StyledAboutTitle
+                fontAlign={"center"}
+                fontSize={"18"}
+                fontWeight={"500"}
+              >
+                <ReactIcon width={30} height={30} fill={`${theme.darkFont}`} />
+                React, hooks, Typescript, Web Api, styled-components
+              </StyledAboutTitle>
+              <StyledAboutTitle
+                fontAlign={"center"}
+                fontSize={"18"}
+                fontWeight={"500"}
+              >
+                <Coding width={30} height={30} fill={`${theme.darkFont}`} />
+                Data: PokeApi
+              </StyledAboutTitle>
             </StyledContent>
           </StyledSkillCard>
           <StyledBlock>
@@ -166,7 +221,7 @@ const StyledBlock = styled.div`
 
   @media screen and (min-width: 980px) {
     margin-top: 0px;
-    margin-left: 10px;
+    /* margin-left: 10px; */
   }
   h1 {
     letter-spacing: 0.8px;
