@@ -221,7 +221,6 @@ const StyledBlock = styled.div`
 
   @media screen and (min-width: 980px) {
     margin-top: 0px;
-    /* margin-left: 10px; */
   }
   h1 {
     letter-spacing: 0.8px;
