@@ -96,11 +96,11 @@ const App: React.FC<IProps> = (props) => {
                 </Link> */}
                   {/* ---------- */}
                   <StyledIcon
-                    href="mailto:fuyuwu041000@gamail.com"
+                    href="mailto:fuyuwu041000@gmail.com"
                     rel="noreferrer noopener"
                   >
                     <Mail width={24} height={24} fill={`${theme.darkFont}`} />
-                    fuyuwu041000@gamail.com
+                    fuyuwu041000@gmail.com
                   </StyledIcon>
                 </StyledContact>
                 <StyledtagFlex>
