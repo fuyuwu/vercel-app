@@ -19,7 +19,7 @@ const weatherTypes = {
   isCloudy: [1, 2, 3, 4, 5, 6, 7],
   isFog: [24],
   isSnowing: [23, 37, 42],
-  isRain: [37, 38, 39],
+  isRain: [8, 9, 10, 11, 12, 13, 14, 37, 38, 39],
 };
 const currentIcon = {
   day: {
@@ -56,7 +56,6 @@ const WeatherIcons = ({ currentWeatherCode, moment }) => {
   useEffect(() => {
     setCurrentWeatherIcon(theWeatherIcon);
   }, [theWeatherIcon]);
-
   return (
     <IconContainer>
       <IconContainer>{currentIcon[moment][currentWeatherIcon]}</IconContainer>

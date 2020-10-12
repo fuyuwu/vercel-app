@@ -53,7 +53,6 @@ const App: React.FC<IProps> = (props) => {
   }, []);
   return (
     <>
-      {/* <StyledLoad isLoad={isLoad}>{isLoad ? "頁面加載中...." : ""}</StyledLoad> */}
       {isLoad ? (
         <main>
           <StyledLoad>
