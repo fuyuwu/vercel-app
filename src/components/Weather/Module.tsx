@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import styled, { ThemeProvider } from "styled-components";
 import WeatherCard from "./component/WeatherCard";
 import sunriseSunsetData from "./lib/sunrise-sunset.json";
-import useWeatherApi from "./lib/useWeatherApi";
+// import useWeatherApi from "./lib/useWeatherApi";
 
 const theme = {
   light: {
@@ -70,24 +70,24 @@ const StyledContainer = styled.div`
 `;
 
 const WeatherApp: React.FC = () => {
-  const [weatherElement, fetchData] = useWeatherApi();
+  // const [weatherElement, fetchData] = useWeatherApi();
   const [currentTheme, setCurrentTheme] = useState("dark");
-  const { locationName }: any = weatherElement;
+  // const { locationName }: any = weatherElement;
 
-  const moment = useMemo(() => getMoment(locationName), [locationName]);
+  // const moment = useMemo(() => getMoment(ßlocationName), [locationName]);
 
-  useEffect(() => {
-    setCurrentTheme(moment === "day" ? "light" : "dark");
-  }, [moment]);
+  // useEffect(() => {
+  //   setCurrentTheme(moment === "day" ? "light" : "dark");
+  // }, [moment]);
 
   return (
     <ThemeProvider theme={theme[currentTheme]}>
       <StyledContainer>
-        <WeatherCard
+        {/* <WeatherCard
           weatherElement={weatherElement}
           moment={moment}
           fetchData={fetchData}
-        />
+        /> */}
       </StyledContainer>
     </ThemeProvider>
   );

@@ -347,7 +347,7 @@ export const NightCloud: React.FC<IIconProps> = (props) => {
         </g>
         <path
           d="m187.733 26.407h-9.34v-9.34c0-4.267-3.459-7.726-7.726-7.726s-7.726 3.459-7.726 7.726v9.34h-9.341c-4.267 0-7.726 3.459-7.726 7.726s3.459 7.726 7.726 7.726h9.341v9.341c0 4.267 3.459 7.726 7.726 7.726s7.726-3.459 7.726-7.726v-9.341h9.34c4.267 0 7.726-3.459 7.726-7.726s-3.459-7.726-7.726-7.726z"
-          fill="#fff0af"
+          fill="var(--white)0af"
         />
         <g fill="#ffe07d">
           <path d="m85.333 103.208c-4.268 0-7.726 3.459-7.726 7.726v17.067c0 4.267 3.459 7.726 7.726 7.726s7.726-3.459 7.726-7.726v-17.067c0-4.267-3.458-7.726-7.726-7.726z" />
@@ -1005,14 +1005,14 @@ export const Failed: React.FC<IIconProps> = (props) => {
         <rect
           x="3.98"
           y="-427.615"
-          fill="#fff"
+          fill="var(--white)"
           width="55.992"
           height="285.672"
         />
         <rect
           x="-110.828"
           y="-312.815"
-          fill="#fff"
+          fill="var(--white)"
           width="285.672"
           height="55.992"
         />
@@ -1053,7 +1053,7 @@ export const Success: React.FC<IIconProps> = (props) => {
     >
       <ellipse fill="#32BEA6" cx="256" cy="256" rx="256" ry="255.832" />
       <polygon
-        fill="#FFFFFF"
+        fill="var(--white)FFF"
         points="235.472,392.08 114.432,297.784 148.848,253.616 223.176,311.52 345.848,134.504 
 	391.88,166.392 "
       />
@@ -1308,7 +1308,7 @@ export const Fold: React.FC<IIconProps> = (props) => {
       <path
         fill="none"
         fillRule="evenodd"
-        stroke="#111419"
+        stroke='var(--dark-font)'
         strokeLinejoin="round"
         strokeWidth="2"
         d="M0 6L12 6"
@@ -1327,7 +1327,7 @@ export const Unfold: React.FC<IIconProps> = (props) => {
       <g
         fill="none"
         fillRule="evenodd"
-        stroke="#111419"
+        stroke='var(--dark-font)'
         strokeLinejoin="round"
         strokeWidth="2"
       >
@@ -1642,7 +1642,7 @@ export const CellPhone: React.FC<IIconProps> = (props) => {
     <svg
       width={props.width}
       height={props.height}
-      fill={props.fill || "#fff"}
+      fill={props.fill || "var(--white)"}
       version="1.1"
       id="Layer_1"
       xmlns="http://www.w3.org/2000/svg"
@@ -1692,7 +1692,7 @@ export const Mail: React.FC<IIconProps> = (props) => {
     <svg
       width={props.width}
       height={props.height}
-      fill={props.fill || "#fff"}
+      fill={props.fill || "var(--white)"}
       version="1.1"
       id="Capa_1"
       xmlns="http://www.w3.org/2000/svg"

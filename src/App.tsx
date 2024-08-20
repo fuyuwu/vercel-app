@@ -184,7 +184,7 @@ const StyledIcon = styled.a`
     cursor: pointer;
     svg {
       transition: all 0.5s;
-      fill: #fa8072;
+      fill: var(--primary-main);
     }
   }
 `;

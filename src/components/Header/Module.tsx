@@ -67,7 +67,6 @@ const Header: React.FC<IHeaderProps> = (props) => {
     return (
       <header
         className={`${isScroll ? "show" : ""}`}
-        onScroll={handlerScroll}
       >
         {children}
       </header>
@@ -97,12 +96,12 @@ const Header: React.FC<IHeaderProps> = (props) => {
                 );
               })}
             </Router>
-            <p style={{ textAlign: "center", fontSize: 20, color: "#fa8072" }}>
+            <p style={{ textAlign: "center", fontSize: 20, color: "var(--primary-main)" }}>
               持續新增中....
             </p>
           </StyledHeaderMenu>
 
-          <StyledLine borderColor={"#fff"} lineStyle={"solid"} lineWeight={2} />
+          <StyledLine borderColor={"var(--white)"} lineStyle={"solid"} lineWeight={2} />
 
           <StyledContact>
             <StyledIcon>
@@ -143,11 +142,11 @@ const StyledHeaderLi = styled.li`
     padding: 10px 15px;
     transition: all 0.3s;
     /* color: #212f3c; */
-    color: #fff;
+    color: var(--white);
 
     &:hover {
       transition: all 0.3s;
-      color: #fa8072;
+      color: var(--primary-main);
     }
     @media ${device.tablet} {
       display: inline-block;
@@ -159,11 +158,11 @@ const StyledMenu = styled.a`
   padding: 10px 15px;
   transition: all 0.3s;
   /* color: #212f3c; */
-  color: #fff;
+  color: var(--white);
 
   &:hover {
     transition: all 0.3s;
-    color: #fa8072;
+    color: var(--primary-main);
   }
   @media ${device.tablet} {
     display: inline-block;
@@ -182,7 +181,7 @@ const StyledIcon = styled.a`
   &:hover {
     svg {
       transition: all 0.5s;
-      fill: #fa8072;
+      fill: var(--primary-main);
     }
   }
 `;

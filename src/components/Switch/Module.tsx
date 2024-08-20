@@ -37,7 +37,7 @@ const Module: React.FC<ISwitchProps> = (props) => {
         {props.isLoading ? (
           <Loading
             className={"default"}
-            bgColor={"#fa8072"}
+            bgColor={"var(--primary-main)"}
             visible={true}
           />
         ) : (

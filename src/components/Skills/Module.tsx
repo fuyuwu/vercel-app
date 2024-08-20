@@ -151,7 +151,7 @@ const Skills: React.FC<ISkillsProps> = (props) => {
               <StyledLanguage>
                 <Taiwan width={36} height={36} />
               </StyledLanguage>
-              <Progress percent={100} color={"#111419"} font={"Native"} />
+              <Progress percent={100} color={'var(--dark-font)'} font={"Native"} />
             </StyledFlex>
           </StyledSkillCard>
           <StyledSkillCard padding={"25px 0"}>
@@ -159,7 +159,7 @@ const Skills: React.FC<ISkillsProps> = (props) => {
               <StyledLanguage>
                 <Japan width={36} height={36} />
               </StyledLanguage>
-              <Progress percent={85} color={"#111419"} font={"JLPT N1"} />
+              <Progress percent={85} color={'var(--dark-font)'} font={"JLPT N1"} />
             </StyledFlex>
           </StyledSkillCard>
           <StyledSkillCard padding={"25px 0"}>
@@ -167,7 +167,7 @@ const Skills: React.FC<ISkillsProps> = (props) => {
               <StyledLanguage>
                 <USA width={36} height={36} />
               </StyledLanguage>
-              <Progress percent={50} color={"#111419"} font={"Primary"} />
+              <Progress percent={50} color={'var(--dark-font)'} font={"Primary"} />
             </StyledFlex>
           </StyledSkillCard>
         </StyledLanguageBlock>

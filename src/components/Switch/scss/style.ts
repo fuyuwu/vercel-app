@@ -10,10 +10,10 @@ export const StyledSwitch = styled.div`
     vertical-align: middle;
     width: 50px;
     background-color: ${(props: ISwitchProps) =>
-      props.isOpen ? "#1890ff" : "#FFFFFF"};
+      props.isOpen ? 'var(--primary-main)' : "var(--white)FFF"};
     border-radius: 11px;
     border: 1px solid
-      ${(props: ISwitchProps) => (props.isOpen ? "#1890ff" : "#ECECEC")};
+      ${(props: ISwitchProps) => (props.isOpen ? 'var(--primary-main)' : "#ECECEC")};
     box-sizing: border-box;
     cursor: ${(props: ISwitchProps) =>
       props.isDisabled ? "not-allowed" : "pointer"};
@@ -26,7 +26,7 @@ export const StyledSwitch = styled.div`
       content: "";
       width: 20px;
       height: 20px;
-      background-color: #ffffff;
+      background-color: var(--white)fff;
       border-radius: 50%;
       box-shadow: 0px 1px 3px rgba(30, 30, 30, 0.3);
       transition: all 300ms ease-in-out;
@@ -51,8 +51,7 @@ export const StyledSwitch = styled.div`
 `;
 
 export const StyledSwitchText = styled.span`
-  /* color: #111419; */
-  color: #fff;
+  color: var(--dark-font);
   font-size: 16px;
   vertical-align: middle;
   &:first-of-type {

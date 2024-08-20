@@ -29,13 +29,13 @@
         }
 
         &.active {
-          background: #111419;
-          color: #fa8072;
+          background: var(--dark-font);
+          color: var(--primary-main);
         }
         &:hover {
           transition: 0.3s ease;
-          background: #fa8072;
-          color: #fff;
+          background: var(--dark-font);
+          color: var(--white);
         }
       }
 

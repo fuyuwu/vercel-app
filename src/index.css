@@ -12,3 +12,12 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+:root {
+  --primary-main: #73A9AD;
+  --primary-default: #90C8AC;
+  --dark-font: #111419;
+  --light-font: #F5F0BB;
+  --opacity: #6469712e;
+  --white: #ffffff;
+}

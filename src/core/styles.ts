@@ -65,10 +65,10 @@ export const StyledTag = styled.a`
   display: inline-block;
   font-size: 12px;
   padding: 5px 10px;
-  border-radius: 15px;
+  border-radius: 0px 15px 15px 0px;
   margin: 10px 5px;
-  background-color: ${theme.lightFont};
-  color: ${theme.normalFont};
+  background-color: ${theme.darkFont};
+  color: ${theme.lightFont};
   letter-spacing: 0.8px;
   cursor: default;
   svg {

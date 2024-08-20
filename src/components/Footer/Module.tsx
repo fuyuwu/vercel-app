@@ -11,7 +11,7 @@ const Footer: React.FC = () => {
 
 const StyledFooter = styled.footer`
   border-radius: 5px 5px;
-  background: #111419;
+  background: var(--dark-font);
 `;
 
 const StyledCopyright = styled.p`
@@ -19,7 +19,7 @@ const StyledCopyright = styled.p`
   font-family: "Mamelon";
   letter-spacing: 2px;
   padding: 15px 0;
-  color: #fff;
+  color: var(--white);
   cursor: default;
 `;
 

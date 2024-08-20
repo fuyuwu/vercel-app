@@ -44,11 +44,11 @@ const StyledPercent = styled.div<{ percent: number }>`
     border-radius: 7px;
   }
   progress::-webkit-progress-bar {
-    background-color: #fa8072;
+    background-color: var(--primary-main);
     border-radius: 7px;
   }
   progress::-webkit-progress-value {
-    background-color: #111419;
+    background-color: var(--dark-font);
     border-radius: 7px;
     transition: width 0.5s ease-in-out;
   }

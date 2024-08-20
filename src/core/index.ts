@@ -19,11 +19,11 @@ export const device = {
 };
 
 export const theme = {
-  darkFont: "#111419",
-  lightFont: "#fa8072",
-  mainTheme: "#76d7c4",
-  normalFont: "#fff",
-  opactiyBg: "#6469712e",
+  darkFont: "var(--dark-font)",
+  lightFont: "var(--light-font)",
+  mainTheme: 'var(--primary-main)',
+  normalFont: 'var(--primary-default)',
+  opacityBg: 'var(--opacity)',
 };
 export interface ICommonProps {
   className?: string;

@@ -23,9 +23,9 @@ const Module: React.FC<ICollectProps> = (props) => {
       {/* <Loading visible={props.isLoading} className={`${loadStyle}`} /> */}
       <StyledCollectBtn onClick={onCollect}>
         {props.isFavorite ? (
-          <Heart width={18} height={18} fill={"#fa8072"} />
+          <Heart width={18} height={18} fill={"var(--primary-main)"} />
         ) : (
-          <Heartf width={18} height={18} fill={"#fa8072"} />
+          <Heartf width={18} height={18} fill={"var(--primary-main)"} />
         )}
       </StyledCollectBtn>
     </StyledBlock>

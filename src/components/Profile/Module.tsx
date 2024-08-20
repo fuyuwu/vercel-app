@@ -87,7 +87,7 @@ export const AsyncAction = () => {
         isOpen={isOpen}
         isDisabled={isDisabled}
       />
-      <div style={{ color: "#fff" }}>{isOpen ? "fetch成功" : ""}</div>
+      <div style={{ color: "var(--white)" }}>{isOpen ? "fetch成功" : ""}</div>
     </>
   );
 };
@@ -113,9 +113,9 @@ const Profile: React.FC<IProps> = (props) => {
             }}
           >
             <StyledContent>
-              <StyledAboutTitle fontAlign={"center"}>
+              {/* <StyledAboutTitle fontAlign={"center"}>
                 Weather Forecast
-              </StyledAboutTitle>
+              </StyledAboutTitle> */}
               <StyledAboutTitle
                 fontAlign={"center"}
                 fontSize={"18"}
@@ -234,7 +234,7 @@ const StyledControlBtn = styled.div`
   margin: 5px auto 0;
   background-color: #1890ff;
   border-color: #1890ff;
-  color: #fff;
+  color: var(--white);
   cursor: pointer;
 `;
 const StyledContent = styled.div`
