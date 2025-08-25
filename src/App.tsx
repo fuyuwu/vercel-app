@@ -3,29 +3,29 @@ import styled from "styled-components";
 import "./App.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import WorkCard from "./components/WorkCard/Module";
-import Skills from "./components/Skills";
 import Tabs from "./components/Tabs";
-import Profile from "./components/Profile";
+import TabContentRenderer from "./components/TabContentRenderer";
 import Loading from "./components/Loading";
 import { Mail, CellPhone } from "./components/Icons";
 
 import { theme } from "./core";
 import { ITab } from "./core/type";
+import { useAppDispatch, useAppSelector } from "./store/hooks";
+import { setCurrentTab } from "./store/slices/tabSlice";
 
 interface IProps {
   title?: string;
 }
 
 const App: React.FC<IProps> = (props) => {
-  const tab = [
-    { id: "tab01", name: "ABOUT" },
-    { id: "tab02", name: "SKILLS" },
-    { id: "tab03", name: "PROTFILO" },
-  ];
-  const [currentTabID, setCurrentTabID] = useState<string>(tab[0].id); //tab
+  const tab = useAppSelector(state => state.tab.tabs);
+  
+  // 使用 Redux hooks
+  const dispatch = useAppDispatch();
+  const currentTabID = useAppSelector(state => state.tab.currentTabId);
+  
   const tabOnClick = (id: string) => {
-    setCurrentTabID(id);
+    dispatch(setCurrentTab(id));
   };
   const liRenderer = (data: ITab) => {
     const { id, name } = data;
@@ -102,26 +102,23 @@ const App: React.FC<IProps> = (props) => {
                     fuyuwu041000@gmail.com
                   </StyledIcon>
                 </StyledContact>
-                <StyledtagFlex>
+                <StyledTagFlex>
                   <StyledTag># 好奇心旺盛</StyledTag>
                   <StyledTag># 擅長協作開發</StyledTag>
                   <StyledTag># 善於傾聽及溝通</StyledTag>
-                </StyledtagFlex>
+                </StyledTagFlex>
               </div>
               <StyledLine lineWeight={3} />
               {/* ---------------------------------------------- */}
               <StyledNextStep>
                 <Tabs
                   data={tab}
-                  currentTab={currentTabID}
                   onClick={tabOnClick}
                   tabRender={liRenderer}
                 />
               </StyledNextStep>
 
-              <WorkCard id={"tab01"} visible={currentTabID} />
-              <Skills id={"tab02"} visible={currentTabID} />
-              <Profile id={"tab03"} visible={currentTabID} />
+              <TabContentRenderer />
             </StyledContent>
             <Footer />
           </StyledContainer>
@@ -145,7 +142,7 @@ const StyledLoad = styled.div`
     color: ${theme.darkFont};
   }
 `;
-const StyledtagFlex = styled.div`
+const StyledTagFlex = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;

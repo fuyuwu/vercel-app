@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
-  StyledCard,
+  StyledCardSimple,
   StyledAbout,
   StyledAboutTitle,
   StyledFlex,
@@ -16,11 +16,8 @@ import {
 import { ReactIcon, Coding, Git, Japan, Taiwan, USA } from "../Icons";
 import { theme } from "../../core";
 import Progress from "../Progress";
+import { useAppSelector } from "../../store/hooks";
 
-interface ISkillsProps {
-  id: string;
-  visible: string;
-}
 const skillList = [
   "React, hooks",
   "Typescript",
@@ -39,7 +36,17 @@ const uiList = [
   "Flowchart",
   "Functional map",
 ];
-const Skills: React.FC<ISkillsProps> = (props) => {
+interface ISkillsProps {
+  tabId: string;
+}
+
+const Skills: React.FC<ISkillsProps> = ({ tabId }) => {
+  // 從 Redux 獲取當前 tab 狀態
+  const currentTabId = useAppSelector(state => state.tab.currentTabId);
+  
+  // 只有當選中對應的 tab 時才顯示
+  if (currentTabId !== tabId) return null
+
   // const [percent, setPercent] = useState<number>(0);
 
   // useEffect(() => {
@@ -54,7 +61,7 @@ const Skills: React.FC<ISkillsProps> = (props) => {
   //   }, 1000);
   // }, []);
   return (
-    <StyledCard id={props.id} visible={props.visible}>
+    <StyledCardSimple>
       <StyledAbout>
         <StyledAboutTitle fontSize={"25"}>Skills</StyledAboutTitle>
         <StyledFlex>
@@ -172,7 +179,7 @@ const Skills: React.FC<ISkillsProps> = (props) => {
           </StyledSkillCard>
         </StyledLanguageBlock>
       </StyledAbout>
-    </StyledCard>
+    </StyledCardSimple>
   );
 };
 

@@ -1,9 +1,10 @@
 import React from "react";
 import CollapseBlock from "../CollapseBlock";
+import { useAppSelector } from "../../store/hooks";
 
 import {
   StyledTag,
-  StyledCard,
+  StyledCardSimple,
   StyledAbout,
   StyledAboutTitle,
   StyledFlex,
@@ -14,13 +15,17 @@ import {
 } from "../../core/styles";
 
 interface IWorkCardProps {
-  id: string;
-  visible: string;
+  tabId: string;
 }
 
-const WorkCard: React.FC<IWorkCardProps> = (props) => {
+const WorkCard: React.FC<IWorkCardProps> = ({ tabId }) => {
+  // 從 Redux 獲取當前 tab 狀態
+  const currentTabId = useAppSelector(state => state.tab.currentTabId);
+  
+  // 只有當選中對應的 tab 時才顯示
+  if (currentTabId !== tabId) return null
   return (
-    <StyledCard id={props.id} visible={props.visible}>
+    <StyledCardSimple>
       <StyledAbout>
         <StyledAboutTitle fontSize={"25"}>Work Experience</StyledAboutTitle>
         <StyledFlex>
@@ -285,7 +290,7 @@ const WorkCard: React.FC<IWorkCardProps> = (props) => {
           </StyledSkillCard>
         </StyledFlex>
       </StyledAbout>
-    </StyledCard>
+    </StyledCardSimple>
   );
 };
 export default WorkCard;

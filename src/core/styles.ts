@@ -6,6 +6,10 @@ export const StyledCard = styled.div<{ id: string; visible: string }>`
   display: ${(props) => (props.visible === props.id ? "block" : "none")};
 `;
 
+export const StyledCardSimple = styled.div`
+  display: block;
+`;
+
 export const StyledFlex = styled.div<{
   alignItems?: string;
   justContent?: string;

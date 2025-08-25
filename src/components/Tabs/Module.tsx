@@ -1,15 +1,17 @@
 import * as React from "react";
 import "./css.scss";
 import { ITab } from "../../core/type";
+import { useAppSelector } from "../../store/hooks";
 
 export interface ITabsProps {
   data: ITab[];
-  currentTab: string;
   onClick: (id: string) => void;
   tabRender: (data: ITab) => JSX.Element;
 }
 
 const Tabs: React.FC<ITabsProps> = (props) => {
+  const currentTab = useAppSelector(state => state.tab.currentTabId);
+  
   if (!props.data || props.data.length === 0) {
     return null;
   }
