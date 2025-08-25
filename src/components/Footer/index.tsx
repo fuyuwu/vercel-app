@@ -24,3 +24,4 @@ const StyledCopyright = styled.p`
 `;
 
 export default Footer;
+

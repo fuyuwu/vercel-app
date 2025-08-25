@@ -187,7 +187,7 @@ const StyledIcon = styled.a`
 `;
 // Icons--------
 const StyledContainer = styled.div`
-  margin: 10px;
+  /* margin: 10px; */
   background: ${theme.mainTheme};
   border-radius: 10px;
   /* @media screen and (min-width: 768px) {
@@ -245,7 +245,7 @@ const StyledTag = styled.a`
   border-radius: 15px;
   margin: 2px 5px;
   background-color: ${theme.lightFont};
-  color: ${theme.normalFont};
+  color: ${theme.darkFont};
   letter-spacing: 0.8px;
   cursor: default;
   svg {
