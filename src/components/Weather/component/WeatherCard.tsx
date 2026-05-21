@@ -61,7 +61,6 @@ const StyledWeatherCard = styled.div`
   border-radius: 5px;
   box-sizing: border-box;
   padding: 30px 15px;
-  font-family: "Mamelon";
 `;
 
 const StyledLocation = styled.div`
@@ -74,7 +73,7 @@ const StyledDescription = styled.div`
   color: ${({ theme }) => theme.textColor};
   margin-bottom: 30px;
   span {
-    font-family: Arial, sans-serif;
+    font-family: inherit;
   }
 `;
 const StyledweatherElement = styled.div`

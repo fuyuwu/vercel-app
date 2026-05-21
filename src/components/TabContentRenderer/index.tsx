@@ -1,36 +1,32 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { useAppSelector } from '../../store/hooks';
-import WorkCard from '../WorkCard';
-import Skills from '../Skills';
-import Profile from '../Profile';
-import Experience from '../Experience';
+import Loading from '../Loading';
+import { theme } from '../../core';
 
-const componentMap: Record<string, React.ComponentType<{ tabId: string }>> = {
-  'WorkCard': WorkCard,
-  'Skills': Skills,
-  'Profile': Profile,
-  'Experience': Experience,
+const componentMap: Record<string, React.LazyExoticComponent<React.ComponentType<any>>> = {
+  WorkCard: React.lazy(() => import('../WorkCard')),
+  Experience: React.lazy(() => import('../Experience')),
+  Skills: React.lazy(() => import('../Skills')),
+  Profile: React.lazy(() => import('../Profile')),
 };
 
 const TabContentRenderer: React.FC = () => {
-  const { tabs } = useAppSelector(state => state.tab);
-  return (
-    <>
-      {tabs.map((tab) => {
-        const CurrentComponent = componentMap[tab.component];
-        
-        if (!CurrentComponent) {
-          console.warn(`Component ${tab.component} not found`);
-          return null;
-        }
+  const { tabs, currentTabId } = useAppSelector(state => state.tab);
+  const currentTab = tabs.find(t => t.id === currentTabId);
 
-        return (
-          <div key={tab.id} style={{ order: tab.order }}>
-            <CurrentComponent tabId={tab.id} />
-          </div>
-        );
-      })}
-    </>
+  if (!currentTab) return null;
+
+  const CurrentComponent = componentMap[currentTab.component];
+
+  if (!CurrentComponent) {
+    console.warn(`Component ${currentTab.component} not found`);
+    return null;
+  }
+
+  return (
+    <Suspense fallback={<Loading visible bgColor={theme.darkFont} />}>
+      <CurrentComponent />
+    </Suspense>
   );
 };
 

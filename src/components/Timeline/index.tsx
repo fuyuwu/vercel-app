@@ -341,8 +341,8 @@ const StyledTitle = styled.h3`
   font-weight: bold;
   color: ${theme.darkFont};
   margin: 0.5rem 0;
-  font-family: "Mamelon";
 `;
+
 
 const StyledSubtitle = styled.div`
   font-size: 16px;

@@ -1,156 +1,283 @@
 import React from "react";
 import styled from "styled-components";
-import { useAppSelector } from "../../store/hooks";
-import Timeline from "../Timeline";
+import CollapseBlock from "../CollapseBlock";
+import { theme } from "../../core";
 
-// Import images
 import luxonsImg from "../../core/images/luxons.png";
 import innoImg from "../../core/images/inno.png";
 import quancomImg from "../../core/images/quancom.png";
-import starImg from "../../core/images/star.webp";
 import lionImg from "../../core/images/lion.jpg";
 import eqsImg from "../../core/images/eqs.webp";
 import iiiImg from "../../core/images/iii.svg";
 
-interface IExperienceProps {
-  tabId: string;
-}
+const TechTags: React.FC<{ techs: string[] }> = ({ techs }) => (
+  <StyledTechRow>
+    {techs.map((t) => (
+      <StyledTechTag key={t}>{t}</StyledTechTag>
+    ))}
+  </StyledTechRow>
+);
 
-const Experience: React.FC<IExperienceProps> = ({ tabId }) => {
-  const currentTabId = useAppSelector(state => state.tab.currentTabId);
-  if (currentTabId !== tabId) return null
-  const experienceItems = [
-    {
-      id: "1",
-      year: "2024 - Now",
-      title: "Frontend Developer",
-      company: "雷速網絡科技",
-      description: "主要工作內容為開發及維護前後平台系統專案和遊戲相關前台PC版需求。與需求有關單位互相討論並協力完成需求。",
-      picture: luxonsImg,
-      skills: [
-        "Vue2",
-        "Vue3",
-        "element-ui",
-        "JavaScript",
-        "RESTful API",
-        "SCSS"
-      ]
-    },
-    {
-      id: "2",
-      year: "2021-2023",
-      title: "Frontend Developer",
-      company: "伊諾科技",
-      description: "負責開發及維護前後台系統專案和遊戲相關前台PC版需求。與需求有關單位互相討論並協力完成需求。",
-      picture: innoImg,
-      skills: [
-        "React",
-        "Typescript",
-        "JavaScript",
-        "Web Api",
-        "webpack",
-      ]
-    },
-    {
-      id: "3",
-      year: "2020-2021",
-      title: "Frontend Developer",
-      company: "量算科技",
-      picture: quancomImg,
-      skills: [
-        "React",
-        "Typescript",
-        "JavaScript",
-        "Web Api",
-        "webpack",
-      ]
-    },
-    {
-      id: "4",
-      year: "2020-2021",
-      title: "Frontend Developer",
-      company: "恆星科技",
-      picture: starImg,
-      skills: [
-        "React",
-        "Typescript",
-        "JavaScript",
-        "Web Api",
-        "webpack",
-      ]
-    },
-    {
-      id: "5",
-      year: "2019-2020",
-      title: "Frontend Developer",
-      company: "雄獅資訊",
-      description: "主要工作內容為開發重構平台專案和維護舊平台以及各個專案中修改 Bug 和邏輯，依 Scrum 敏捷式開發流程與後端、node.js 團隊、PM、UI/UX 進行多次討論並協力完成需求。",
-      picture: lionImg,
-      skills: [
-        "React",
-        "Redux",
-        "hooks",
-        "Storybook",
-        "css in js",
-        "styled-components",
-        "Typescript",
-        "JavaScript",
-        "Web Api",
-        "webpack",
-        "SCSS",
-        "ejs",
-        "css",
-        "jQuery"
-      ]
-    },
-    {
-      id: "6",
-      year: "2018-2019",
-      title: "Frontend Developer",
-      subtitle: "網頁程式設計, 設計廣告 banner, 整合行銷策略, 製作行銷企劃簡報",
-      company: "日商 EQS",
-      picture: eqsImg,
-      description: "主要設計分公司官網及切版和網頁效果",
-      skills: [
-        "PhotoShop",
-        "css",
-        "html",
-        "javascript",
-        "jQuery"
-      ]
-    },
-    {
-      id: "7",
-      year: "2017-2018",
-      title: "Frontend Developer",
-      subtitle: "資策會",
-      description: "負責開發及維護前後台系統專案和遊戲相關前台PC版需求。與需求有關單位互相討論並協力完成需求。",
-      picture: iiiImg,
-      skills: [
-        "css",
-        "html",
-        "javascript",
-        "php",
-        "MySQL"
-      ]
-    }
-  ];
+const CompanyName: React.FC<{ logo: string; alt: string; isSvg?: boolean; children: React.ReactNode }> = ({ logo, alt, isSvg, children }) => (
+  <StyledCompanyRow>
+    <StyledLogo src={logo} alt={alt} isSvg={isSvg} />
+    <ExpContent style={{ margin: 0 }}>{children}</ExpContent>
+  </StyledCompanyRow>
+);
+
+const Experience: React.FC = () => {
   return (
     <StyledExperience>
-      <div>
-        <Timeline items={experienceItems} />
-      </div>
+      <StyledSection>
+        <StyledGrid>
+
+          <StyledCardWrap>
+            <ExpTitle>前端工程師・2023/4 - Now</ExpTitle>
+            <CompanyName logo={luxonsImg} alt="雷速">雷速網絡科技有限公司</CompanyName>
+            <ExpContent style={{ marginBottom: 8 }}>
+              開發及維護前後台系統專案和遊戲相關前台 PC/H5 需求，與各需求單位討論並協力完成。
+            </ExpContent>
+            <ExpLabel>負責專案</ExpLabel>
+            <CollapseBlock title="前後台系統專案" defaultState="open">
+              <ExpWorkBlock>
+                <p>優化邏輯及開發新功能。</p>
+                <TechTags techs={["Vue2", "element-ui", "RESTful API", "SCSS"]} />
+              </ExpWorkBlock>
+            </CollapseBlock>
+            <CollapseBlock title="新後台專案（2024/9~10）" defaultState="open">
+              <ExpWorkBlock>
+                <p>以 vue-pure-admin 為底層架構，快速建立管理後台。</p>
+                <TechTags techs={["Vue3", "Composition API", "Vite 5", "TypeScript", "Element Plus", "Pinia", "Vue Router 4", "Tailwind CSS", "pnpm"]} />
+              </ExpWorkBlock>
+            </CollapseBlock>
+            <CollapseBlock title="新版代理後台 2.0（2025/12~2026/1）" defaultState="open">
+              <ExpWorkBlock>
+                <p>主要以 H5 開發，負責核心頁面功能、登入驗證設定及優化、專案共用表單驗證規則。</p>
+                <TechTags techs={["Vue3", "TypeScript", "Vite", "Pinia", "Vue Router 4", "Tailwind CSS", "Vant"]} />
+              </ExpWorkBlock>
+            </CollapseBlock>
+            <CollapseBlock title="遊戲前台專案">
+              <ExpWorkBlock>
+                <p>更換多組企業皮膚色碼，開發新功能及維護。</p>
+                <TechTags techs={["Vue3", "TypeScript", "SCSS"]} />
+              </ExpWorkBlock>
+            </CollapseBlock>
+          </StyledCardWrap>
+
+          <StyledCardWrap>
+            <ExpTitle>前端工程師・2021/11 - 2023/4</ExpTitle>
+            <CompanyName logo={innoImg} alt="伊諾">伊諾科技有限公司</CompanyName>
+            <ExpContent style={{ marginBottom: 8 }}>
+              依 Scrum 敏捷流程與後端、Node.js 團隊、PM、UI/UX 協力完成需求，負責 Bug 修復、邏輯優化及新功能開發。
+            </ExpContent>
+            <ExpLabel>負責專案</ExpLabel>
+            <CollapseBlock title="新平台重構專案" defaultState="open">
+              <ExpWorkBlock>
+                <p>串接 WebSocket 新增動畫通知功能、優化優惠活動邏輯、新增代理加盟表單驗證、修改紅包雨邏輯。</p>
+                <TechTags techs={["GraphQL", "Apollo Client", "TypeScript", "React", "Tailwind CSS"]} />
+              </ExpWorkBlock>
+            </CollapseBlock>
+            <CollapseBlock title="平台專案" defaultState="open">
+              <ExpWorkBlock>
+                <p>撰寫輸入框及選擇語系 Picker 共用元件，套用至各業主登入/註冊/忘記密碼等表單；新增貨幣輸入限制規則；串接 API 新增動態區塊效果。</p>
+                <TechTags techs={["React", "CSS Module", "SCSS", "Webpack"]} />
+              </ExpWorkBlock>
+            </CollapseBlock>
+            <CollapseBlock title="獨立小專案">
+              <ExpWorkBlock>
+                <p>a. 外站下載專案：獨立的 APP 下載頁。</p>
+                <p>b. 導航網專案：依使用者來源導入不同方案，頁面可查看速度等相關數據。</p>
+              </ExpWorkBlock>
+            </CollapseBlock>
+          </StyledCardWrap>
+
+          <StyledCardWrap>
+            <ExpTitle>前端工程師・2020/11 - 2021/9</ExpTitle>
+            <CompanyName logo={quancomImg} alt="量算">量算科技有限公司</CompanyName>
+            <ExpContent style={{ marginBottom: 8 }}>
+              開發新系統平台及內部使用系統，製作共通元件，與 PO、設計師討論需求，與後端有效溝通串接資料。
+            </ExpContent>
+            <ExpLabel>負責專案</ExpLabel>
+            <CollapseBlock title="後台／商務後台專案" defaultState="open">
+              <ExpWorkBlock>
+                <p>依角色權限顯示不同畫面的管理系統，刻畫數據列表、表單串接及使用者體驗優化。</p>
+                <TechTags techs={["React", "Redux", "Hooks", "react-hook-form", "styled-components", "react-i18next", "RESTful API"]} />
+              </ExpWorkBlock>
+            </CollapseBlock>
+            <CollapseBlock title="共用元件開發" defaultState="open">
+              <ExpWorkBlock>
+                <p>搜尋文字標籤、父子層下拉選單、複合式搜尋元件等大型元件，以及 checkbox、radio、input 等統一樣式表單元件。串接 Google ReCaptcha V3 至登入驗證機制。</p>
+              </ExpWorkBlock>
+            </CollapseBlock>
+            <CollapseBlock title="Storybook 專案">
+              <ExpWorkBlock>
+                <p>製作全公司共通元件與 templates，讓 UX 快速套用樣板以利需求討論與優化。</p>
+                <TechTags techs={["React", "Hooks", "JavaScript", "Storybook"]} />
+              </ExpWorkBlock>
+            </CollapseBlock>
+          </StyledCardWrap>
+
+          <StyledCardWrap>
+            <ExpTitle>前端工程師・2019/11 - 2020/9</ExpTitle>
+            <CompanyName logo={lionImg} alt="雄獅">雄獅資訊科技股份有限公司</CompanyName>
+            <ExpContent style={{ marginBottom: 8 }}>
+              前端開發、共通元件製作，與 UX 及後端有效溝通，參與 React-Native 旅遊 App 開發及多個平台專案。
+            </ExpContent>
+            <ExpLabel>負責專案</ExpLabel>
+            <CollapseBlock title="React-Native 旅遊票券 App（5個月以上）" defaultState="open">
+              <ExpWorkBlock>
+                <p>執行票券商品細節頁面切版及部分商業邏輯，撰寫共用元件及樣式。</p>
+                <TechTags techs={["React", "Hooks", "TypeScript", "React Native", "CSS in JS"]} />
+              </ExpWorkBlock>
+            </CollapseBlock>
+            <CollapseBlock title="站長平台專案" defaultState="open">
+              <ExpWorkBlock>
+                <p>製作全公司共通元件與 templates，讓 UX 快速套好樣板。</p>
+                <TechTags techs={["React", "Hooks", "TypeScript", "SCSS", "Storybook"]} />
+              </ExpWorkBlock>
+            </CollapseBlock>
+            <CollapseBlock title="搜尋引擎專案">
+              <ExpWorkBlock>
+                <p>旅遊自由行模組從舊有邏輯改版至 React，整理共用邏輯，並套用至機票專案。</p>
+                <TechTags techs={["React", "Hooks", "TypeScript", "Redux", "SCSS"]} />
+              </ExpWorkBlock>
+            </CollapseBlock>
+            <CollapseBlock title="其他專案（會員、機票營運）">
+              <ExpWorkBlock>
+                <p>會員中心改版、登入註冊樣式與邏輯；機票營運頁面切版及套用共通元件。</p>
+                <TechTags techs={["ejs", "CSS", "jQuery"]} />
+              </ExpWorkBlock>
+            </CollapseBlock>
+          </StyledCardWrap>
+
+          <StyledCardWrap>
+            <ExpTitle>網頁設計師・2019/4 - 2019/9</ExpTitle>
+            <CompanyName logo={eqsImg} alt="翼酷">翼酷情智股份有限公司</CompanyName>
+            <ExpWorkBlock>
+              <p>網頁程式設計、設計廣告 Banner、整合行銷策略、製作行銷企劃簡報。</p>
+              <TechTags techs={["HTML5", "CSS3", "JavaScript"]} />
+            </ExpWorkBlock>
+          </StyledCardWrap>
+
+          <StyledCardWrap>
+            <ExpTitle>UI/UX 互動式網頁設計・2018/9 - 2019/3</ExpTitle>
+            <CompanyName logo={iiiImg} alt="資策會" isSvg>資策會</CompanyName>
+            <ExpWorkBlock>
+              <p>學習 UX 分析、UI Flow、Wireframe 規劃及前後端開發與資料庫建置。專題：電商 RWD 網站（含後台購物系統）。</p>
+              <TechTags techs={["HTML", "CSS", "JavaScript", "jQuery", "PHP", "MySQL", "Adobe XD"]} />
+            </ExpWorkBlock>
+          </StyledCardWrap>
+
+        </StyledGrid>
+      </StyledSection>
     </StyledExperience>
   );
 };
 
 const StyledExperience = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  justify-content: center;
   width: 100%;
-  max-width: 100%;
+`;
+
+const StyledSection = styled.section`
+  margin-bottom: 40px;
+`;
+
+const StyledGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+
+  @media screen and (min-width: 600px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media screen and (min-width: 980px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+`;
+
+const StyledCardWrap = styled.div`
+  position: relative;
+  padding: 16px 16px 20px;
+  color: ${theme.lightFont};
+  background: rgba(26, 42, 64, 0.28);
+  border-radius: 10px;
+`;
+
+const StyledCompanyRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+`;
+
+const StyledLogo = styled.img<{ isSvg?: boolean }>`
+  flex-shrink: 0;
+  height: 20px;
+  width: auto;
+  object-fit: contain;
+  border-radius: ${({ isSvg }) => (isSvg ? "0" : "4px")};
+  opacity: 0.85;
+`;
+
+const StyledTechRow = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+`;
+
+const StyledTechTag = styled.span`
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(241, 222, 198, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  white-space: nowrap;
+  letter-spacing: 0.3px;
+`;
+
+const ExpTitle = styled.p`
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: 0.8px;
+  color: ${theme.lightFont};
+  margin-bottom: 6px;
+`;
+
+const ExpContent = styled.p`
+  letter-spacing: 0.8px;
+  margin: 0;
+  margin-top: 6px;
+  font-size: 14px;
+  color: rgba(241, 222, 198, 0.7);
+  word-break: break-word;
+`;
+
+const ExpLabel = styled.span`
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(241, 222, 198, 0.5);
+  margin: 10px 0 6px;
+`;
+
+const ExpWorkBlock = styled.div`
+  padding: 10px 14px;
+  border-radius: 6px;
+  border-left: 3px solid rgba(241, 222, 198, 0.3);
+  background: rgba(0, 0, 0, 0.12);
+  letter-spacing: 0.5px;
+  margin: 4px 0 6px;
+  color: rgba(241, 222, 198, 0.8);
+  p {
+    margin: 3px 0;
+    font-size: 13px;
+    line-height: 1.6;
+  }
 `;
 
 export default Experience;

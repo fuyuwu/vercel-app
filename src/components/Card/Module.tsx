@@ -6,6 +6,7 @@ import Collect from "../Collect";
 interface ICardProps {
   cardTitle?: string;
   cardId?: string;
+  children?: React.ReactNode;
 }
 
 const Card: React.FC<ICardProps> = (props) => {

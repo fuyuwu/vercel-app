@@ -1308,7 +1308,7 @@ export const Fold: React.FC<IIconProps> = (props) => {
       <path
         fill="none"
         fillRule="evenodd"
-        stroke='var(--dark-font)'
+        stroke="currentColor"
         strokeLinejoin="round"
         strokeWidth="2"
         d="M0 6L12 6"
@@ -1327,7 +1327,7 @@ export const Unfold: React.FC<IIconProps> = (props) => {
       <g
         fill="none"
         fillRule="evenodd"
-        stroke='var(--dark-font)'
+        stroke="currentColor"
         strokeLinejoin="round"
         strokeWidth="2"
       >
