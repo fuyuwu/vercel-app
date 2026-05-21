@@ -15,10 +15,12 @@ code {
 
 :root {
   --primary-main: #008080;
-  --primary-default: #FF8343;
+  /* --primary-default: #FF8343; */
+  --primary-default: #FF9900;
   --dark-font: #1A2A40;
   --light-font: #F1DEC6;
-  --opacity: #6469712e;
+  /* --opacity: #6469712e; */
+  --opacity: #F5F5F5;
   --white: #ffffff;
 }
 

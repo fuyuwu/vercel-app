@@ -53,7 +53,6 @@ const TimelineItemComponent: React.FC<{
   showConnectors: boolean;
   animated: boolean;
 }> = ({ item, index, total, direction, showConnectors, animated }) => {
-  const isEven = index % 2 === 0;
   
   return (
     <StyledTimelineItem 
@@ -61,33 +60,29 @@ const TimelineItemComponent: React.FC<{
       index={index}
       total={total}
       animated={animated}
-      isEven={isEven}
     >
-      {/* Left Content for Odd Items */}
-      {!isEven && (
-        <StyledTimelineContent>
-          <StyledTimelineHeader>
-            <StyledYear>{item.year}</StyledYear>
-            <StyledTitle>{item.title}</StyledTitle>
-            {item.picture && <StyledPicture src={item.picture} alt={item.title}/>}
-            {item.subtitle && <StyledSubtitle>{item.subtitle}</StyledSubtitle>}
-            {item.company && <StyledCompany>{item.company}</StyledCompany>}
-            {item.location && <StyledLocation>{item.location}</StyledLocation>}
-          </StyledTimelineHeader>
-          
-          <StyledDescription>{item.description}</StyledDescription>
-          
-          {item.skills && item.skills.length > 0 && (
-            <StyledSkillsContainer>
-              {item.skills.map((skill, skillIndex) => (
-                <StyledSkillTag key={skillIndex}>
-                  {skill}
-                </StyledSkillTag>
-              ))}
-            </StyledSkillsContainer>
-          )}
-        </StyledTimelineContent>
-      )}
+      <StyledTimelineContent>
+        <StyledTimelineHeader>
+          <StyledYear>{item.year}</StyledYear>
+          <StyledTitle>{item.title}</StyledTitle>
+          {item.picture && <StyledPicture src={item.picture} alt={item.title}/>}
+          {item.subtitle && <StyledSubtitle>{item.subtitle}</StyledSubtitle>}
+          {item.company && <StyledCompany>{item.company}</StyledCompany>}
+          {item.location && <StyledLocation>{item.location}</StyledLocation>}
+        </StyledTimelineHeader>
+        
+        <StyledDescription>{item.description}</StyledDescription>
+        
+        {item.skills && item.skills.length > 0 && (
+          <StyledSkillsContainer>
+            {item.skills.map((skill, skillIndex) => (
+              <StyledSkillTag key={skillIndex}>
+                {skill}
+              </StyledSkillTag>
+            ))}
+          </StyledSkillsContainer>
+        )}
+      </StyledTimelineContent>
       
       {/* Center Timeline */}
       <StyledTimelineCenter>
@@ -99,38 +94,11 @@ const TimelineItemComponent: React.FC<{
           )}
         </StyledTimelineDot>
         
-        <StyledContentConnector isEven={isEven} />
         
         {showConnectors && index < total - 1 && (
           <StyledVerticalConnector />
         )}
       </StyledTimelineCenter>
-      
-      {/* Right Content for Even Items */}
-      {isEven && (
-        <StyledTimelineContent>
-          <StyledTimelineHeader>
-            <StyledYear>{item.year}</StyledYear>
-            <StyledTitle>{item.title}</StyledTitle>
-            {item.picture && <StyledPicture src={item.picture} alt={item.title}/>}
-            {item.subtitle && <StyledSubtitle>{item.subtitle}</StyledSubtitle>}
-            {item.company && <StyledCompany>{item.company}</StyledCompany>}
-            {item.location && <StyledLocation>{item.location}</StyledLocation>}
-          </StyledTimelineHeader>
-          
-          <StyledDescription>{item.description}</StyledDescription>
-          
-          {item.skills && item.skills.length > 0 && (
-            <StyledSkillsContainer>
-              {item.skills.map((skill, skillIndex) => (
-                <StyledSkillTag key={skillIndex}>
-                  {skill}
-                </StyledSkillTag>
-              ))}
-            </StyledSkillsContainer>
-          )}
-        </StyledTimelineContent>
-      )}
     </StyledTimelineItem>
   );
 };
@@ -152,7 +120,6 @@ const StyledTimelineItem = styled.div<{
   index: number;
   total: number;
   animated: boolean;
-  isEven: boolean;
 }>`
   display: flex;
   flex-direction: ${props => props.direction === 'vertical' ? 'row' : 'column'};
