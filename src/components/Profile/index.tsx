@@ -18,7 +18,7 @@ interface Project {
   techs: string[];
   accent: string;
   type: "demo" | "iframe";
-  renderDemo?: () => React.ReactNode;
+  renderDemo?: (accent: string) => React.ReactNode;
   iframeUrl?: string;
 }
 
@@ -29,7 +29,7 @@ const ControlBtn: React.FC = () => {
   return <Switch onClick={() => setIsOpen(!isOpen)} isOpen={isOpen} />;
 };
 
-const DisabledDemo: React.FC = () => {
+const DisabledDemo: React.FC<{ accent: string }> = ({ accent }) => {
   const [isDisabled, setIsDisabled] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
   return (
@@ -40,40 +40,75 @@ const DisabledDemo: React.FC = () => {
         isOpen={isOpen}
         isDisabled={isDisabled}
       />
-      <StyledToggleBtn onClick={() => setIsDisabled((v) => !v)}>
+      <StyledToggleBtn accent={accent} onClick={() => setIsDisabled((v) => !v)}>
         {isDisabled ? "enable" : "disable"}
       </StyledToggleBtn>
     </StyledDemoRow>
   );
 };
 
-const AsyncDemo: React.FC = () => {
+interface EvoNode { species: { name: string; url: string }; evolves_to: EvoNode[] }
+interface EvoEntry { name: string; id: number }
+
+const idFromUrl = (url: string) =>
+  parseInt(url.split("/").filter(Boolean).pop() ?? "0");
+
+const AsyncDemo: React.FC<{ accent: string }> = ({ accent }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-  const [isDisabled, setIsDisabled] = useState(false);
+  const [chain, setChain] = useState<EvoEntry[]>([]);
+  const [isError, setIsError] = useState(false);
 
   const fetchData = () => {
     if (isLoading) return;
     setIsLoading(true);
-    setIsDisabled(true);
+    setChain([]);
+    setIsError(false);
     fetch("https://pokeapi.co/api/v2/evolution-chain/1/")
       .then((res) => res.json())
-      .then(() => setTimeout(() => {
-        setIsLoading(false);
-        setIsOpen((v) => !v);
-        setIsDisabled(false);
-      }, 1500))
+      .then((data) => {
+        const entries: EvoEntry[] = [];
+        let node: EvoNode = data.chain;
+        while (node) {
+          entries.push({ name: node.species.name, id: idFromUrl(node.species.url) });
+          node = node.evolves_to[0];
+        }
+        setTimeout(() => {
+          setIsLoading(false);
+          setChain(entries);
+        }, 1500);
+      })
       .catch(() => setTimeout(() => {
         setIsLoading(false);
-        setIsDisabled(false);
+        setIsError(true);
       }, 3000));
   };
 
   return (
-    <StyledDemoRow>
-      <Switch onClick={fetchData} isLoading={isLoading} isOpen={isOpen} isDisabled={isDisabled} />
-      {isOpen && <StyledBadge color="#2D6A4F">fetch 成功</StyledBadge>}
-    </StyledDemoRow>
+    <StyledAsyncWrap>
+      <StyledAsyncTop>
+        <Switch onClick={fetchData} isLoading={isLoading} isOpen={chain.length > 0} isDisabled={isLoading} />
+        <StyledToggleBtn accent={accent} onClick={fetchData} disabled={isLoading}>
+          {isLoading ? "fetching…" : "Call API"}
+        </StyledToggleBtn>
+      </StyledAsyncTop>
+      {(chain.length > 0 || isError) && (
+        <StyledResultBox accent={accent}>
+          {isError
+            ? <StyledResultErr>fetch 失敗</StyledResultErr>
+            : chain.map((entry, i) => (
+                <StyledResultItem key={entry.name} accent={accent}>
+                  <StyledResultIndex accent={accent}>{i + 1}</StyledResultIndex>
+                  <StyledPokeSprite
+                    src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${entry.id}.png`}
+                    alt={entry.name}
+                  />
+                  {entry.name}
+                </StyledResultItem>
+              ))
+          }
+        </StyledResultBox>
+      )}
+    </StyledAsyncWrap>
   );
 };
 
@@ -96,21 +131,21 @@ const PROJECTS: Project[] = [
     title: "Switch Component",
     desc: "可組合的 Switch 元件，封裝三種使用情境：基本開關、disabled 狀態外部控制、非同步 loading（串接 PokeAPI 示範）。",
     techs: ["React", "Hooks", "TypeScript", "styled-components", "PokeAPI"],
-    accent: "#2D6A4F",
+    accent: "#087ea4",
     type: "demo",
-    renderDemo: () => (
+    renderDemo: (accent) => (
       <StyledSwitchGrid>
-        <StyledSwitchItem>
-          <StyledDemoLabel>基本</StyledDemoLabel>
+        <StyledSwitchItem accent={accent}>
+          <StyledDemoLabel>Default</StyledDemoLabel>
           <ControlBtn />
         </StyledSwitchItem>
-        <StyledSwitchItem>
-          <StyledDemoLabel>Disabled 控制</StyledDemoLabel>
-          <DisabledDemo />
+        <StyledSwitchItem accent={accent}>
+          <StyledDemoLabel>Disabled Control</StyledDemoLabel>
+          <DisabledDemo accent={accent} />
         </StyledSwitchItem>
-        <StyledSwitchItem>
+        <StyledSwitchItem accent={accent}>
           <StyledDemoLabel>Async fetch</StyledDemoLabel>
-          <AsyncDemo />
+          <AsyncDemo accent={accent} />
         </StyledSwitchItem>
       </StyledSwitchGrid>
     ),
@@ -179,7 +214,7 @@ const Profile: React.FC = () => {
                     </StyledTechRow>
                   </StyledCardTop>
                   <StyledDemoArea>
-                    {p.type === "demo" && p.renderDemo?.()}
+                    {p.type === "demo" && p.renderDemo?.(p.accent)}
                     {p.type === "iframe" && (
                       <StyledIframe
                         src={p.iframeUrl}
@@ -305,7 +340,7 @@ const StyledTechTag = styled.span<{ accent: string }>`
 
 const StyledDemoArea = styled.div`
   flex: 1;
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(15, 28, 48, 0.65);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -317,25 +352,30 @@ const StyledDemoArea = styled.div`
 
 const StyledSwitchGrid = styled.div`
   display: flex;
-  flex-wrap: wrap;
-  gap: 32px;
-  justify-content: center;
+  flex-direction: column;
+  gap: 0;
+  width: 100%;
 `;
 
-const StyledSwitchItem = styled.div`
+const StyledSwitchItem = styled.div<{ accent: string }>`
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 16px;
+  padding: 16px 20px;
+
+  & + & {
+    border-top: 1px solid ${({ accent }) => accent}40;
+  }
 `;
 
 const StyledDemoLabel = styled.span`
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  color: ${theme.darkFont};
-  opacity: 0.45;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  color: rgba(241, 222, 198, 0.45);
   text-transform: uppercase;
+  width: 80px;
+  flex-shrink: 0;
 `;
 
 const StyledDemoRow = styled.div`
@@ -344,27 +384,97 @@ const StyledDemoRow = styled.div`
   gap: 12px;
 `;
 
-const StyledToggleBtn = styled.button`
-  font-size: 11px;
+const StyledToggleBtn = styled.button<{ accent: string }>`
+  font-size: 12px;
   font-weight: 600;
-  padding: 4px 10px;
-  border-radius: 6px;
-  border: 1px solid rgba(26, 42, 64, 0.2);
-  background: transparent;
-  color: ${theme.darkFont};
+  padding: 6px 16px;
+  border-radius: 8px;
+  border: none;
+  background: ${({ accent }) => accent};
+  color: #fff;
   cursor: pointer;
-  transition: background 0.2s;
-  &:hover { background: rgba(26, 42, 64, 0.08); }
+  letter-spacing: 0.3px;
+  transition: opacity 0.2s;
+  &:hover:not(:disabled) {
+    opacity: 0.8;
+  }
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+`;
+
+const StyledAsyncWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+`;
+
+const StyledAsyncTop = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+`;
+
+const StyledResultBox = styled.div<{ accent: string }>`
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid ${({ accent }) => accent}40;
+  background: ${({ accent }) => accent}10;
+  overflow: hidden;
+`;
+
+const StyledPokeSprite = styled.img`
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  flex-shrink: 0;
+`;
+
+const StyledResultItem = styled.div<{ accent: string }>`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(241, 222, 198, 0.85);
+  & + & {
+    border-top: 1px solid ${({ accent }) => accent}25;
+  }
+`;
+
+const StyledResultIndex = styled.span<{ accent: string }>`
+  font-size: 10px;
+  font-weight: 700;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: ${({ accent }) => accent}30;
+  color: ${({ accent }) => accent};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+`;
+
+const StyledResultErr = styled.p`
+  margin: 0;
+  padding: 10px 12px;
+  font-size: 12px;
+  color: rgba(241, 222, 198, 0.45);
 `;
 
 const StyledBadge = styled.span<{ color: string }>`
   font-size: 12px;
   font-weight: 600;
-  padding: 3px 10px;
+  padding: 4px 12px;
   border-radius: 20px;
-  background: ${({ color }) => color}18;
+  background: ${({ color }) => color}30;
   color: ${({ color }) => color};
-  border: 1px solid ${({ color }) => color}28;
+  border: 1px solid ${({ color }) => color}60;
 `;
 
 const StyledIframe = styled.iframe`
