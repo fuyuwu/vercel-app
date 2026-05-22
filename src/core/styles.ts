@@ -25,7 +25,7 @@ export const StyledFlex = styled.div<{
 `;
 
 export const StyledAbout = styled.div`
-  margin: 20px 0;
+  margin: 24px 0;
 `;
 
 export const StyledSkillCard = styled.div<{
@@ -34,11 +34,12 @@ export const StyledSkillCard = styled.div<{
   style?: CSSProperties;
 }>`
   flex: 1;
-  padding: ${(props) => (props.padding ? props.padding : "0px 10px 20px")};
-  border-radius: 5px;
-  margin-top: 10px;
-  margin-right: 5px;
-  background: ${(props) => props.showBg || "rgba(255, 255, 255, 0.5)"};
+  padding: ${(props) => (props.padding ? props.padding : "16px 16px 24px")};
+  border-radius: 10px;
+  margin-top: 12px;
+  margin-right: 8px;
+  background: ${(props) => props.showBg || "rgba(255, 255, 255, 0.92)"};
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
   @media screen and (min-width: 980px) {
     margin-top: 0px;
     max-width: 100%;
@@ -68,12 +69,13 @@ export const StyledLine = styled.div<{
 export const StyledTag = styled.a`
   display: inline-block;
   font-size: 12px;
-  padding: 5px 10px;
-  border-radius: 0px 15px 15px 0px;
-  margin: 10px 5px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin: 6px 4px;
   background-color: ${theme.darkFont};
   color: ${theme.lightFont};
-  letter-spacing: 0.8px;
+  letter-spacing: 0.5px;
+  font-weight: 500;
   cursor: default;
   svg {
     margin-left: 4px;
@@ -81,7 +83,7 @@ export const StyledTag = styled.a`
     vertical-align: middle;
   }
   @media screen and (min-width: 768px) {
-    font-size: 14px;
+    font-size: 13px;
   }
 `;
 export const StyledAboutTitle = styled.p<{
@@ -95,7 +97,6 @@ export const StyledAboutTitle = styled.p<{
   letter-spacing: 0.8px;
   color: ${theme.darkFont};
   margin-bottom: 8px;
-  font-family: "Mamelon";
   svg {
     vertical-align: middle;
     margin-right: 7px;
@@ -134,13 +135,16 @@ export const StyledAboutList = styled.li`
   list-style: none;
 `;
 export const StyledWorkBlock = styled.div`
-  padding: 10px;
-  border-radius: 5px;
-  border: 3px solid ${theme.lightFont};
-  letter-spacing: 2px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border-left: 4px solid ${theme.darkFont};
+  background: rgba(26, 42, 64, 0.04);
+  letter-spacing: 0.5px;
+  margin: 4px 0 8px;
   p {
-    margin: 0;
+    margin: 4px 0;
     font-size: 14px;
+    line-height: 1.6;
   }
 `;
 export const StyledNextStep = styled.div<{ padding?: string }>`

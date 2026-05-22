@@ -6,6 +6,7 @@ import { theme } from "../../core";
 interface ICollapseBlockProps {
   title: string | React.ReactNode;
   defaultState?: "open" | "close";
+  children?: React.ReactNode;
 }
 
 const CollapseBlock: React.FC<ICollapseBlockProps> = (props) => {
@@ -65,7 +66,7 @@ const StyledBlock = styled.div`
 const StyledTitle = styled.span`
   display: inline-block;
   padding: 5px 10px;
-  color: ${theme.darkFont};
+  color: inherit;
   letter-spacing: 0.8px;
   font-size: 14px;
   font-weight: bold;

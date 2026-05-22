@@ -5,6 +5,7 @@ import { MenuBtn, CloseBtn, Mail, CellPhone } from "../Icons";
 interface ISlideMenuProps {
   visible: boolean;
   ContentComponent?: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 const SlideMenu: React.FC<ISlideMenuProps> = (props) => {
