@@ -10,9 +10,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Get Vercel Org ID
+        id: org
+        run: |
+          ORG_ID=$(curl -s "https://api.vercel.com/v2/user" \
+            -H "Authorization: Bearer ${{ secrets.VERCEL_TOKEN }}" | jq -r '.user.id')
+          echo "id=$ORG_ID" >> $GITHUB_OUTPUT
+
       - uses: amondnet/vercel-action@v25
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-org-id: ${{ steps.org.outputs.id }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
           vercel-args: '--prod'
