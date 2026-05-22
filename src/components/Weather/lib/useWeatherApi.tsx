@@ -1,100 +1,84 @@
 import { useState, useEffect, useCallback } from "react";
+import { IWeatherData } from "./types";
 
-const fetchCurrentWeather = () => {
-  return fetch(
-    "https://opendata.cwb.gov.tw/api/v1/rest/datastore/O-A0003-001?Authorization=CWB-50749C1B-35F3-4CA5-9CAD-99B79812FEEC&locationName=臺北"
-  )
-    .then((response) => response.json())
-    .then((data) => {
-      const locationData = data.records.location[0];
+const API_KEY = "CWA-202F5DD8-A198-4FE9-BDC1-A360826A18C9";
+const BASE = "https://opendata.cwa.gov.tw/api/v1/rest/datastore";
 
-      const weatherElements = locationData.weatherElement.reduce(
-        (neededElements, item) => {
-          if (["WDSD", "TEMP", "HUMD"].includes(item.elementName)) {
-            neededElements[item.elementName] = item.elementValue;
-          }
-          return neededElements;
-        },
-        {}
-      );
-
-      return {
-        observationTime: locationData.time.obsTime,
-        locationName: locationData.locationName,
-        temperature: weatherElements.TEMP,
-        windSpeed: weatherElements.WDSD,
-        humid: weatherElements.HUMD,
-      };
-    });
+const fetchObservation = async (stationName: string) => {
+  const res = await fetch(
+    `${BASE}/O-A0003-001?Authorization=${API_KEY}&StationName=${encodeURIComponent(stationName)}`
+  );
+  const data = await res.json();
+  console.log("[O-A0003-001]", stationName, data.records);
+  const station = data.records?.Station?.[0];
+  if (!station) throw new Error(`Station not found: ${stationName}`);
+  const el = station.WeatherElement;
+  return {
+    observationTime: station.ObsTime.DateTime as string,
+    locationName: station.StationName as string,
+    temperature: parseFloat(el.AirTemperature),
+    windSpeed: parseFloat(el.WindSpeed),
+    humid: parseFloat(el.RelativeHumidity),
+  };
 };
 
-const fetchWeatherForecast = () => {
-  return fetch(
-    "https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization=CWB-50749C1B-35F3-4CA5-9CAD-99B79812FEEC&locationName=臺北市"
-  )
-    .then((response) => response.json())
-    .then((data) => {
-      const locationData = data.records.location[0];
-      const weatherElements = locationData.weatherElement.reduce(
-        (neededElements, item) => {
-          if (["Wx", "PoP", "CI"].includes(item.elementName)) {
-            neededElements[item.elementName] = item.time[0].parameter;
-          }
-          return neededElements;
-        },
-        {}
-      );
-
-      return {
-        description: weatherElements.Wx.parameterName,
-        weatherCode: weatherElements.Wx.parameterValue,
-        rainPossibility: weatherElements.PoP.parameterName,
-        comfortability: weatherElements.CI.parameterName,
-      };
-    });
+const fetchForecast = async (forecastName: string) => {
+  const res = await fetch(
+    `${BASE}/F-C0032-001?Authorization=${API_KEY}&locationName=${encodeURIComponent(forecastName)}`
+  );
+  const data = await res.json();
+  const loc = data.records.location[0];
+  const elements: Record<string, { parameterName: string; parameterValue: string }> =
+    loc.weatherElement.reduce(
+      (acc: Record<string, { parameterName: string; parameterValue: string }>, item: { elementName: string; time: { parameter: { parameterName: string; parameterValue: string } }[] }) => {
+        if (["Wx", "PoP", "CI"].includes(item.elementName)) {
+          acc[item.elementName] = item.time[0].parameter;
+        }
+        return acc;
+      },
+      {}
+    );
+  return {
+    description: elements.Wx.parameterName,
+    weatherCode: parseInt(elements.Wx.parameterValue),
+    rainPossibility: parseInt(elements.PoP.parameterName),
+    comfortability: elements.CI.parameterName,
+  };
 };
 
-const useWeatherApi = () => {
-  const [weatherElement, setWeatherElement] = useState({
-    observationTime: new Date(),
+const useWeatherApi = (stationName: string, forecastName: string) => {
+  const [weather, setWeather] = useState<IWeatherData>({
+    observationTime: "",
     locationName: "",
-    humid: 0,
     temperature: 0,
     windSpeed: 0,
+    humid: 0,
     description: "",
-    weatherCode: 0,
+    weatherCode: 1,
     rainPossibility: 0,
     comfortability: "",
     isLoading: true,
+    isError: false,
   });
 
-  const fetchData = useCallback(() => {
-    const fetchingData = async () => {
-      const [currentWeather, weatherForecast] = await Promise.all([
-        fetchCurrentWeather(),
-        fetchWeatherForecast(),
+  const fetchData = useCallback(async () => {
+    setWeather((prev) => ({ ...prev, isLoading: true, isError: false }));
+    try {
+      const [obs, forecast] = await Promise.all([
+        fetchObservation(stationName),
+        fetchForecast(forecastName),
       ]);
-
-      setWeatherElement({
-        ...currentWeather,
-        ...weatherForecast,
-        isLoading: false,
-      });
-    };
-
-    setWeatherElement((prevState) => ({
-      ...prevState,
-      isLoading: true,
-    }));
-
-    fetchingData();
-  }, []);
+      setWeather({ ...obs, ...forecast, isLoading: false, isError: false });
+    } catch {
+      setWeather((prev) => ({ ...prev, isLoading: false, isError: true }));
+    }
+  }, [stationName, forecastName]);
 
   useEffect(() => {
     fetchData();
   }, [fetchData]);
 
-  return [weatherElement, fetchData];
+  return { weather, fetchData };
 };
 
 export default useWeatherApi;

@@ -55,7 +55,7 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <div style={{ overflow: "hidden", maxWidth: "100%" }}>
+    <div style={{ overflowX: "hidden", maxWidth: "100%" }}>
       <StyledContainer>
         <Header title="FuFu's Blog" scrolled={isScrolled}>
           {tabs.map(({ id, name }) => (
@@ -117,7 +117,7 @@ const App: React.FC = () => {
 const StyledContainer = styled.div`
   background: ${theme.mainTheme};
   border-radius: 10px;
-  overflow: hidden;
+  overflow-x: hidden;
   min-height: 100vh;
   display: flex;
   flex-direction: column;

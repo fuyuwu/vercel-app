@@ -1,14 +1,17 @@
 import React from "react";
-import styled from "styled-components";
-import { theme } from "../../../core";
-import { Rain, Air, Reload } from "../../Icons";
-import WeatherIcons from "../component/WeatherIcons";
-import Loading from "../../Loading";
+import styled, { keyframes } from "styled-components";
+import { Air, Rain, Reload } from "../../Icons";
+import WeatherIcons from "./WeatherIcons";
+import { IWeatherData } from "../lib/types";
 
-const WeatherCard = (props) => {
-  const { fetchData, weatherElement, moment } = props;
+interface Props {
+  weather: IWeatherData;
+  moment: "day" | "night";
+  onRefresh: () => void;
+}
+
+const WeatherCard: React.FC<Props> = ({ weather, moment, onRefresh }) => {
   const {
-    obsTime,
     locationName,
     temperature,
     windSpeed,
@@ -16,126 +19,158 @@ const WeatherCard = (props) => {
     weatherCode,
     rainPossibility,
     comfortability,
+    observationTime,
     isLoading,
-  } = weatherElement;
+    isError,
+  } = weather;
+
+  const obsLabel = observationTime
+    ? new Date(observationTime).toLocaleTimeString("zh-TW", { hour: "2-digit", minute: "2-digit" })
+    : "--:--";
 
   return (
-    <StyledWeatherCard>
-      <StyledLocation>{locationName}</StyledLocation>
-      <StyledDescription>
-        {description} {comfortability}
-      </StyledDescription>
+    <StyledCard>
+      <StyledTop>
+        <div>
+          <StyledLocation>{locationName || "---"}</StyledLocation>
+          <StyledDesc>
+            {isError ? "資料載入失敗" : `${description} ${comfortability}`}
+          </StyledDesc>
+        </div>
+        <StyledRefresh onClick={onRefresh} disabled={isLoading}>
+          <StyledReloadIcon isLoading={isLoading}>
+            <Reload width={16} height={16} />
+          </StyledReloadIcon>
+        </StyledRefresh>
+      </StyledTop>
 
-      <StyledweatherElement>
-        <StyledTemperature>
-          {temperature}
-          <StyledCelsius>°C</StyledCelsius>
-        </StyledTemperature>
-        <WeatherIcons
-          currentWeatherCode={weatherCode}
-          moment={moment || "day"}
-        />
-      </StyledweatherElement>
-      <StyledAirFlow>
-        <Air width={18} height={18} />
-        {windSpeed} m/h
-      </StyledAirFlow>
-      <StyledRain>
-        <Rain width={18} height={18} fill={"#00ACEA"} />
-        {Math.round(rainPossibility)} %
-      </StyledRain>
+      <StyledMain>
+        <StyledTempRow>
+          <StyledTemp>
+            {isError ? "--" : Math.round(temperature)}
+            <StyledUnit>°C</StyledUnit>
+          </StyledTemp>
+          <WeatherIcons currentWeatherCode={weatherCode} moment={moment} />
+        </StyledTempRow>
 
-      {obsTime}
-      {isLoading ? (
-        <Loading className={"newPos"} visible={true} bgColor={theme.darkFont} />
-      ) : (
-        <StyledReload onClick={fetchData} isLoading={isLoading}>
-          <Reload width={16} height={16} fill={theme.darkFont} />
-        </StyledReload>
-      )}
-    </StyledWeatherCard>
+        <StyledMeta>
+          <StyledMetaItem>
+            <Air width={16} height={16} />
+            <span>{isError ? "--" : `${windSpeed} m/s`}</span>
+          </StyledMetaItem>
+          <StyledMetaItem>
+            <Rain width={16} height={16} fill="#0077B6" />
+            <span>{isError ? "--" : `${rainPossibility}%`}</span>
+          </StyledMetaItem>
+          <StyledTime>{obsLabel}</StyledTime>
+        </StyledMeta>
+      </StyledMain>
+    </StyledCard>
   );
 };
-const StyledWeatherCard = styled.div`
-  background-color: ${({ theme }) => theme.foregroundColor};
-  border-radius: 5px;
-  box-sizing: border-box;
-  padding: 30px 15px;
+
+const spin = keyframes`
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 `;
 
-const StyledLocation = styled.div`
-  font-size: 28px;
-  margin-bottom: 20px;
-  color: ${({ theme }) => theme.titleColor};
+const StyledCard = styled.div`
+  width: 100%;
+  max-width: 320px;
+  background: #1A2A40;
+  border-radius: 16px;
+  padding: 20px 24px 16px;
+  margin: 0 20px;
+  color: #F1DEC6;
 `;
-const StyledDescription = styled.div`
-  font-size: 16px;
-  color: ${({ theme }) => theme.textColor};
-  margin-bottom: 30px;
-  span {
-    font-family: inherit;
-  }
+
+const StyledTop = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
 `;
-const StyledweatherElement = styled.div`
+
+const StyledLocation = styled.h3`
+  margin: 0 0 4px;
+  font-size: 22px;
+  font-weight: 700;
+  color: #F1DEC6;
+`;
+
+const StyledDesc = styled.p`
+  margin: 0;
+  font-size: 13px;
+  color: rgba(241, 222, 198, 0.6);
+`;
+
+const StyledRefresh = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: rgba(241, 222, 198, 0.5);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s;
+  &:hover { color: #F1DEC6; }
+  &:disabled { cursor: not-allowed; opacity: 0.4; }
+`;
+
+const StyledReloadIcon = styled.span<{ isLoading: boolean }>`
+  display: flex;
+  animation: ${({ isLoading }) => isLoading ? spin : "none"} 1s linear infinite;
+  svg { fill: currentColor; }
+`;
+
+const StyledMain = styled.div``;
+
+const StyledTempRow = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
-`;
-const StyledTemperature = styled.div`
-  color: ${({ theme }) => theme.temperatureColor};
-  font-size: 50px;
-  font-weight: 300;
-  display: flex;
-`;
-const StyledCelsius = styled.div`
-  font-weight: normal;
-  font-size: 25px;
-  color: #aaa;
-`;
-const StyledReload = styled.div<{ isLoading: boolean }>`
-  text-align: right;
-  cursor: pointer;
-  margin-bottom: -18px;
-  color: ${({ theme }) => theme.textColor};
-  svg {
-    fill: ${({ theme }) => theme.textColor};
-    margin-left: 10px;
-    cursor: pointer;
-    animation: rotate infinite 1.5s linear;
-    animation-duration: ${(props) => (props.isLoading ? "1.5s" : "0s")};
-  }
-  @keyframes rotate {
-    from {
-      transform: rotate(360deg);
-    }
-    to {
-      transform: rotate(0deg);
-    }
-  }
+  margin-bottom: 16px;
 `;
 
-const StyledAirFlow = styled.div`
-  display: flex;
-  align-items: center;
-  font-size: 16x;
+const StyledTemp = styled.div`
+  font-size: 56px;
   font-weight: 300;
-  color: ${({ theme }) => theme.textColor};
-  margin-bottom: 20px;
-  svg {
-    margin-right: 30px;
-  }
+  line-height: 1;
+  display: flex;
+  align-items: flex-start;
+  gap: 2px;
+  color: #F1DEC6;
 `;
 
-const StyledRain = styled.div`
+const StyledUnit = styled.span`
+  font-size: 22px;
+  font-weight: 400;
+  margin-top: 8px;
+  color: rgba(241, 222, 198, 0.65);
+`;
+
+const StyledMeta = styled.div`
   display: flex;
   align-items: center;
-  font-size: 16x;
-  font-weight: 300;
-  color: ${({ theme }) => theme.textColor};
-  svg {
-    margin-right: 30px;
-  }
+  gap: 16px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(241, 222, 198, 0.1);
+`;
+
+const StyledMetaItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: rgba(241, 222, 198, 0.7);
+  svg { flex-shrink: 0; }
+`;
+
+const StyledTime = styled.span`
+  margin-left: auto;
+  font-size: 12px;
+  color: rgba(241, 222, 198, 0.35);
 `;
 
 export default WeatherCard;
