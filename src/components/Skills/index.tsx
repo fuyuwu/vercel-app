@@ -8,7 +8,7 @@ const frontendGroups = [
     skills: ["Vue 2", "Vue 3", "Pinia", "Options API", "Composition API", "Vite 5", "TypeScript", "JavaScript (ES6+)"],
   },
   {
-    color: "#087ea4",
+    color: "#61DAFB",
     skills: ["React", "Hooks", "TypeScript", "JavaScript (ES6+)", "Redux", "React-Redux", "React-hook-form", "React Native", "Webpack", "Storybook", "CSS-in-JS"],
   },
 ];
