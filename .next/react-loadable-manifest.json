@@ -1,0 +1,26 @@
+{
+  "src/components/TabContentRenderer/index.tsx -> ../Experience": {
+    "id": "src/components/TabContentRenderer/index.tsx -> ../Experience",
+    "files": [
+      "static/chunks/_app-pages-browser_src_components_Experience_index_tsx.js"
+    ]
+  },
+  "src/components/TabContentRenderer/index.tsx -> ../Profile": {
+    "id": "src/components/TabContentRenderer/index.tsx -> ../Profile",
+    "files": [
+      "static/chunks/_app-pages-browser_src_components_Profile_index_tsx.js"
+    ]
+  },
+  "src/components/TabContentRenderer/index.tsx -> ../Skills": {
+    "id": "src/components/TabContentRenderer/index.tsx -> ../Skills",
+    "files": [
+      "static/chunks/_app-pages-browser_src_components_Skills_index_tsx.js"
+    ]
+  },
+  "src/components/TabContentRenderer/index.tsx -> ../WorkCard": {
+    "id": "src/components/TabContentRenderer/index.tsx -> ../WorkCard",
+    "files": [
+      "static/chunks/_app-pages-browser_src_components_WorkCard_index_tsx.js"
+    ]
+  }
+}

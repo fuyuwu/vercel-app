@@ -1,3 +1,5 @@
+'use client';
+
 /** @summary 共用styles */
 import styled, { CSSProperties } from "styled-components";
 import { theme } from ".";

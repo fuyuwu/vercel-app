@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useEffect } from "react";
 import "./css.scss";
 import { MenuBtn, CloseBtn, Mail, CellPhone } from "../Icons";

@@ -1,3 +1,5 @@
+'use client';
+
 const size = {
   mobileS: "320px",
   mobileM: "375px",

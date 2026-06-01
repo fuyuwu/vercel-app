@@ -1,7 +1,8 @@
+'use client';
+
 import React, { useState, useEffect } from "react";
 import { Fold, Unfold } from "../Icons";
 import styled from "styled-components";
-import { theme } from "../../core";
 
 interface ICollapseBlockProps {
   title: string | React.ReactNode;

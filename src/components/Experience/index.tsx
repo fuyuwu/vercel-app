@@ -1,3 +1,5 @@
+'use client';
+
 import React from "react";
 import styled from "styled-components";
 import CollapseBlock from "../CollapseBlock";
@@ -18,9 +20,9 @@ const TechTags: React.FC<{ techs: string[] }> = ({ techs }) => (
   </StyledTechRow>
 );
 
-const CompanyName: React.FC<{ logo: string; alt: string; isSvg?: boolean; children: React.ReactNode }> = ({ logo, alt, isSvg, children }) => (
+const CompanyName: React.FC<{ logo: string | { src: string }; alt: string; isSvg?: boolean; children: React.ReactNode }> = ({ logo, alt, isSvg, children }) => (
   <StyledCompanyRow>
-    <StyledLogo src={logo} alt={alt} isSvg={isSvg} />
+    <StyledLogo src={typeof logo === 'string' ? logo : logo.src} alt={alt} isSvg={isSvg} />
     <ExpContent style={{ margin: 0 }}>{children}</ExpContent>
   </StyledCompanyRow>
 );

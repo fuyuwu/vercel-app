@@ -1,21 +1,23 @@
-![React Logo](https://github.com/vercel/vercel/blob/master/packages/frameworks/logos/react.svg)
+# FuFu's Blog
 
-# React Example
+Personal portfolio and blog site by **FuFu Wu**, Front-end Engineer.
 
-This directory is a brief example of a [React](https://reactjs.org/) app with [Serverless Functions](https://vercel.com/docs/v2/serverless-functions/introduction) that can be deployed with Vercel and zero configuration.
+## Tech Stack
 
-## Deploy Your Own
+- **Framework** — [Next.js 14](https://nextjs.org/) (App Router)
+- **Language** — TypeScript
+- **UI** — React 18 + styled-components (with SSR registry)
+- **State Management** — Redux Toolkit
+- **Styling** — Sass, CSS Variables
+- **Deployment** — Vercel
 
-Deploy your own React project, along with Serverless Functions, with Vercel.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/vercel/vercel/tree/master/examples/create-react-app-functions)
+## Other Projects
 
-_Live Example: https://create-react-app.now-examples.now.sh/_
+| Project | Tech | Link |
+|---------|------|------|
+| GutCheck | Vue 3 + Pinia + Vue Router + Tailwind CSS + Vite | [gutcheck-fu.vercel.app](https://gutcheck-fu.vercel.app/) |
 
-### How We Created This Example
+## Author
 
-To get started with React, along with [Serverless Functions](https://vercel.com/docs/v2/serverless-functions/introduction), with Vercel, you can use the [Create-React-App CLI](https://reactjs.org/docs/create-a-new-react-app.html#create-react-app) to initialize the project:
-
-```shell
-$ npx create-react-app my-app
-```
+**FuFu Wu** · fuyuwu041000@gmail.com
