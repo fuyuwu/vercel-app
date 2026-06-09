@@ -245,7 +245,6 @@ const StyledAccentLine = styled.div`
 const StyledSloganRow = styled.div`
   display: flex;
   align-items: center;
-  gap: 14px;
 `;
 
 const StyledLoveIllustration = styled.img`

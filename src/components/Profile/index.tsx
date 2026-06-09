@@ -212,64 +212,101 @@ const TABS: { id: Framework; label: string; color: string }[] = [
 
 const GROUPS: ProjectGroup[] = ["Components", "Projects"];
 
+/* ── GutCheck Featured Card ── */
+
+const GUTCHECK = {
+  title: "GutCheck",
+  tagline: "Personal health tracker for calories & weight",
+  desc: "以 Vue 3 + Composition API 建構的健康管理 App，記錄每日熱量攝取、追蹤體重趨勢，支援 RWD 全裝置適配。",
+  features: [
+    "每日熱量攝取記錄與目標設定",
+    "體重趨勢視覺化圖表",
+    "食物資料庫搜尋與快速新增",
+  ],
+  techs: ["Vue 3", "Composition API", "TypeScript", "Vite", "Pinia", "Tailwind CSS"],
+  liveUrl: "https://gutcheck-fu.vercel.app",
+  accent: "#42b883",
+};
+
 /* ── Component ── */
 
 const Profile: React.FC = () => {
   const [activeFramework, setActiveFramework] = useState<Framework>("React");
-
   const activeColor = TABS.find((t) => t.id === activeFramework)!.color;
-  const filtered = PROJECTS.filter((p) => p.framework === activeFramework);
+  const components = PROJECTS.filter((p) => p.framework === "React" && p.group === "Components");
 
   return (
     <StyledWrap>
-      <StyledTabRow>
-        {TABS.map((tab) => (
-          <StyledTab
-            key={tab.id}
-            active={tab.id === activeFramework}
-            color={tab.color}
-            onClick={() => setActiveFramework(tab.id)}
-          >
-            {tab.label}
-          </StyledTab>
-        ))}
-      </StyledTabRow>
 
-      {GROUPS.map((group) => {
-        const items = filtered.filter((p) => p.group === group);
-        if (!items.length) return null;
-        return (
-          <StyledSection key={group}>
-            <StyledSectionLabel color={activeColor}>{group}</StyledSectionLabel>
-            <StyledGrid>
-              {items.map((p) => (
-                <StyledCard key={p.id} accent={p.accent} wide={p.type === "iframe"}>
-                  <StyledCardTop>
-                    <StyledTitle>{p.title}</StyledTitle>
-                    <StyledDesc>{p.desc}</StyledDesc>
-                    <StyledTechRow>
-                      {p.techs.map((t) => (
-                        <StyledTechTag key={t} accent={p.accent}>{t}</StyledTechTag>
-                      ))}
-                    </StyledTechRow>
-                  </StyledCardTop>
-                  <StyledDemoArea>
-                    {p.type === "demo" && p.renderDemo?.(p.accent)}
-                    {p.type === "iframe" && (
-                      <StyledIframe
-                        src={p.iframeUrl}
-                        title={p.title}
-                        loading="lazy"
-                        sandbox="allow-scripts allow-same-origin allow-forms"
-                      />
-                    )}
-                  </StyledDemoArea>
-                </StyledCard>
-              ))}
-            </StyledGrid>
-          </StyledSection>
-        );
-      })}
+      {/* ── Featured Project: GutCheck ── */}
+      <StyledFeaturedCard>
+        <StyledFeaturedLeft>
+          <StyledFeaturedBadge>Featured Project</StyledFeaturedBadge>
+          <StyledFeaturedTitle>{GUTCHECK.title}</StyledFeaturedTitle>
+          <StyledFeaturedTagline>{GUTCHECK.tagline}</StyledFeaturedTagline>
+          <StyledFeaturedDesc>{GUTCHECK.desc}</StyledFeaturedDesc>
+          <StyledFeatureList>
+            {GUTCHECK.features.map(f => (
+              <StyledFeatureItem key={f}>
+                <StyledFeatureDot />
+                {f}
+              </StyledFeatureItem>
+            ))}
+          </StyledFeatureList>
+          <StyledFeaturedTechRow>
+            {GUTCHECK.techs.map(t => (
+              <StyledFeaturedTech key={t} accent={GUTCHECK.accent}>{t}</StyledFeaturedTech>
+            ))}
+          </StyledFeaturedTechRow>
+          <StyledFeaturedActions>
+            <StyledLiveBtn href={GUTCHECK.liveUrl} target="_blank" rel="noreferrer" accent={GUTCHECK.accent}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
+                <polyline points="15 3 21 3 21 9"/>
+                <line x1="10" y1="14" x2="21" y2="3"/>
+              </svg>
+              Live Demo
+            </StyledLiveBtn>
+          </StyledFeaturedActions>
+        </StyledFeaturedLeft>
+        <StyledFeaturedPreview>
+          <StyledIframe
+            src={GUTCHECK.liveUrl}
+            title="GutCheck"
+            loading="lazy"
+            sandbox="allow-scripts allow-same-origin allow-forms"
+          />
+        </StyledFeaturedPreview>
+      </StyledFeaturedCard>
+
+      {/* ── Component Library ── */}
+      <StyledComponentSection>
+        <StyledSectionLabel color="#087ea4">Component Library</StyledSectionLabel>
+        <StyledTabRow>
+          {TABS.filter(t => t.id === "React").map((tab) => (
+            <StyledTab key={tab.id} active color={tab.color}>{tab.label}</StyledTab>
+          ))}
+        </StyledTabRow>
+        <StyledGrid>
+          {components.map((p) => (
+            <StyledCard key={p.id} accent={p.accent} wide={false}>
+              <StyledCardTop>
+                <StyledTitle>{p.title}</StyledTitle>
+                <StyledDesc>{p.desc}</StyledDesc>
+                <StyledTechRow>
+                  {p.techs.map((t) => (
+                    <StyledTechTag key={t} accent={p.accent}>{t}</StyledTechTag>
+                  ))}
+                </StyledTechRow>
+              </StyledCardTop>
+              <StyledDemoArea>
+                {p.renderDemo?.(p.accent)}
+              </StyledDemoArea>
+            </StyledCard>
+          ))}
+        </StyledGrid>
+      </StyledComponentSection>
+
     </StyledWrap>
   );
 };
@@ -519,7 +556,8 @@ const StyledBadge = styled.span<{ color: string }>`
 
 const StyledIframe = styled.iframe`
   width: 100%;
-  height: 500px;
+  height: 100%;
+  min-height: 400px;
   border: none;
   display: block;
 `;
@@ -577,5 +615,149 @@ const StyledTypingInlineInput = styled.input<{ accent: string }>`
   }
 `;
 
+
+/* ── Featured Card ── */
+
+const StyledFeaturedCard = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid var(--cream-border);
+  box-shadow: 0 4px 32px rgba(26, 42, 64, 0.1);
+
+  @media screen and (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const StyledFeaturedLeft = styled.div`
+  padding: 40px 36px;
+  background: var(--cream-card);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
+
+const StyledFeaturedBadge = styled.span`
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: #42b883;
+`;
+
+const StyledFeaturedTitle = styled.h3`
+  margin: 0;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--content-text);
+  line-height: 1.1;
+`;
+
+const StyledFeaturedTagline = styled.p`
+  margin: 0;
+  font-size: 14px;
+  font-style: italic;
+  color: var(--content-text-sub);
+  letter-spacing: 0.3px;
+`;
+
+const StyledFeaturedDesc = styled.p`
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--content-text-sub);
+`;
+
+const StyledFeatureList = styled.ul`
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+const StyledFeatureItem = styled.li`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--content-text);
+  letter-spacing: 0.3px;
+`;
+
+const StyledFeatureDot = styled.div`
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #42b883;
+  flex-shrink: 0;
+`;
+
+const StyledFeaturedTechRow = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+`;
+
+const StyledFeaturedTech = styled.span<{ accent: string }>`
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background: ${({ accent }) => accent}12;
+  color: ${({ accent }) => accent};
+  border: 1px solid ${({ accent }) => accent}30;
+  white-space: nowrap;
+`;
+
+const StyledFeaturedActions = styled.div`
+  display: flex;
+  gap: 12px;
+  margin-top: 4px;
+`;
+
+const StyledLiveBtn = styled.a<{ accent: string }>`
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 24px;
+  border-radius: 10px;
+  background: ${({ accent }) => accent};
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  transition: opacity 0.2s;
+
+  svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  &:hover { opacity: 0.85; }
+`;
+
+const StyledFeaturedPreview = styled.div`
+  background: #f0f0f0;
+  position: relative;
+  min-height: 400px;
+  overflow: hidden;
+
+  @media screen and (max-width: 768px) {
+    min-height: 300px;
+  }
+`;
+
+const StyledComponentSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
 
 export default Profile;
