@@ -1,57 +1,26 @@
 'use client';
 
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import TabContentRenderer from "./components/TabContentRenderer";
-import { Mail, CellPhone } from "./components/Icons";
-
+import Experience from "./components/Experience";
+import Skills from "./components/Skills";
+import Profile from "./components/Profile";
+import { Mail } from "./components/Icons";
 import { theme } from "./core";
-import { useAppDispatch, useAppSelector } from "./store/hooks";
-import { setCurrentTab } from "./store/slices/tabSlice";
 import IntroAnimation from "./components/IntroAnimation";
 
-const TAB_ICONS: Record<string, React.ReactNode> = {
-  tab01: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="12" cy="8" r="4" />
-      <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
-    </svg>
-  ),
-  tab02: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="2" y="7" width="20" height="14" rx="2" />
-      <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" />
-      <line x1="12" y1="12" x2="12" y2="16" />
-      <line x1="8" y1="14" x2="16" y2="14" />
-    </svg>
-  ),
-  tab03: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <polyline points="16 18 22 12 16 6" />
-      <polyline points="8 6 2 12 8 18" />
-      <line x1="15" y1="9" x2="9" y2="15" />
-    </svg>
-  ),
-  tab04: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="3" y="3" width="7" height="7" rx="1" />
-      <rect x="14" y="3" width="7" height="7" rx="1" />
-      <rect x="3" y="14" width="7" height="7" rx="1" />
-      <rect x="14" y="14" width="7" height="7" rx="1" />
-    </svg>
-  ),
-};
+const NAV_ITEMS = [
+  { label: "Experience", href: "#experience" },
+  { label: "Skills",     href: "#skills" },
+  { label: "Portfolio",  href: "#portfolio" },
+];
 
 const App: React.FC = () => {
-  const tabs = useAppSelector(state => state.tab.tabs);
-  const currentTabID = useAppSelector(state => state.tab.currentTabId);
-  const dispatch = useAppDispatch();
-
   const [introFinished, setIntroFinished] = useState(false);
-
   const [isScrolled, setIsScrolled] = useState(false);
+
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 0);
     window.addEventListener("scroll", onScroll);
@@ -59,26 +28,12 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <div style={{ overflowX: "hidden", maxWidth: "100%" }}>
+    <div style={{ overflowX: "hidden" }}>
       {!introFinished && <IntroAnimation onFinish={() => setIntroFinished(true)} />}
       <StyledContainer>
-        <Header title="" scrolled={isScrolled}>
-          {tabs.map(({ id, name }) => (
-            <StyledTabBtn
-              key={id}
-              active={id === currentTabID}
-              onClick={() => dispatch(setCurrentTab(id))}
-              title={name}
-            >
-              {TAB_ICONS[id]}
-              <StyledActiveDot active={id === currentTabID} />
-            </StyledTabBtn>
-          ))}
-        </Header>
+        <Header scrolled={isScrolled} navItems={NAV_ITEMS} />
 
-        {/* ── Hero Section (dark teal) ── */}
         <StyledHeroSection>
-          {/* 裝飾幾何 */}
           <StyledDecoCircle size={360} top={-120} right={-80} opacity={0.06} />
           <StyledDecoCircle size={220} top={-40} right={80} opacity={0.04} />
           <StyledDecoArc />
@@ -86,13 +41,12 @@ const App: React.FC = () => {
             <StyledAvatarWrapper>
               <StyledAvatar src="/avatar.jpg" alt="FuFu" />
             </StyledAvatarWrapper>
-
             <StyledHeroInfo>
               <StyledRoleBadge>Frontend Engineer</StyledRoleBadge>
               <StyledName>FuFu Wu</StyledName>
               <StyledAccentLine />
               <StyledSloganRow>
-                <StyledLoveIllustration src="/love.jpeg" alt="love illustration" />
+                <StyledLoveIllustration src="/love.jpeg" alt="love" />
                 <StyledSlogan>Where ideas become interfaces.</StyledSlogan>
               </StyledSloganRow>
               <StyledContactLink href="mailto:fuyuwu041000@gmail.com" rel="noreferrer noopener">
@@ -108,17 +62,54 @@ const App: React.FC = () => {
           </StyledHero>
         </StyledHeroSection>
 
-        {/* ── Wave divider ── */}
         <StyledWaveDivider>
-          <svg viewBox="0 0 1440 72" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <svg viewBox="0 0 1440 72" preserveAspectRatio="none">
             <path d="M0,0 C320,72 720,0 1080,48 C1260,72 1380,32 1440,16 L1440,0 Z" fill="#008080" />
           </svg>
         </StyledWaveDivider>
 
-        {/* ── Content Section (light cream) ── */}
-        <StyledMainContent>
-          <TabContentRenderer />
-        </StyledMainContent>
+        <StyledLightSection>
+          <StyledSection id="portfolio">
+            <StyledSectionHeader>
+              <StyledSectionLabel>Side Projects</StyledSectionLabel>
+              <StyledSectionTitle>Portfolio</StyledSectionTitle>
+            </StyledSectionHeader>
+            <Profile />
+          </StyledSection>
+        </StyledLightSection>
+
+        <StyledWaveBox bg={theme.mainTheme}>
+          <svg viewBox="0 0 1440 72" preserveAspectRatio="none">
+            <path d="M0,0 C320,72 720,0 1080,48 C1260,72 1380,32 1440,16 L1440,0 Z" fill="var(--cream)" />
+          </svg>
+        </StyledWaveBox>
+
+        <StyledDarkSection>
+          <StyledSkillsDecoCircle size={320} bottom={-80} left={-60} />
+          <StyledSkillsDecoCircle size={180} bottom={20} left={60} />
+          <StyledSection id="experience">
+            <StyledSectionHeader>
+              <StyledSectionTitleLight>Experience</StyledSectionTitleLight>
+            </StyledSectionHeader>
+            <Experience />
+          </StyledSection>
+        </StyledDarkSection>
+
+        <StyledWaveBox bg="var(--cream)">
+          <svg viewBox="0 0 1440 72" preserveAspectRatio="none">
+            <path d="M0,0 C320,72 720,0 1080,48 C1260,72 1380,32 1440,16 L1440,0 Z" fill="#008080" />
+          </svg>
+        </StyledWaveBox>
+
+        <StyledLightSection>
+          <StyledSection id="skills">
+            <StyledSectionHeader>
+              <StyledSectionLabel>What I work with</StyledSectionLabel>
+              <StyledSectionTitle>Skills</StyledSectionTitle>
+            </StyledSectionHeader>
+            <Skills />
+          </StyledSection>
+        </StyledLightSection>
 
         <Footer />
       </StyledContainer>
@@ -126,7 +117,7 @@ const App: React.FC = () => {
   );
 };
 
-/* ─── Styled Components ─── */
+/* ─── Styled ─── */
 
 const StyledContainer = styled.div`
   overflow-x: hidden;
@@ -136,7 +127,7 @@ const StyledContainer = styled.div`
   background: var(--cream);
 `;
 
-/* ── Hero Section ── */
+/* Hero */
 const StyledHeroSection = styled.div`
   background: ${theme.mainTheme};
   padding: 72px 24px 56px;
@@ -173,18 +164,6 @@ const StyledDecoArc = styled.div`
   pointer-events: none;
 `;
 
-const StyledWaveDivider = styled.div`
-  background: var(--cream);
-  margin-top: -1px;
-  line-height: 0;
-
-  svg {
-    display: block;
-    width: 100%;
-    height: 72px;
-  }
-`;
-
 const StyledHero = styled.div`
   max-width: 800px;
   margin: 0 auto;
@@ -207,9 +186,7 @@ const StyledAvatarWrapper = styled.div`
   border-radius: 50%;
   overflow: hidden;
   border: 2px solid rgba(241, 222, 198, 0.4);
-  box-shadow:
-    0 0 0 6px rgba(241, 222, 198, 0.08),
-    0 12px 40px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 0 6px rgba(241, 222, 198, 0.08), 0 12px 40px rgba(0,0,0,0.3);
 
   @media screen and (min-width: 680px) {
     width: 140px;
@@ -265,11 +242,29 @@ const StyledAccentLine = styled.div`
   }
 `;
 
+const StyledSloganRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 14px;
+`;
+
+const StyledLoveIllustration = styled.img`
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  opacity: 0.55;
+  mix-blend-mode: screen;
+  filter: invert(1) brightness(0.9);
+  pointer-events: none;
+  flex-shrink: 0;
+`;
+
 const StyledSlogan = styled.p`
   margin: 0;
   font-family: 'Kiwi Maru', sans-serif;
   font-size: 15px;
   font-weight: 400;
+  font-style: italic;
   color: rgba(241, 222, 198, 0.75);
   letter-spacing: 0.3px;
   line-height: 1.5;
@@ -285,9 +280,7 @@ const StyledContactLink = styled.a`
   letter-spacing: 0.4px;
   transition: color 0.2s;
 
-  &:hover {
-    color: rgba(241, 222, 198, 0.9);
-  }
+  &:hover { color: rgba(241, 222, 198, 0.9); }
 `;
 
 const StyledTagFlex = styled.div`
@@ -297,9 +290,7 @@ const StyledTagFlex = styled.div`
   gap: 6px;
   margin-top: 4px;
 
-  @media screen and (min-width: 680px) {
-    justify-content: flex-start;
-  }
+  @media screen and (min-width: 680px) { justify-content: flex-start; }
 `;
 
 const StyledTag = styled.span`
@@ -314,70 +305,122 @@ const StyledTag = styled.span`
   font-weight: 500;
 `;
 
-const StyledSloganRow = styled.div`
-  display: flex;
-  align-items: center;
+/* Wave */
+const StyledWaveDivider = styled.div`
+  background: var(--cream);
+  margin-top: -1px;
+  line-height: 0;
+
+  svg {
+    display: block;
+    width: 100%;
+    height: 72px;
+  }
 `;
 
-const StyledLoveIllustration = styled.img`
-  width: 36px;
-  height: 36px;
-  object-fit: contain;
-  opacity: 0.55;
-  mix-blend-mode: screen;
-  filter: invert(1) brightness(0.9);
-  pointer-events: none;
-  flex-shrink: 0;
-`;
-
-/* ── Main Content Section ── */
+/* Main */
 const StyledMainContent = styled.main`
   flex: 1;
   background: var(--cream);
-  padding: 32px 24px 48px;
+  padding: 0 24px 64px;
 
   @media screen and (max-width: 679px) {
-    padding: 24px 16px 40px;
+    padding: 0 16px 48px;
   }
 `;
 
-/* Tab icons */
+const StyledSection = styled.section`
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 64px 0 48px;
 
-const StyledTabBtn = styled.button<{ active: boolean }>`
-  position: relative;
-  width: 44px;
-  height: 44px;
-  border: none;
-  border-radius: 12px;
-  background: ${({ active }) => active ? "rgba(255,255,255,0.2)" : "transparent"};
-  color: ${theme.lightFont};
-  opacity: ${({ active }) => active ? 1 : 0.45};
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 3px;
-  transition: background 0.2s, opacity 0.2s;
+  @media screen and (max-width: 679px) {
+    padding: 48px 0 32px;
+  }
+`;
+
+const StyledSectionHeader = styled.div`
+  margin-bottom: 32px;
+`;
+
+const StyledSectionLabel = styled.p`
+  margin: 0 0 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: ${theme.mainTheme};
+  opacity: 0.7;
+`;
+
+const StyledSectionTitle = styled.h2`
+  margin: 0;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--content-text);
+  letter-spacing: 0.5px;
+  line-height: 1.1;
+`;
+
+const StyledWaveBox = styled.div<{ bg: string }>`
+  background: ${({ bg }) => bg};
+  margin-top: -1px;
+  line-height: 0;
 
   svg {
-    width: 22px;
-    height: 22px;
-  }
-
-  &:hover {
-    opacity: 1;
-    background: rgba(255, 255, 255, 0.15);
+    display: block;
+    width: 100%;
+    height: 72px;
   }
 `;
 
-const StyledActiveDot = styled.span<{ active: boolean }>`
-  width: 4px;
-  height: 4px;
+/* Light / Dark sections */
+const StyledLightSection = styled.div`
+  background: var(--cream);
+  padding: 0 24px;
+
+  @media screen and (max-width: 679px) { padding: 0 16px; }
+`;
+
+const StyledDarkSection = styled.div`
+  background: ${theme.mainTheme};
+  position: relative;
+  overflow: hidden;
+  padding: 0 24px 16px;
+
+  @media screen and (max-width: 679px) { padding: 0 16px 16px; }
+`;
+
+const StyledSkillsDecoCircle = styled.div<{ size: number; bottom: number; left: number }>`
+  position: absolute;
+  width: ${({ size }) => size}px;
+  height: ${({ size }) => size}px;
+  bottom: ${({ bottom }) => bottom}px;
+  left: ${({ left }) => left}px;
   border-radius: 50%;
-  background: ${theme.lightFont};
-  opacity: ${({ active }) => active ? 1 : 0};
-  transition: opacity 0.2s;
+  border: 1px solid rgba(241, 222, 198, 0.08);
+  pointer-events: none;
+`;
+
+
+const StyledSectionLabelLight = styled.p`
+  margin: 0 0 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(241, 222, 198, 0.45);
+`;
+
+const StyledSectionTitleLight = styled.h2`
+  margin: 0;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: ${theme.lightFont};
+  letter-spacing: 0.5px;
+  line-height: 1.1;
 `;
 
 export default App;

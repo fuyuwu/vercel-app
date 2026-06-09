@@ -51,7 +51,7 @@ const Module: React.FC<ISwitchProps> = (props) => {
 };
 
 Module.defaultProps = {
-  onClick: () => console.log("Switch"),
+  onClick: () => {},
 };
 
 export default Module;

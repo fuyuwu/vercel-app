@@ -11,8 +11,7 @@ const fetchObservation = async (stationName: string) => {
     `${BASE}/O-A0003-001?Authorization=${API_KEY}&StationName=${encodeURIComponent(stationName)}`
   );
   const data = await res.json();
-  console.log("[O-A0003-001]", stationName, data.records);
-  const station = data.records?.Station?.[0];
+const station = data.records?.Station?.[0];
   if (!station) throw new Error(`Station not found: ${stationName}`);
   const el = station.WeatherElement;
   return {

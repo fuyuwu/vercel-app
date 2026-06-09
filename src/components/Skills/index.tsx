@@ -192,7 +192,7 @@ const StyledGroupDivider = styled.div`
   @media screen and (min-width: 600px) {
     display: block;
     width: 1px;
-    background: rgba(241, 222, 198, 0.15);
+    background: var(--cream-border);
     margin: 0 16px;
     align-self: stretch;
   }
