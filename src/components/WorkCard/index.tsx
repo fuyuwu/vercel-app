@@ -59,28 +59,18 @@ const WorkCard: React.FC = () => {
       <StyledSubheading>選擇一個區塊，深入了解我的經歷與作品</StyledSubheading>
 
       <StyledGrid>
-        {navCards.map((card) => {
-          const hasDesc = !!card.description;
-          return (
-            <StyledCard
-              key={card.tabId}
-              accent={card.accent}
-              hasDesc={hasDesc}
-              onClick={() => dispatch(setCurrentTab(card.tabId))}
-            >
-              <StyledIconWrapper accent={card.accent} hasDesc={hasDesc}>
-                {card.icon}
-              </StyledIconWrapper>
-              <StyledCardLabel accent={card.accent}>{card.label}</StyledCardLabel>
-              {hasDesc && <StyledCardDesc>{card.description}</StyledCardDesc>}
-              <StyledArrow accent={card.accent}>
-                <svg viewBox="0 0 24 24" fill="none">
-                  <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </StyledArrow>
-            </StyledCard>
-          );
-        })}
+        {navCards.map((card) => (
+          <StyledCircleCard
+            key={card.tabId}
+            accent={card.accent}
+            onClick={() => dispatch(setCurrentTab(card.tabId))}
+          >
+            <StyledCircle accent={card.accent}>
+              {card.icon}
+            </StyledCircle>
+            <StyledCardLabel accent={card.accent}>{card.label}</StyledCardLabel>
+          </StyledCircleCard>
+        ))}
       </StyledGrid>
     </StyledWrapper>
   );
@@ -94,134 +84,70 @@ const StyledWrapper = styled.div`
 `;
 
 const StyledHeading = styled.h2`
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 700;
-  color: ${theme.lightFont};
+  color: var(--content-text);
   margin: 0 0 8px;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
 `;
 
 const StyledSubheading = styled.p`
   font-size: 14px;
-  color: rgba(241, 222, 198, 0.55);
+  color: var(--content-text-sub);
   margin: 0 0 32px;
 `;
 
 const StyledGrid = styled.div`
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 16px;
-
-  @media screen and (min-width: 600px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
+  display: flex;
+  justify-content: center;
+  gap: 56px;
+  flex-wrap: wrap;
 `;
 
-const StyledCard = styled.div<{ accent: string; hasDesc: boolean }>`
-  position: relative;
+const StyledCircleCard = styled.div<{ accent: string }>`
   display: flex;
   flex-direction: column;
-  align-items: ${({ hasDesc }) => hasDesc ? "flex-start" : "center"};
-  justify-content: ${({ hasDesc }) => hasDesc ? "flex-start" : "center"};
-  gap: 10px;
-  padding: 28px 24px 24px;
-  background: rgba(0, 0, 0, 0.14);
-  border-radius: 16px;
-  border: 2px solid transparent;
+  align-items: center;
+  gap: 14px;
   cursor: pointer;
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-  text-align: ${({ hasDesc }) => hasDesc ? "left" : "center"};
-  overflow: hidden;
 
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: ${({ accent }) => accent};
-    border-radius: 14px 14px 0 0;
+  &:hover > div {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 40px ${({ accent }) => accent}28;
+    border-color: ${({ accent }) => accent}50;
   }
 
-  &:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
-    background: ${({ accent }) => accent};
-    border-color: transparent;
+  &:hover > span {
+    color: ${({ accent }) => accent};
   }
 `;
 
-const StyledIconWrapper = styled.div<{ accent: string; hasDesc: boolean }>`
-  width: ${({ hasDesc }) => hasDesc ? "48px" : "72px"};
-  height: ${({ hasDesc }) => hasDesc ? "48px" : "72px"};
-  border-radius: ${({ hasDesc }) => hasDesc ? "12px" : "20px"};
-  background: ${({ accent }) => accent}28;
+const StyledCircle = styled.div<{ accent: string }>`
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: var(--cream-card);
+  border: 2px solid var(--cream-border);
+  box-shadow: 0 4px 16px rgba(26, 42, 64, 0.08);
   display: flex;
   align-items: center;
   justify-content: center;
   color: ${({ accent }) => accent};
-  transition: background 0.25s, color 0.25s;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 
   svg {
-    width: ${({ hasDesc }) => hasDesc ? "26px" : "38px"};
-    height: ${({ hasDesc }) => hasDesc ? "26px" : "38px"};
-  }
-
-  ${StyledCard}:hover & {
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
+    width: 34px;
+    height: 34px;
   }
 `;
 
 const StyledCardLabel = styled.span<{ accent: string }>`
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 1.5px;
-  color: ${({ accent }) => accent};
-  transition: color 0.25s;
-
-  ${StyledCard}:hover & {
-    color: rgba(255, 255, 255, 0.9);
-  }
-`;
-
-
-const StyledCardDesc = styled.p`
-  font-size: 13px;
-  line-height: 1.7;
-  color: rgba(241, 222, 198, 0.65);
-  margin: 0;
-  flex: 1;
-  transition: color 0.25s;
-
-  ${StyledCard}:hover & {
-    color: rgba(255, 255, 255, 0.8);
-  }
-`;
-
-const StyledArrow = styled.div<{ accent: string }>`
-  align-self: flex-end;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: ${({ accent }) => accent}18;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: ${({ accent }) => accent};
-  transition: background 0.2s, transform 0.2s;
-
-  svg {
-    width: 18px;
-    height: 18px;
-  }
-
-  ${StyledCard}:hover & {
-    background: ${({ accent }) => accent};
-    color: white;
-    transform: translateX(3px);
-  }
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--content-text-sub);
+  transition: color 0.3s ease;
 `;
 
 export default WorkCard;

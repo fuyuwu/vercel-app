@@ -6,7 +6,7 @@ import styled from "styled-components";
 const Footer: React.FC = () => {
   return (
     <StyledFooter>
-      <StyledCopyright>FuFu © 2020</StyledCopyright>
+      <StyledCopyright>FuFu © 2026</StyledCopyright>
     </StyledFooter>
   );
 };

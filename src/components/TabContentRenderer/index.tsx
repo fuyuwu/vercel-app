@@ -5,30 +5,40 @@ import { useAppSelector } from '../../store/hooks';
 import Loading from '../Loading';
 import { theme } from '../../core';
 
+const WorkCard  = React.lazy(() => import('../WorkCard'));
+const Experience = React.lazy(() => import('../Experience'));
+const Skills    = React.lazy(() => import('../Skills'));
+const Profile   = React.lazy(() => import('../Profile'));
+
 const componentMap: Record<string, React.LazyExoticComponent<React.ComponentType<any>>> = {
-  WorkCard: React.lazy(() => import('../WorkCard')),
-  Experience: React.lazy(() => import('../Experience')),
-  Skills: React.lazy(() => import('../Skills')),
-  Profile: React.lazy(() => import('../Profile')),
+  WorkCard,
+  Experience,
+  Skills,
+  Profile,
 };
 
 const TabContentRenderer: React.FC = () => {
   const { tabs, currentTabId } = useAppSelector(state => state.tab);
-  const currentTab = tabs.find(t => t.id === currentTabId);
-
-  if (!currentTab) return null;
-
-  const CurrentComponent = componentMap[currentTab.component];
-
-  if (!CurrentComponent) {
-    console.warn(`Component ${currentTab.component} not found`);
-    return null;
-  }
 
   return (
-    <Suspense fallback={<Loading visible bgColor={theme.darkFont} />}>
-      <CurrentComponent />
-    </Suspense>
+    <>
+      {tabs.map(tab => {
+        const Comp = componentMap[tab.component];
+        if (!Comp) return null;
+        const isActive = tab.id === currentTabId;
+
+        return (
+          <div
+            key={tab.id}
+            style={{ display: isActive ? 'block' : 'none' }}
+          >
+            <Suspense fallback={<Loading visible bgColor={theme.darkFont} />}>
+              <Comp />
+            </Suspense>
+          </div>
+        );
+      })}
+    </>
   );
 };
 

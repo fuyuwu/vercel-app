@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { theme } from "../../core";
 import Switch from "../Switch";
 import Weather from "../Weather";
+import Typeing from "../Typeing";
 
 /* ── Types ── */
 
@@ -114,13 +115,39 @@ const AsyncDemo: React.FC<{ accent: string }> = ({ accent }) => {
   );
 };
 
+const TypingDemo: React.FC<{ accent: string }> = ({ accent }) => {
+  const [input, setInput] = useState("");
+
+  return (
+    <StyledTypingWrap>
+      <StyledTypingRow>
+        <StyledTypingLabel accent={accent}>Auto</StyledTypingLabel>
+        <Typeing text="おはようございます！" speed={100} />
+      </StyledTypingRow>
+
+      <StyledTypingDivider accent={accent} />
+
+      <StyledTypingRow>
+        <StyledTypingLabel accent={accent}>Custom</StyledTypingLabel>
+        <StyledTypingInlineInput
+          accent={accent}
+          value={input}
+          onChange={e => setInput(e.target.value)}
+          placeholder="輸入文字…"
+          maxLength={60}
+        />
+      </StyledTypingRow>
+    </StyledTypingWrap>
+  );
+};
+
 const PROJECTS: Project[] = [
   {
     id: "weather",
     framework: "React",
     group: "Components",
     title: "Weather Widget",
-    desc: "串接中央氣象局開放資料 API，依使用者 IP 定位自動帶入城市，支援手動切換縣市，即時顯示溫度與天氣狀態。",
+    desc: "串接中央氣象局開放資料 API，依使用者 IP 定位自動帶入城市，可手動切換縣市，即時顯示溫度與天氣狀態。",
     techs: ["React", "Hooks", "TypeScript", "styled-components", "CWB API", "Geolocation"],
     accent: "#0077B6",
     type: "demo",
@@ -151,6 +178,17 @@ const PROJECTS: Project[] = [
         </StyledSwitchItem>
       </StyledSwitchGrid>
     ),
+  },
+  {
+    id: "typing",
+    framework: "React",
+    group: "Components",
+    title: "Typing Animation",
+    desc: "Typing Writer Animation",
+    techs: ["React", "Hooks", "TypeScript", "styled-components"],
+    accent: "#0077B6",
+    type: "demo",
+    renderDemo: (accent) => <TypingDemo accent={accent} />,
   },
   {
     id: "vue-portfolio",
@@ -485,5 +523,59 @@ const StyledIframe = styled.iframe`
   border: none;
   display: block;
 `;
+
+const StyledTypingWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: 100%;
+`;
+
+const StyledTypingRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  color: ${theme.lightFont};
+  font-size: 15px;
+`;
+
+const StyledTypingLabel = styled.span<{ accent: string }>`
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: ${({ accent }) => accent};
+  width: 52px;
+  flex-shrink: 0;
+`;
+
+const StyledTypingDivider = styled.div<{ accent: string }>`
+  height: 1px;
+  background: ${({ accent }) => accent}30;
+`;
+
+const StyledTypingInlineInput = styled.input<{ accent: string }>`
+  flex: 1;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid ${({ accent }) => accent}60;
+  padding: 2px 4px;
+  font-size: 15px;
+  font-family: inherit;
+  color: ${theme.lightFont};
+  outline: none;
+  transition: border-color 0.2s;
+
+  &::placeholder {
+    color: rgba(241, 222, 198, 0.3);
+    font-style: italic;
+  }
+
+  &:focus {
+    border-bottom-color: ${({ accent }) => accent};
+  }
+`;
+
 
 export default Profile;

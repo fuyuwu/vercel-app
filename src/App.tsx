@@ -10,6 +10,7 @@ import { Mail, CellPhone } from "./components/Icons";
 import { theme } from "./core";
 import { useAppDispatch, useAppSelector } from "./store/hooks";
 import { setCurrentTab } from "./store/slices/tabSlice";
+import IntroAnimation from "./components/IntroAnimation";
 
 const TAB_ICONS: Record<string, React.ReactNode> = {
   tab01: (
@@ -48,6 +49,8 @@ const App: React.FC = () => {
   const currentTabID = useAppSelector(state => state.tab.currentTabId);
   const dispatch = useAppDispatch();
 
+  const [introFinished, setIntroFinished] = useState(false);
+
   const [isScrolled, setIsScrolled] = useState(false);
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 0);
@@ -57,8 +60,9 @@ const App: React.FC = () => {
 
   return (
     <div style={{ overflowX: "hidden", maxWidth: "100%" }}>
+      {!introFinished && <IntroAnimation onFinish={() => setIntroFinished(true)} />}
       <StyledContainer>
-        <Header title="FuFu's Blog" scrolled={isScrolled}>
+        <Header title="" scrolled={isScrolled}>
           {tabs.map(({ id, name }) => (
             <StyledTabBtn
               key={id}
@@ -72,28 +76,29 @@ const App: React.FC = () => {
           ))}
         </Header>
 
-        <StyledContent>
-          {/* ── Hero ── */}
-          <StyledHero className="animate-left">
+        {/* ── Hero Section (dark teal) ── */}
+        <StyledHeroSection>
+          {/* 裝飾幾何 */}
+          <StyledDecoCircle size={360} top={-120} right={-80} opacity={0.06} />
+          <StyledDecoCircle size={220} top={-40} right={80} opacity={0.04} />
+          <StyledDecoArc />
+          <StyledHero>
             <StyledAvatarWrapper>
               <StyledAvatar src="/avatar.jpg" alt="FuFu" />
             </StyledAvatarWrapper>
 
             <StyledHeroInfo>
+              <StyledRoleBadge>Frontend Engineer</StyledRoleBadge>
               <StyledName>FuFu Wu</StyledName>
-              <StyledRole>Front-end Engineer</StyledRole>
-
-              <StyledContact>
-                <StyledContactLink href="callto:+886988611937" rel="noreferrer noopener">
-                  <CellPhone width={18} height={18} fill={theme.darkFont} />
-                  +886 988611937
-                </StyledContactLink>
-                <StyledContactLink href="mailto:fuyuwu041000@gmail.com" rel="noreferrer noopener">
-                  <Mail width={18} height={18} fill={theme.darkFont} />
-                  fuyuwu041000@gmail.com
-                </StyledContactLink>
-              </StyledContact>
-
+              <StyledAccentLine />
+              <StyledSloganRow>
+                <StyledLoveIllustration src="/love.jpeg" alt="love illustration" />
+                <StyledSlogan>Where ideas become interfaces.</StyledSlogan>
+              </StyledSloganRow>
+              <StyledContactLink href="mailto:fuyuwu041000@gmail.com" rel="noreferrer noopener">
+                <Mail width={14} height={14} fill="rgba(241,222,198,0.6)" />
+                fuyuwu041000@gmail.com
+              </StyledContactLink>
               <StyledTagFlex>
                 <StyledTag># 好奇心旺盛</StyledTag>
                 <StyledTag># 擅長協作開發</StyledTag>
@@ -101,11 +106,19 @@ const App: React.FC = () => {
               </StyledTagFlex>
             </StyledHeroInfo>
           </StyledHero>
+        </StyledHeroSection>
 
-          <StyledDivider />
+        {/* ── Wave divider ── */}
+        <StyledWaveDivider>
+          <svg viewBox="0 0 1440 72" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,0 C320,72 720,0 1080,48 C1260,72 1380,32 1440,16 L1440,0 Z" fill="#008080" />
+          </svg>
+        </StyledWaveDivider>
 
+        {/* ── Content Section (light cream) ── */}
+        <StyledMainContent>
           <TabContentRenderer />
-        </StyledContent>
+        </StyledMainContent>
 
         <Footer />
       </StyledContainer>
@@ -116,35 +129,74 @@ const App: React.FC = () => {
 /* ─── Styled Components ─── */
 
 const StyledContainer = styled.div`
-  background: ${theme.mainTheme};
-  border-radius: 10px;
   overflow-x: hidden;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: var(--cream);
 `;
 
-const StyledContent = styled.div`
-  padding: 72px 16px 16px;
+/* ── Hero Section ── */
+const StyledHeroSection = styled.div`
+  background: ${theme.mainTheme};
+  padding: 72px 24px 56px;
+  position: relative;
+  overflow: hidden;
 
   @media screen and (max-width: 679px) {
-    padding-top: 56px;
+    padding-top: 60px;
+    padding-bottom: 48px;
   }
-  flex: 1;
 `;
 
-/* Hero */
+const StyledDecoCircle = styled.div<{ size: number; top: number; right: number; opacity: number }>`
+  position: absolute;
+  width: ${({ size }) => size}px;
+  height: ${({ size }) => size}px;
+  top: ${({ top }) => top}px;
+  right: ${({ right }) => right}px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(241, 222, 198, ${({ opacity }) => opacity * 10});
+  pointer-events: none;
+`;
+
+const StyledDecoArc = styled.div`
+  position: absolute;
+  bottom: 40px;
+  left: -60px;
+  width: 200px;
+  height: 100px;
+  border-radius: 0 0 100px 100px;
+  border: 2px solid #C8841A;
+  border-top: none;
+  opacity: 0.2;
+  pointer-events: none;
+`;
+
+const StyledWaveDivider = styled.div`
+  background: var(--cream);
+  margin-top: -1px;
+  line-height: 0;
+
+  svg {
+    display: block;
+    width: 100%;
+    height: 72px;
+  }
+`;
+
 const StyledHero = styled.div`
+  max-width: 800px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
-  padding: 8px 0 24px;
+  gap: 28px;
 
   @media screen and (min-width: 680px) {
     flex-direction: row;
     align-items: center;
-    gap: 32px;
+    gap: 44px;
   }
 `;
 
@@ -154,8 +206,10 @@ const StyledAvatarWrapper = styled.div`
   height: 120px;
   border-radius: 50%;
   overflow: hidden;
-  border: 3px solid ${theme.lightFont};
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  border: 2px solid rgba(241, 222, 198, 0.4);
+  box-shadow:
+    0 0 0 6px rgba(241, 222, 198, 0.08),
+    0 12px 40px rgba(0, 0, 0, 0.3);
 
   @media screen and (min-width: 680px) {
     width: 140px;
@@ -174,39 +228,51 @@ const StyledHeroInfo = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 
   @media screen and (min-width: 680px) {
     align-items: flex-start;
   }
 `;
 
+const StyledRoleBadge = styled.span`
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(241, 222, 198, 0.5);
+`;
+
 const StyledName = styled.h2`
   margin: 0;
-  font-size: 28px;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 44px;
   font-weight: 700;
-  color: ${theme.darkFont};
+  color: ${theme.lightFont};
   letter-spacing: 1px;
+  line-height: 1.05;
 `;
 
-const StyledRole = styled.p`
-  margin: 0;
-  font-size: 15px;
-  font-weight: 500;
-  color: ${theme.darkFont};
-  opacity: 0.75;
-  letter-spacing: 0.5px;
-`;
+const StyledAccentLine = styled.div`
+  width: 32px;
+  height: 2px;
+  border-radius: 2px;
+  background: rgba(241, 222, 198, 0.35);
+  align-self: flex-start;
 
-const StyledContact = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 4px 16px;
-
-  @media screen and (min-width: 680px) {
-    justify-content: flex-start;
+  @media screen and (max-width: 679px) {
+    align-self: center;
   }
+`;
+
+const StyledSlogan = styled.p`
+  margin: 0;
+  font-family: 'Kiwi Maru', sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  color: rgba(241, 222, 198, 0.75);
+  letter-spacing: 0.3px;
+  line-height: 1.5;
 `;
 
 const StyledContactLink = styled.a`
@@ -214,13 +280,13 @@ const StyledContactLink = styled.a`
   align-items: center;
   gap: 6px;
   text-decoration: none;
-  font-size: 13px;
-  color: ${theme.darkFont};
-  padding: 4px 0;
-  transition: opacity 0.2s;
+  font-size: 12px;
+  color: rgba(241, 222, 198, 0.5);
+  letter-spacing: 0.4px;
+  transition: color 0.2s;
 
   &:hover {
-    opacity: 0.65;
+    color: rgba(241, 222, 198, 0.9);
   }
 `;
 
@@ -238,22 +304,41 @@ const StyledTagFlex = styled.div`
 
 const StyledTag = styled.span`
   display: inline-block;
-  font-size: 12px;
-  padding: 4px 12px;
+  font-size: 11px;
+  padding: 3px 12px;
   border-radius: 20px;
-  background-color: rgba(26, 42, 64, 0.12);
-  color: ${theme.darkFont};
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(241, 222, 198, 0.18);
+  color: rgba(241, 222, 198, 0.6);
   letter-spacing: 0.5px;
   font-weight: 500;
 `;
 
-const StyledDivider = styled.div`
-  height: 1px;
-  border-bottom: dashed;
-  border-color: ${theme.darkFont};
-  border-width: 2px;
-  opacity: 0.3;
-  margin: 0 0 8px;
+const StyledSloganRow = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const StyledLoveIllustration = styled.img`
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  opacity: 0.55;
+  mix-blend-mode: screen;
+  filter: invert(1) brightness(0.9);
+  pointer-events: none;
+  flex-shrink: 0;
+`;
+
+/* ── Main Content Section ── */
+const StyledMainContent = styled.main`
+  flex: 1;
+  background: var(--cream);
+  padding: 32px 24px 48px;
+
+  @media screen and (max-width: 679px) {
+    padding: 24px 16px 40px;
+  }
 `;
 
 /* Tab icons */

@@ -129,9 +129,11 @@ const StyledCategoryGrid = styled.div`
 `;
 
 const cardBase = `
-  background: rgba(26, 42, 64, 0.28);
+  background: var(--cream-card);
   border-radius: 12px;
-  padding: 16px 18px 18px;
+  padding: 18px 20px 20px;
+  border: 1px solid var(--cream-border);
+  box-shadow: 0 2px 12px rgba(26, 42, 64, 0.06);
 `;
 
 const StyledFrontendCard = styled.div`
@@ -161,11 +163,11 @@ const StyledAccentBar = styled.div<{ accent: string }>`
 `;
 
 const StyledCategoryLabel = styled.span<{ accent: string }>`
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: 1.2px;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
-  color: rgba(241, 222, 198, 0.6);
+  color: var(--content-text-sub);
 `;
 
 const StyledGroupsRow = styled.div`
@@ -207,10 +209,10 @@ const StyledSkillTag = styled.span<{ color?: string }>`
   font-weight: 500;
   padding: 4px 11px;
   border-radius: 20px;
-  background: ${({ color }) => color ? `${color}22` : "rgba(255, 255, 255, 0.1)"};
-  color: ${({ color }) => color ?? "rgba(241, 222, 198, 0.85)"};
+  background: ${({ color }) => color ? `${color}12` : "rgba(26, 42, 64, 0.06)"};
+  color: ${({ color }) => color ?? "var(--content-text)"};
   letter-spacing: 0.3px;
-  border: 1px solid ${({ color }) => color ? `${color}44` : "rgba(255, 255, 255, 0.16)"};
+  border: 1px solid ${({ color }) => color ? `${color}30` : "var(--cream-border)"};
   white-space: nowrap;
 `;
 
@@ -221,6 +223,7 @@ const StyledLangCard = styled.div`
   border-top: 3px solid #e49826;
   grid-column: 1 / -1;
 `;
+
 
 const StyledLangList = styled.div`
   display: flex;
@@ -253,7 +256,7 @@ const StyledLangMeta = styled.div`
 const StyledLangSub = styled.p`
   margin: 2px 0 0;
   font-size: 11px;
-  color: rgba(241, 222, 198, 0.5);
+  color: var(--content-text-sub);
   letter-spacing: 0.3px;
 `;
 
@@ -263,9 +266,9 @@ const StyledLangBarWrap = styled.div`
 `;
 
 const StyledTrack = styled.div`
-  height: 5px;
+  height: 4px;
   border-radius: 99px;
-  background: rgba(241, 222, 198, 0.15);
+  background: var(--cream-border);
   overflow: hidden;
 `;
 
@@ -279,7 +282,7 @@ const StyledFill = styled.div<{ percent: number }>`
 const StyledLangPercent = styled.span`
   font-size: 12px;
   font-weight: 700;
-  color: rgba(241, 222, 198, 0.5);
+  color: var(--content-text-sub);
   flex-shrink: 0;
   text-align: right;
 `;

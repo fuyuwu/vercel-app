@@ -105,7 +105,6 @@ const TimelineItemComponent: React.FC<{
   );
 };
 
-// Styled Components
 const StyledTimelineContainer = styled.div<{ direction: 'vertical' | 'horizontal' }>`
   display: flex;
   flex-direction: ${props => props.direction === 'vertical' ? 'column' : 'row'};
