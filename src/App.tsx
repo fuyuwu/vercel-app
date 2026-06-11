@@ -12,9 +12,9 @@ import { theme } from "./core";
 import IntroAnimation from "./components/IntroAnimation";
 
 const NAV_ITEMS = [
+  { label: "Portfolio",  href: "#portfolio" },
   { label: "Experience", href: "#experience" },
   { label: "Skills",     href: "#skills" },
-  { label: "Portfolio",  href: "#portfolio" },
 ];
 
 const App: React.FC = () => {
