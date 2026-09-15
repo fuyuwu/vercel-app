@@ -8,7 +8,7 @@ import { useAppSelector } from "../../store/hooks";
 export interface ITabsProps {
   data: ITab[];
   onClick: (id: string) => void;
-  tabRender: (data: ITab) => JSX.Element;
+  tabRender: (data: ITab) => React.JSX.Element;
 }
 
 const Tabs: React.FC<ITabsProps> = (props) => {
