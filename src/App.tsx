@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import styled, { keyframes } from "styled-components";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -10,6 +11,9 @@ import Profile from "./components/Profile";
 import { Mail } from "./components/Icons";
 import { theme } from "./core";
 import IntroAnimation from "./components/IntroAnimation";
+import DoodleBackground from "./components/DoodleBackground";
+import PawTrail from "./components/PawTrail";
+import Reveal from "./components/Reveal";
 
 const NAV_ITEMS = [
   { label: "Portfolio",  href: "#portfolio" },
@@ -19,6 +23,7 @@ const NAV_ITEMS = [
 
 const App: React.FC = () => {
   const [introFinished, setIntroFinished] = useState(false);
+  const [showIntro, setShowIntro] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -29,35 +34,56 @@ const App: React.FC = () => {
 
   return (
     <div style={{ overflowX: "hidden" }}>
-      {!introFinished && <IntroAnimation onFinish={() => setIntroFinished(true)} />}
+      {showIntro && (
+        <IntroAnimation
+          onCoinDone={() => setIntroFinished(true)}
+          onExited={() => setShowIntro(false)}
+        />
+      )}
       <StyledContainer>
         <Header scrolled={isScrolled} navItems={NAV_ITEMS} />
 
         <StyledHeroSection>
+          <DoodleBackground color="var(--light-font)" opacity={0.12} />
+          <PawTrail color="var(--light-font)" opacity={0.22} />
           <StyledDecoCircle size={360} top={-120} right={-80} opacity={0.06} />
           <StyledDecoCircle size={220} top={-40} right={80} opacity={0.04} />
           <StyledDecoArc />
           <StyledHero>
-            <StyledAvatarWrapper>
-              <StyledAvatar src="/avatar.jpg" alt="FuFu" />
-            </StyledAvatarWrapper>
+            <Reveal active={introFinished} delay={0}>
+              <StyledAvatarWrapper>
+                <StyledAvatar src="/avatar.jpg" alt="FuFu" fill sizes="140px" priority />
+              </StyledAvatarWrapper>
+            </Reveal>
             <StyledHeroInfo>
-              <StyledRoleBadge>Frontend Engineer</StyledRoleBadge>
-              <StyledName>FuFu Wu</StyledName>
-              <StyledAccentLine />
-              <StyledSloganRow>
-                <StyledLoveIllustration src="/love.jpeg" alt="love" />
-                <StyledSlogan>Where ideas become interfaces.</StyledSlogan>
-              </StyledSloganRow>
-              <StyledContactLink href="mailto:fuyuwu041000@gmail.com" rel="noreferrer noopener">
-                <Mail width={14} height={14} fill="rgba(241,222,198,0.6)" />
-                fuyuwu041000@gmail.com
-              </StyledContactLink>
-              <StyledTagFlex>
-                <StyledTag># 好奇心旺盛</StyledTag>
-                <StyledTag># 擅長協作開發</StyledTag>
-                <StyledTag># 善於傾聽及溝通</StyledTag>
-              </StyledTagFlex>
+              <Reveal active={introFinished} delay={100}>
+                <StyledRoleBadge>Frontend Engineer</StyledRoleBadge>
+              </Reveal>
+              <Reveal active={introFinished} delay={180}>
+                <StyledName>FuFu Wu</StyledName>
+              </Reveal>
+              <Reveal active={introFinished} delay={260}>
+                <StyledAccentLine />
+              </Reveal>
+              <Reveal active={introFinished} delay={320}>
+                <StyledSloganRow>
+                  <StyledLoveIllustration src="/love.jpeg" alt="love" width={36} height={36} />
+                  <StyledSlogan>Where ideas become interfaces.</StyledSlogan>
+                </StyledSloganRow>
+              </Reveal>
+              <Reveal active={introFinished} delay={380}>
+                <StyledContactLink href="mailto:fuyuwu041000@gmail.com" rel="noreferrer noopener">
+                  <Mail width={14} height={14} fill="rgba(241,222,198,0.6)" />
+                  fuyuwu041000@gmail.com
+                </StyledContactLink>
+              </Reveal>
+              <Reveal active={introFinished} delay={440}>
+                <StyledTagFlex>
+                  <StyledTag># 好奇心旺盛</StyledTag>
+                  <StyledTag># 擅長協作開發</StyledTag>
+                  <StyledTag># 善於傾聽及溝通</StyledTag>
+                </StyledTagFlex>
+              </Reveal>
             </StyledHeroInfo>
           </StyledHero>
         </StyledHeroSection>
@@ -69,12 +95,17 @@ const App: React.FC = () => {
         </StyledWaveDivider>
 
         <StyledLightSection>
+          <DoodleBackground color="var(--primary-main)" opacity={0.06} />
           <StyledSection id="portfolio">
-            <StyledSectionHeader>
-              <StyledSectionLabel>Side Projects</StyledSectionLabel>
-              <StyledSectionTitle>Portfolio</StyledSectionTitle>
-            </StyledSectionHeader>
-            <Profile />
+            <Reveal>
+              <StyledSectionHeader>
+                <StyledSectionLabel>Side Projects</StyledSectionLabel>
+                <StyledSectionTitle>Portfolio</StyledSectionTitle>
+              </StyledSectionHeader>
+            </Reveal>
+            <Reveal delay={120}>
+              <Profile />
+            </Reveal>
           </StyledSection>
         </StyledLightSection>
 
@@ -85,13 +116,18 @@ const App: React.FC = () => {
         </StyledWaveBox>
 
         <StyledDarkSection>
+          <DoodleBackground color="var(--light-font)" opacity={0.08} />
           <StyledSkillsDecoCircle size={320} bottom={-80} left={-60} />
           <StyledSkillsDecoCircle size={180} bottom={20} left={60} />
           <StyledSection id="experience">
-            <StyledSectionHeader>
-              <StyledSectionTitleLight>Experience</StyledSectionTitleLight>
-            </StyledSectionHeader>
-            <Experience />
+            <Reveal>
+              <StyledSectionHeader>
+                <StyledSectionTitleLight>Experience</StyledSectionTitleLight>
+              </StyledSectionHeader>
+            </Reveal>
+            <Reveal delay={120}>
+              <Experience />
+            </Reveal>
           </StyledSection>
         </StyledDarkSection>
 
@@ -102,12 +138,17 @@ const App: React.FC = () => {
         </StyledWaveBox>
 
         <StyledLightSection>
+          <DoodleBackground color="var(--primary-main)" opacity={0.06} />
           <StyledSection id="skills">
-            <StyledSectionHeader>
-              <StyledSectionLabel>What I work with</StyledSectionLabel>
-              <StyledSectionTitle>Skills</StyledSectionTitle>
-            </StyledSectionHeader>
-            <Skills />
+            <Reveal>
+              <StyledSectionHeader>
+                <StyledSectionLabel>What I work with</StyledSectionLabel>
+                <StyledSectionTitle>Skills</StyledSectionTitle>
+              </StyledSectionHeader>
+            </Reveal>
+            <Reveal delay={120}>
+              <Skills />
+            </Reveal>
           </StyledSection>
         </StyledLightSection>
 
@@ -180,6 +221,7 @@ const StyledHero = styled.div`
 `;
 
 const StyledAvatarWrapper = styled.div`
+  position: relative;
   flex-shrink: 0;
   width: 120px;
   height: 120px;
@@ -194,9 +236,7 @@ const StyledAvatarWrapper = styled.div`
   }
 `;
 
-const StyledAvatar = styled.img`
-  width: 100%;
-  height: 100%;
+const StyledAvatar = styled(Image)`
   object-fit: cover;
   object-position: center top;
 `;
@@ -222,7 +262,7 @@ const StyledRoleBadge = styled.span`
 
 const StyledName = styled.h2`
   margin: 0;
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: var(--font-playfair), Georgia, serif;
   font-size: 44px;
   font-weight: 700;
   color: ${theme.lightFont};
@@ -247,7 +287,7 @@ const StyledSloganRow = styled.div`
   align-items: center;
 `;
 
-const StyledLoveIllustration = styled.img`
+const StyledLoveIllustration = styled(Image)`
   width: 36px;
   height: 36px;
   object-fit: contain;
@@ -260,7 +300,7 @@ const StyledLoveIllustration = styled.img`
 
 const StyledSlogan = styled.p`
   margin: 0;
-  font-family: 'Kiwi Maru', sans-serif;
+  font-family: var(--font-kiwi-maru), sans-serif;
   font-size: 15px;
   font-weight: 400;
   font-style: italic;
@@ -354,7 +394,7 @@ const StyledSectionLabel = styled.p`
 
 const StyledSectionTitle = styled.h2`
   margin: 0;
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: var(--font-playfair), Georgia, serif;
   font-size: 36px;
   font-weight: 700;
   color: var(--content-text);
@@ -378,6 +418,8 @@ const StyledWaveBox = styled.div<{ bg: string }>`
 const StyledLightSection = styled.div`
   background: var(--cream);
   padding: 0 24px;
+  position: relative;
+  overflow: hidden;
 
   @media screen and (max-width: 679px) { padding: 0 16px; }
 `;
@@ -414,7 +456,7 @@ const StyledSectionLabelLight = styled.p`
 
 const StyledSectionTitleLight = styled.h2`
   margin: 0;
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: var(--font-playfair), Georgia, serif;
   font-size: 36px;
   font-weight: 700;
   color: ${theme.lightFont};

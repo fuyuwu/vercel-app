@@ -1,28 +1,37 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
 import styled, { keyframes, css } from 'styled-components';
 import { theme } from '../core';
 
 interface IntroAnimationProps {
-  onFinish: () => void;
+  /** 硬幣轉完的當下觸發，讓底下的頁面開始顯示（不用等蓋板淡出跑完） */
+  onCoinDone: () => void;
+  /** 蓋板淡出動畫跑完後觸發，把這個元件整個卸載 */
+  onExited: () => void;
 }
 
-const IntroAnimation: React.FC<IntroAnimationProps> = ({ onFinish }) => {
+const FADE_MS = 450;
+
+const IntroAnimation: React.FC<IntroAnimationProps> = ({ onCoinDone, onExited }) => {
   const [fading, setFading] = useState(false);
 
   useEffect(() => {
-    const t1 = setTimeout(() => setFading(true), 2000);
-    const t2 = setTimeout(() => onFinish(), 2000 + 700);
+    const t1 = setTimeout(() => {
+      onCoinDone();
+      setFading(true);
+    }, 2000);
+    const t2 = setTimeout(() => onExited(), 2000 + FADE_MS);
     return () => { clearTimeout(t1); clearTimeout(t2); };
-  }, [onFinish]);
+  }, [onCoinDone, onExited]);
 
   return (
     <Overlay fading={fading}>
       <CoinScene>
         <Coin>
           <CoinFront>
-            <CoinAvatar src="/avatar.jpg" alt="FuFu" />
+            <CoinAvatar src="/avatar.jpg" alt="FuFu" fill sizes="160px" priority />
           </CoinFront>
           <CoinBack>Fu</CoinBack>
         </Coin>
@@ -55,7 +64,9 @@ const Overlay = styled.div<{ fading: boolean }>`
   justify-content: center;
 
   ${({ fading }) => fading && css`
-    animation: ${overlayFadeOut} 0.7s ease forwards;
+    /* 淡出的同時就不擋滑鼠事件，底下頁面轉完硬幣立刻能互動 */
+    pointer-events: none;
+    animation: ${overlayFadeOut} ${FADE_MS}ms ease forwards;
   `}
 `;
 
@@ -89,9 +100,7 @@ const CoinFront = styled.div`
   transform: rotateY(0deg);
 `;
 
-const CoinAvatar = styled.img`
-  width: 100%;
-  height: 100%;
+const CoinAvatar = styled(Image)`
   object-fit: cover;
   object-position: center top;
 `;
@@ -105,7 +114,7 @@ const CoinBack = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Kiwi Maru', serif;
+  font-family: var(--font-kiwi-maru), serif;
   font-size: 52px;
   font-weight: 700;
   color: ${theme.lightFont};

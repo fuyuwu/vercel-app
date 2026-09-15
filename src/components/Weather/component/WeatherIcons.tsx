@@ -39,8 +39,10 @@ const currentIcon = {
     isRain: <NightRainy />,
   },
 };
-const weatherCode2Type = (weatherCode) =>
-  Object.entries(weatherTypes).reduce(
+export type WeatherType = keyof typeof weatherTypes;
+
+export const weatherCode2Type = (weatherCode: number): WeatherType | "" =>
+  (Object.entries(weatherTypes) as [WeatherType, number[]][]).reduce<WeatherType | "">(
     (currentWeatherType, [weatherType, weatherCodes]) =>
       weatherCodes.includes(Number(weatherCode))
         ? weatherType
@@ -48,15 +50,20 @@ const weatherCode2Type = (weatherCode) =>
     ""
   );
 
-const WeatherIcons = ({ currentWeatherCode, moment }) => {
-  const [currentWeatherIcon, setCurrentWeatherIcon] = useState("isCloudy");
+interface WeatherIconsProps {
+  currentWeatherCode: number;
+  moment: "day" | "night";
+}
+
+const WeatherIcons: React.FC<WeatherIconsProps> = ({ currentWeatherCode, moment }) => {
+  const [currentWeatherIcon, setCurrentWeatherIcon] = useState<WeatherType>("isCloudy");
 
   const theWeatherIcon = useMemo(() => weatherCode2Type(currentWeatherCode), [
     currentWeatherCode,
   ]);
 
   useEffect(() => {
-    setCurrentWeatherIcon(theWeatherIcon);
+    if (theWeatherIcon) setCurrentWeatherIcon(theWeatherIcon);
   }, [theWeatherIcon]);
   return (
     <IconContainer>

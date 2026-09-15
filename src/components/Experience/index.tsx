@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef } from "react";
+import Image from "next/image";
 import styled from "styled-components";
 import { theme } from "../../core";
 
@@ -81,10 +82,12 @@ const Experience: React.FC = () => {
             onClick={() => handleSelect(i, logoRefs.current[i])}
           >
             <StyledLogo
-              src={typeof item.logo === 'string' ? item.logo : item.logo.src}
+              src={item.logo}
               alt={item.company}
-              active={selected === i}
-              cover={item.cover}
+              $active={selected === i}
+              $cover={item.cover}
+              width={item.cover ? 120 : 90}
+              height={item.cover ? 120 : 90}
             />
           </StyledLogoBtn>
         ))}
@@ -154,11 +157,9 @@ const StyledLogoBtn = styled.button<{ active: boolean }>`
   }
 `;
 
-const StyledLogo = styled.img<{ active: boolean; cover?: boolean }>`
-  width: ${({ cover }) => cover ? '100%' : '75%'};
-  height: ${({ cover }) => cover ? '100%' : '75%'};
-  object-fit: ${({ cover }) => cover ? 'cover' : 'contain'};
-  opacity: ${({ active }) => active ? 1 : 0.65};
+const StyledLogo = styled(Image)<{ $active: boolean; $cover?: boolean }>`
+  object-fit: ${({ $cover }) => $cover ? 'cover' : 'contain'};
+  opacity: ${({ $active }) => $active ? 1 : 0.65};
   transition: opacity 0.25s ease;
 `;
 

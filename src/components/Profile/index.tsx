@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from "react";
+import Image from "next/image";
 import styled from "styled-components";
 import { theme } from "../../core";
 import Switch from "../Switch";
@@ -104,6 +105,8 @@ const AsyncDemo: React.FC<{ accent: string }> = ({ accent }) => {
                   <StyledPokeSprite
                     src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${entry.id}.png`}
                     alt={entry.name}
+                    width={36}
+                    height={36}
                   />
                   {entry.name}
                 </StyledResultItem>
@@ -502,9 +505,7 @@ const StyledResultBox = styled.div<{ accent: string }>`
   overflow: hidden;
 `;
 
-const StyledPokeSprite = styled.img`
-  width: 36px;
-  height: 36px;
+const StyledPokeSprite = styled(Image)`
   object-fit: contain;
   image-rendering: pixelated;
   flex-shrink: 0;
@@ -650,7 +651,7 @@ const StyledFeaturedBadge = styled.span`
 
 const StyledFeaturedTitle = styled.h3`
   margin: 0;
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: var(--font-playfair), Georgia, serif;
   font-size: 36px;
   font-weight: 700;
   color: var(--content-text);

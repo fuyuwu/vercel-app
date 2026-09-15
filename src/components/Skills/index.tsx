@@ -51,7 +51,7 @@ const Skills: React.FC = () => {
           </StyledCategoryHeader>
           <StyledGroupsRow>
             {frontendGroups.map((group, i) => (
-              <React.Fragment>
+              <React.Fragment key={group.color}>
                 <StyledGroup>
                   <StyledTagRow>
                     {group.skills.map((s) => (
