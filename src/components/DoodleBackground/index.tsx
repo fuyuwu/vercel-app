@@ -1,15 +1,11 @@
 import React from 'react';
 
 interface Props {
-  /** 線條顏色，預設吃當前文字色（currentColor） */
   color?: string;
-  /** 整體透明度 */
   opacity?: number;
-  /** 單一貼磚（tile）邊長，數字越大越稀疏 */
+  /** Larger = sparser pattern */
   tileSize?: number;
-  /** 疊加層的 z-index，預設鋪在內容下方 */
   zIndex?: number;
-  /** 每個圖案要不要自己動（淡入淡出、輕輕彈跳），預設開 */
   animated?: boolean;
 }
 
@@ -31,7 +27,7 @@ const ddKeyframes = `
   }
 `;
 
-/** 動物腳掌：一顆大肉球 + 三顆腳趾（實心剪影），半徑約 15.5 個單位 */
+/** Radius ~15.5 units */
 const Paw: React.FC = () => (
   <g fill="currentColor" stroke="none">
     <ellipse cx="0" cy="6" rx="7" ry="6" />
@@ -41,7 +37,7 @@ const Paw: React.FC = () => (
   </g>
 );
 
-/** 小狗頭線稿：垂耳、圓潤臉型，半徑約 35 個單位（含耳朵） */
+/** Radius ~35 units incl. ears */
 const DogHead: React.FC = () => (
   <g fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
     <path d="M-18,-6 Q-30,-14 -32,0 Q-34,10 -22,13 Q-18,7 -16,-2" />
@@ -53,7 +49,7 @@ const DogHead: React.FC = () => (
   </g>
 );
 
-/** 小貓頭線稿：尖耳、鬍鬚，半徑約 36 個單位（含耳朵） */
+/** Radius ~36 units incl. ears */
 const CatHead: React.FC = () => (
   <g fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
     <path d="M-13,-15 L-22,-28 L-5,-19" />
@@ -67,11 +63,8 @@ const CatHead: React.FC = () => (
   </g>
 );
 
-/**
- * 每個圖案的位置都跟貼磚邊界保持足夠緩衝（半徑 × scale 再多留一截），
- * 不管 patternTransform 怎麼轉，剪影都不會被相鄰貼磚的邊界切到、破格。
- * 貼磚拉大到 260，加上總數維持 5 個，整體看起來才不會太密集。
- */
+// Each motif keeps a margin from the tile edge (radius * scale + buffer)
+// so it never gets clipped by an adjacent tile, regardless of rotation.
 const MOTIFS = [
   { Shape: Paw, x: 55, y: 65, rotate: -18, scale: 0.9, cls: 'dd-fade', delay: '0s' },
   { Shape: Paw, x: 205, y: 60, rotate: 20, scale: 0.55, cls: 'dd-step', delay: '0.5s' },
@@ -80,13 +73,10 @@ const MOTIFS = [
   { Shape: Paw, x: 30, y: 235, rotate: 40, scale: 0.4, cls: 'dd-step', delay: '1.6s' },
 ];
 
-/**
- * 可愛手繪風背景 —— 鋪動物掌印跟小狗、小貓的線稿頭像，
- * 走跟 DogIllustration / CatIllustration 一致的圓潤線稿風格。
- * 每個圖案外層負責定位（SVG transform 屬性），內層負責動畫（CSS transform/opacity），
- * 兩者分開才不會互相蓋掉——動畫都繞自己的中心跑，不會整組跳位。
- * 純裝飾用途：pointer-events 關閉，絕對定位鋪滿父層，父層需自行設定 position: relative。
- */
+// Decorative tiled background of paw prints and dog/cat line art.
+// Position (SVG transform attr) and animation (CSS transform) are kept on
+// separate <g> layers so the CSS animation can't clobber the placement.
+// Parent must be position: relative.
 const DoodleBackground: React.FC<Props> = ({
   color = 'currentColor',
   opacity = 0.08,

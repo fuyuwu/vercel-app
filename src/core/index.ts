@@ -31,7 +31,7 @@ export interface ICommonProps {
   className?: string;
 }
 
-/** @summary 檢查瀏覽器是否為 IE 或 Edge */
+/** @summary Check whether the browser is IE or Edge */
 export const checkIsIEEdge = () => {
   const userBrowser = window.navigator.userAgent;
   const msie = userBrowser.indexOf("MSIE ");
@@ -46,24 +46,24 @@ export const checkIsIEEdge = () => {
   return false;
 };
 
-/** @summary 正規式清單 */
+/** @summary Regex list */
 export const regxList = {
-  phone: /^09\d{8}$/, // 手機號碼
-  number: /^\d{7,8}$/, // 室內電話
-  numberWithArea: /0\d{1,3}\-\d{7,8}/, // 室內電話(02-87939000)
-  chinese: /^[\u4e00-\u9fa5]+$/, // 純中文
-  chineseAndNum: /^[\u4e00-\u9fa50-9]+$/, // 數字+中文
-  english: /^[a-zA-Z]+$/, // 純英文
-  englishAndNum: /^[0-9a-zA-Z]+$/, // 數字+英文
-  passport: /^[a-zA-z0-9]{1,14}$/, // 護照號碼
-  countryCode: /^(\+?\d{1,3}|\d{1,4})$/, // 國碼
+  phone: /^09\d{8}$/, // mobile number
+  number: /^\d{7,8}$/, // landline
+  numberWithArea: /0\d{1,3}\-\d{7,8}/, // landline with area code (02-87939000)
+  chinese: /^[\u4e00-\u9fa5]+$/, // Chinese only
+  chineseAndNum: /^[\u4e00-\u9fa50-9]+$/, // digits + Chinese
+  english: /^[a-zA-Z]+$/, // English only
+  englishAndNum: /^[0-9a-zA-Z]+$/, // digits + English
+  passport: /^[a-zA-z0-9]{1,14}$/, // passport number
+  countryCode: /^(\+?\d{1,3}|\d{1,4})$/, // country code
   mail: /^\w+([-+.]\w+)*@\w+([-.]\w+)*.\w+([-.]\w+)*$/,
   dateAndTime: /^\d{4}\/(0?[1-9]|1[0-2])\/((0?[1-9])|((1|2)[0-9])|30|31)\s\d{2}:\d{2}$/, // ex: 2018/05/18 05:18
   time: /^\d{2}:\d{2}$/, // ex: 2018/05/18 05:18,
-  ID: /^[A-Z][12]\d{8}$/, //身分證字號
-  spaceStartEnd: /(^\s*)|(\s*$)/, //首尾空格
+  ID: /^[A-Z][12]\d{8}$/, //Taiwan national ID number
+  spaceStartEnd: /(^\s*)|(\s*$)/, //leading/trailing whitespace
   //exceptSpecial [^`/~=!?@#$%"^\&;',.*():{}[\]<\>\\\|+_-]
-  numberFullwidth: /^[\uFF10-\uFF19]$/, //全形數字
-  lowerFullwidth: /^[\uFF41-\uFF5A]$/, //全型英文小寫
-  upperFullwidth: /^	[\uFF21-\uFF3A]$/, //全型英文大寫
+  numberFullwidth: /^[\uFF10-\uFF19]$/, //fullwidth digit
+  lowerFullwidth: /^[\uFF41-\uFF5A]$/, //fullwidth lowercase letter
+  upperFullwidth: /^	[\uFF21-\uFF3A]$/, //fullwidth uppercase letter
 };

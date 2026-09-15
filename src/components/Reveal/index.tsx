@@ -4,22 +4,15 @@ import React, { useEffect, useRef, useState } from 'react';
 import styled, { keyframes, css } from 'styled-components';
 
 interface Props {
-  /** 動畫延遲（ms），做進場的錯開節奏 */
   delay?: number;
-  /**
-   * 受控模式：直接由外部 state 決定是否播放（例如等 IntroAnimation 結束）。
-   * 不傳的話走內建 IntersectionObserver，捲動進畫面才觸發。
-   */
+  /** Controlled mode: play when this flips true. Omit to use IntersectionObserver instead. */
   active?: boolean;
   className?: string;
   children: React.ReactNode;
 }
 
-/**
- * 進場動畫包裝元件：淡入 + 輕微上移。
- * - 有傳 `active`：跟著外部狀態播放一次（用在 Hero，等 IntroAnimation 蓋板收掉才開始）。
- * - 沒傳 `active`：用 IntersectionObserver 偵測捲動進畫面時觸發一次。
- */
+// Fade-up entrance wrapper. Controlled via `active` (e.g. Hero, gated on
+// IntroAnimation finishing) or, if omitted, via IntersectionObserver.
 const Reveal: React.FC<Props> = ({ delay = 0, active, className, children }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);

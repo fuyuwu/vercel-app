@@ -72,7 +72,7 @@ const Experience: React.FC = () => {
 
   return (
     <StyledWrap>
-      {/* Logo 橫排 */}
+      {/* Logo row */}
       <StyledLogoRow data-logo-row>
         {experiences.map((item, i) => (
           <StyledLogoBtn
@@ -93,7 +93,7 @@ const Experience: React.FC = () => {
         ))}
       </StyledLogoRow>
 
-      {/* 對話框內容 */}
+      {/* Dialog content */}
       <StyledBubbleWrap isOpen={selected !== null}>
         <div>
           {exp && (

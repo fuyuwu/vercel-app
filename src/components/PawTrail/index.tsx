@@ -1,17 +1,12 @@
 import React from 'react';
 
 interface Props {
-  /** 腳印顏色 */
   color?: string;
-  /** 整體透明度 */
   opacity?: number;
 }
 
-/**
- * 一串腳印左右交錯往右走。每個腳印是獨立的小 svg（自己的 viewBox 留好邊界），
- * 用 left / bottom 百分比定位，不靠拉伸或裁切（slice）鋪版，
- * 不管容器多寬多窄，掌印本身的形狀都不會被切到、破格。
- */
+// Each step is its own small svg positioned via left/bottom percentages
+// (not a stretched/sliced background), so the paw shape never gets clipped.
 const STEPS = [
   { left: '3%', bottom: '18%', rotate: -14 },
   { left: '13%', bottom: '55%', rotate: 12 },
@@ -28,11 +23,8 @@ const STEPS = [
 const STEP_INTERVAL = 0.32;
 const LOOP_DURATION = STEPS.length * STEP_INTERVAL + 1.2;
 
-/**
- * 首頁 Hero 專用的「一步一腳印」動畫：狗掌印沿著底部走出來，
- * 每個腳印錯開時間淡入放大、停留一下再淡出，無限循環營造走路感。
- * 純裝飾用途：pointer-events 關閉，需放在 position: relative 的父層裡。
- */
+// Walking paw-print trail for the Hero footer. Steps fade/scale in with a
+// staggered delay and loop. Parent must be position: relative.
 const PawTrail: React.FC<Props> = ({ color = 'var(--light-font)', opacity = 0.28 }) => (
   <div
     aria-hidden="true"

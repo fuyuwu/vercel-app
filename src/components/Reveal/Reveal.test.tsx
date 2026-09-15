@@ -62,7 +62,7 @@ describe('Reveal（未受控模式，靠 IntersectionObserver）', () => {
 
     expect(observe).toHaveBeenCalledTimes(1);
 
-    // 模擬 IntersectionObserver 通知「進畫面了」
+    // simulate IntersectionObserver reporting the element entered the viewport
     const entry: IntersectionObserverEntry = {
       isIntersecting: true,
       target: wrapper,

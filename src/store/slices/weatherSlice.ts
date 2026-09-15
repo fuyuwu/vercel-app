@@ -38,12 +38,12 @@ const initialState: WeatherState = {
   },
 };
 
-// 異步 action 來獲取天氣數據
+// async action to fetch weather data
 export const fetchWeatherData = createAsyncThunk(
   'weather/fetchWeatherData',
   async (_, { rejectWithValue }) => {
     try {
-      // 這裡可以調用你的天氣 API
+      // call the weather API
       const response = await fetch('https://opendata.cwb.gov.tw/api/v1/rest/datastore/O-A0003-001?Authorization=CWB-50749C1B-35F3-4CA5-9CAD-99B79812FEEC&locationName=臺北');
       const data = await response.json();
       return data;

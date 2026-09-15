@@ -9,7 +9,7 @@ describe('PawTrail', () => {
     expect(paws).toHaveLength(10);
 
     const delays = Array.from(paws).map((el) => (el as HTMLElement).style.animationDelay);
-    // 10 個腳印彼此都要有不一樣的 delay，才會有一步一腳印的錯開效果
+    // each paw needs its own delay for the staggered walking effect
     expect(new Set(delays).size).toBe(10);
   });
 

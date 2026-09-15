@@ -6,9 +6,9 @@ import styled, { keyframes, css } from 'styled-components';
 import { theme } from '../core';
 
 interface IntroAnimationProps {
-  /** 硬幣轉完的當下觸發，讓底下的頁面開始顯示（不用等蓋板淡出跑完） */
+  /** Fires as soon as the coin flip ends, before the overlay fade-out finishes */
   onCoinDone: () => void;
-  /** 蓋板淡出動畫跑完後觸發，把這個元件整個卸載 */
+  /** Fires after the overlay has fully faded out, so it can be unmounted */
   onExited: () => void;
 }
 
@@ -64,7 +64,6 @@ const Overlay = styled.div<{ fading: boolean }>`
   justify-content: center;
 
   ${({ fading }) => fading && css`
-    /* 淡出的同時就不擋滑鼠事件，底下頁面轉完硬幣立刻能互動 */
     pointer-events: none;
     animation: ${overlayFadeOut} ${FADE_MS}ms ease forwards;
   `}
