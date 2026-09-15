@@ -9,6 +9,7 @@ import Experience from "./components/Experience";
 import Skills from "./components/Skills";
 import Profile from "./components/Profile";
 import { Mail } from "./components/Icons";
+import LoveIllustration from "./components/Icons/LoveIllustration";
 import { theme } from "./core";
 import IntroAnimation from "./components/IntroAnimation";
 import DoodleBackground from "./components/DoodleBackground";
@@ -67,7 +68,7 @@ const App: React.FC = () => {
               </Reveal>
               <Reveal active={introFinished} delay={320}>
                 <StyledSloganRow>
-                  <StyledLoveIllustration src="/love.jpeg" alt="love" width={36} height={36} />
+                  <LoveIllustration size={50} color="var(--light-font)" active={introFinished} />
                   <StyledSlogan>Where ideas become interfaces.</StyledSlogan>
                 </StyledSloganRow>
               </Reveal>
@@ -285,17 +286,6 @@ const StyledAccentLine = styled.div`
 const StyledSloganRow = styled.div`
   display: flex;
   align-items: center;
-`;
-
-const StyledLoveIllustration = styled(Image)`
-  width: 36px;
-  height: 36px;
-  object-fit: contain;
-  opacity: 0.55;
-  mix-blend-mode: screen;
-  filter: invert(1) brightness(0.9);
-  pointer-events: none;
-  flex-shrink: 0;
 `;
 
 const StyledSlogan = styled.p`
