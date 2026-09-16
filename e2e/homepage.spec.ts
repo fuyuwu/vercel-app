@@ -25,7 +25,7 @@ test.describe('Homepage', () => {
     await page.goto('/');
 
     await expect(page.locator('#portfolio')).toBeAttached();
-    await expect(page.getByRole('heading', { name: 'Portfolio' })).toBeAttached();
+    await expect(page.getByRole('heading', { name: 'QA Hub' })).toBeAttached();
     await expect(page.locator('#experience')).toBeAttached();
     await expect(page.getByRole('heading', { name: 'Experience' })).toBeAttached();
     await expect(page.locator('#skills')).toBeAttached();
