@@ -91,7 +91,7 @@ const App: React.FC = () => {
 
         <StyledWaveDivider>
           <svg viewBox="0 0 1440 72" preserveAspectRatio="none">
-            <path d="M0,0 C320,72 720,0 1080,48 C1260,72 1380,32 1440,16 L1440,0 Z" fill="#008080" />
+            <path d="M0,0 C320,72 720,0 1080,48 C1260,72 1380,32 1440,16 L1440,0 Z" fill="var(--hero-teal)" />
           </svg>
         </StyledWaveDivider>
 
@@ -101,7 +101,6 @@ const App: React.FC = () => {
             <Reveal>
               <StyledSectionHeader>
                 <StyledSectionLabel>Side Projects</StyledSectionLabel>
-                <StyledSectionTitle>Portfolio</StyledSectionTitle>
               </StyledSectionHeader>
             </Reveal>
             <Reveal delay={120}>
@@ -110,7 +109,7 @@ const App: React.FC = () => {
           </StyledSection>
         </StyledLightSection>
 
-        <StyledWaveBox bg={theme.mainTheme}>
+        <StyledWaveBox bg={theme.heroTeal}>
           <svg viewBox="0 0 1440 72" preserveAspectRatio="none">
             <path d="M0,0 C320,72 720,0 1080,48 C1260,72 1380,32 1440,16 L1440,0 Z" fill="var(--cream)" />
           </svg>
@@ -134,7 +133,7 @@ const App: React.FC = () => {
 
         <StyledWaveBox bg="var(--cream)">
           <svg viewBox="0 0 1440 72" preserveAspectRatio="none">
-            <path d="M0,0 C320,72 720,0 1080,48 C1260,72 1380,32 1440,16 L1440,0 Z" fill="#008080" />
+            <path d="M0,0 C320,72 720,0 1080,48 C1260,72 1380,32 1440,16 L1440,0 Z" fill="var(--hero-teal)" />
           </svg>
         </StyledWaveBox>
 
@@ -171,7 +170,7 @@ const StyledContainer = styled.div`
 
 /* Hero */
 const StyledHeroSection = styled.div`
-  background: ${theme.mainTheme};
+  background: ${theme.heroTeal};
   padding: 72px 24px 56px;
   position: relative;
   overflow: hidden;
@@ -415,7 +414,7 @@ const StyledLightSection = styled.div`
 `;
 
 const StyledDarkSection = styled.div`
-  background: ${theme.mainTheme};
+  background: ${theme.heroTeal};
   position: relative;
   overflow: hidden;
   padding: 0 24px 16px;

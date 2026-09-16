@@ -1,41 +1,205 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import styled from "styled-components";
+import { theme } from "../../core";
 import { Taiwan, Japan, USA } from "../Icons";
+import Switch from "../Switch";
+import Weather from "../Weather";
+import Typeing from "../Typeing";
 
-const frontendGroups = [
+/* ── Frontend live demos ── */
+
+const ControlBtn: React.FC = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  return <Switch onClick={() => setIsOpen(!isOpen)} isOpen={isOpen} />;
+};
+
+const DisabledDemo: React.FC<{ accent: string }> = ({ accent }) => {
+  const [isDisabled, setIsDisabled] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
+  return (
+    <StyledDemoRow>
+      <Switch
+        text={["關", "開"]}
+        onClick={() => setIsOpen(!isOpen)}
+        isOpen={isOpen}
+        isDisabled={isDisabled}
+      />
+      <StyledToggleBtn accent={accent} onClick={() => setIsDisabled((v) => !v)}>
+        {isDisabled ? "enable" : "disable"}
+      </StyledToggleBtn>
+    </StyledDemoRow>
+  );
+};
+
+interface EvoNode { species: { name: string; url: string }; evolves_to: EvoNode[] }
+interface EvoEntry { name: string; id: number }
+
+const idFromUrl = (url: string) =>
+  parseInt(url.split("/").filter(Boolean).pop() ?? "0");
+
+const AsyncDemo: React.FC<{ accent: string }> = ({ accent }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [chain, setChain] = useState<EvoEntry[]>([]);
+  const [isError, setIsError] = useState(false);
+
+  const fetchData = () => {
+    if (isLoading) return;
+    setIsLoading(true);
+    setChain([]);
+    setIsError(false);
+    fetch("https://pokeapi.co/api/v2/evolution-chain/1/")
+      .then((res) => res.json())
+      .then((data) => {
+        const entries: EvoEntry[] = [];
+        let node: EvoNode = data.chain;
+        while (node) {
+          entries.push({ name: node.species.name, id: idFromUrl(node.species.url) });
+          node = node.evolves_to[0];
+        }
+        setTimeout(() => {
+          setIsLoading(false);
+          setChain(entries);
+        }, 1500);
+      })
+      .catch(() => setTimeout(() => {
+        setIsLoading(false);
+        setIsError(true);
+      }, 3000));
+  };
+
+  return (
+    <StyledAsyncWrap>
+      <StyledAsyncTop>
+        <Switch onClick={fetchData} isLoading={isLoading} isOpen={chain.length > 0} isDisabled={isLoading} />
+        <StyledToggleBtn accent={accent} onClick={fetchData} disabled={isLoading}>
+          {isLoading ? "fetching…" : "Call API"}
+        </StyledToggleBtn>
+      </StyledAsyncTop>
+      {(chain.length > 0 || isError) && (
+        <StyledResultBox accent={accent}>
+          {isError
+            ? <StyledResultErr>fetch 失敗</StyledResultErr>
+            : chain.map((entry, i) => (
+                <StyledResultItem key={entry.name} accent={accent}>
+                  <StyledResultIndex accent={accent}>{i + 1}</StyledResultIndex>
+                  <StyledPokeSprite
+                    src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${entry.id}.png`}
+                    alt={entry.name}
+                    width={36}
+                    height={36}
+                  />
+                  {entry.name}
+                </StyledResultItem>
+              ))
+          }
+        </StyledResultBox>
+      )}
+    </StyledAsyncWrap>
+  );
+};
+
+const TypingDemo: React.FC<{ accent: string }> = ({ accent }) => {
+  const [input, setInput] = useState("");
+
+  return (
+    <StyledTypingWrap>
+      <StyledTypingRow>
+        <StyledTypingLabel accent={accent}>Auto</StyledTypingLabel>
+        <Typeing text="おはようございます！" speed={100} />
+      </StyledTypingRow>
+
+      <StyledTypingDivider accent={accent} />
+
+      <StyledTypingRow>
+        <StyledTypingLabel accent={accent}>Custom</StyledTypingLabel>
+        <StyledTypingInlineInput
+          accent={accent}
+          value={input}
+          onChange={e => setInput(e.target.value)}
+          placeholder="輸入文字…"
+          maxLength={60}
+        />
+      </StyledTypingRow>
+    </StyledTypingWrap>
+  );
+};
+
+interface FrontendDemo {
+  id: string;
+  title: string;
+  desc: string;
+  techs: string[];
+  accent: string;
+  wide?: boolean;
+  renderDemo: (accent: string) => React.ReactNode;
+}
+
+const frontendDemos: FrontendDemo[] = [
   {
-    color: "#42b883",
-    skills: ["Vue 2", "Vue 3", "Pinia", "Options API", "Composition API", "Vite 5", "TypeScript", "JavaScript (ES6+)"],
+    id: "weather",
+    title: "Weather Widget",
+    desc: "串接中央氣象局開放資料 API，依使用者 IP 定位自動帶入城市，可手動切換縣市，即時顯示溫度與天氣狀態。",
+    techs: ["React", "Hooks", "TypeScript", "styled-components", "CWB API", "Geolocation"],
+    accent: "#0077B6",
+    renderDemo: () => <Weather />,
   },
+  // {
+  //   id: "switch",
+  //   title: "Switch Component",
+  //   desc: "可組合的 Switch 元件，封裝三種使用情境：基本開關、disabled 狀態外部控制、非同步 loading（串接 PokeAPI 示範）。",
+  //   techs: ["React", "Hooks", "TypeScript", "styled-components", "PokeAPI"],
+  //   accent: "#087ea4",
+  //   renderDemo: (accent: string) => (
+  //     <StyledSwitchGrid>
+  //       <StyledSwitchItem accent={accent}>
+  //         <StyledDemoLabel>Default</StyledDemoLabel>
+  //         <ControlBtn />
+  //       </StyledSwitchItem>
+  //       <StyledSwitchItem accent={accent}>
+  //         <StyledDemoLabel>Disabled Control</StyledDemoLabel>
+  //         <DisabledDemo accent={accent} />
+  //       </StyledSwitchItem>
+  //       <StyledSwitchItem accent={accent}>
+  //         <StyledDemoLabel>Async fetch</StyledDemoLabel>
+  //         <AsyncDemo accent={accent} />
+  //       </StyledSwitchItem>
+  //     </StyledSwitchGrid>
+  //   ),
+  // },
   {
-    color: "#315B8C",
-    skills: ["React", "Hooks", "TypeScript", "JavaScript (ES6+)", "Redux", "React-Redux", "React-hook-form", "React Native", "Webpack", "Storybook", "CSS-in-JS"],
+    id: "typing",
+    title: "Typing Animation",
+    desc: "Typing Writer Animation",
+    techs: ["React", "Hooks", "TypeScript", "styled-components"],
+    accent: "#0077B6",
+    renderDemo: (accent: string) => <TypingDemo accent={accent} />,
   },
 ];
 
 const skillCategories = [
+  {
+    label: "AI",
+    accent: "var(--primary-main)",
+    skills: ["Claude Code", "AI-Assisted Development", "Prompt Engineering", "Agentic Coding", "MCP"],
+  },
   {
     label: "Styling",
     accent: "#C9184A",
     skills: ["Tailwind CSS", "SASS/SCSS", "styled-components", "Element-ui", "Element Plus", "Vant", "CSS Module", "CSS3", "Ant Design", "Material Design"],
   },
   {
-    label: "API & GIT",
+    label: "Backend & Git",
     accent: "#0077B6",
     skills: ["Apollo Client", "GraphQL", "RESTful API", "WebSocket", "Git"],
   },
-  {
-    label: "UI / UX",
-    accent: "#6D6875",
-    skills: ["UI Flow", "Wireframe", "Prototype", "Adobe XD", "Google Analytics", "SEO"],
-  },
-  {
-    label: "AI",
-    accent: "var(--primary-main)",
-    skills: ["Claude Code", "AI-Assisted Development", "Prompt Engineering", "Agentic Coding", "MCP"],
-  },
+  // {
+  //   label: "UI / UX",
+  //   accent: "#6D6875",
+  //   skills: ["UI Flow", "Wireframe", "Prototype", "Adobe XD", "Google Analytics", "SEO"],
+  // },
 ];
 
 const humanLangs = [
@@ -85,20 +249,24 @@ const Skills: React.FC = () => {
             <StyledAccentBar accent="#1A2A40" />
             <StyledCategoryLabel accent="#1A2A40">Frontend</StyledCategoryLabel>
           </StyledCategoryHeader>
-          <StyledGroupsRow>
-            {frontendGroups.map((group, i) => (
-              <React.Fragment key={group.color}>
-                <StyledGroup>
-                  <StyledTagRow>
-                    {group.skills.map((s) => (
-                      <StyledSkillTag key={s} color={group.color}>{s}</StyledSkillTag>
+          <StyledDemoGrid>
+            {frontendDemos.map((p) => (
+              <StyledDemoCard key={p.id} accent={p.accent} wide={p.wide}>
+                <StyledDemoCardTop>
+                  <StyledDemoTitle>{p.title}</StyledDemoTitle>
+                  <StyledDemoDesc>{p.desc}</StyledDemoDesc>
+                  <StyledDemoTechRow>
+                    {p.techs.map((t) => (
+                      <StyledDemoTechTag key={t} accent={p.accent}>{t}</StyledDemoTechTag>
                     ))}
-                  </StyledTagRow>
-                </StyledGroup>
-                {i < frontendGroups.length - 1 && <StyledGroupDivider />}
-              </React.Fragment>
+                  </StyledDemoTechRow>
+                </StyledDemoCardTop>
+                <StyledDemoArea>
+                  {p.renderDemo(p.accent)}
+                </StyledDemoArea>
+              </StyledDemoCard>
             ))}
-          </StyledGroupsRow>
+          </StyledDemoGrid>
         </StyledFrontendCard>
 
         {skillCategories.map((cat) => (
@@ -218,31 +386,243 @@ const StyledCategoryLabel = styled.span<{ accent: string }>`
   color: var(--content-text-sub);
 `;
 
-const StyledGroupsRow = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
+/* Frontend live demos */
 
-  @media screen and (min-width: 600px) {
-    flex-direction: row;
-    align-items: flex-start;
-    gap: 0;
+const StyledDemoGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+
+  @media screen and (min-width: 680px) {
+    grid-template-columns: repeat(2, 1fr);
   }
 `;
 
-const StyledGroup = styled.div`
+const StyledDemoCard = styled.div<{ accent: string; wide?: boolean }>`
+  display: flex;
+  flex-direction: column;
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(26, 42, 64, 0.28);
+  border-top: 3px solid ${({ accent }) => accent};
+
+  @media screen and (min-width: 680px) {
+    grid-column: ${({ wide }) => (wide ? "1 / -1" : "auto")};
+  }
+`;
+
+const StyledDemoCardTop = styled.div`
+  padding: 18px 20px 16px;
+  border-bottom: 1px solid rgba(241, 222, 198, 0.08);
+`;
+
+const StyledDemoTitle = styled.h3`
+  margin: 0 0 6px;
+  font-size: 16px;
+  font-weight: 700;
+  color: ${theme.lightFont};
+`;
+
+const StyledDemoDesc = styled.p`
+  margin: 0 0 12px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: rgba(241, 222, 198, 0.6);
+`;
+
+const StyledDemoTechRow = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+`;
+
+const StyledDemoTechTag = styled.span<{ accent: string }>`
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background: ${({ accent }) => accent};
+  color: #fff;
+  border: 1px solid ${({ accent }) => accent};
+  white-space: nowrap;
+  opacity: 0.85;
+`;
+
+const StyledDemoArea = styled.div`
+  flex: 1;
+  background: rgba(15, 28, 48, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 24px;
+  min-height: 220px;
+`;
+
+const StyledSwitchGrid = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: 100%;
+`;
+
+const StyledSwitchItem = styled.div<{ accent: string }>`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+
+  & + & {
+    border-top: 1px solid ${({ accent }) => accent}40;
+  }
+`;
+
+const StyledDemoLabel = styled.span`
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  color: rgba(241, 222, 198, 0.45);
+  text-transform: uppercase;
+  width: 80px;
+  flex-shrink: 0;
+`;
+
+const StyledDemoRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+`;
+
+const StyledToggleBtn = styled.button<{ accent: string }>`
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 16px;
+  border-radius: 8px;
+  border: none;
+  background: ${({ accent }) => accent};
+  color: #fff;
+  cursor: pointer;
+  letter-spacing: 0.3px;
+  transition: opacity 0.2s;
+  &:hover:not(:disabled) {
+    opacity: 0.8;
+  }
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+`;
+
+const StyledAsyncWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   flex: 1;
 `;
 
-const StyledGroupDivider = styled.div`
-  display: none;
+const StyledAsyncTop = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+`;
 
-  @media screen and (min-width: 600px) {
-    display: block;
-    width: 1px;
-    background: var(--cream-border);
-    margin: 0 16px;
-    align-self: stretch;
+const StyledResultBox = styled.div<{ accent: string }>`
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid ${({ accent }) => accent}40;
+  background: ${({ accent }) => accent}10;
+  overflow: hidden;
+`;
+
+const StyledPokeSprite = styled(Image)`
+  object-fit: contain;
+  image-rendering: pixelated;
+  flex-shrink: 0;
+`;
+
+const StyledResultItem = styled.div<{ accent: string }>`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(241, 222, 198, 0.85);
+  & + & {
+    border-top: 1px solid ${({ accent }) => accent}25;
+  }
+`;
+
+const StyledResultIndex = styled.span<{ accent: string }>`
+  font-size: 10px;
+  font-weight: 700;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: ${({ accent }) => accent}30;
+  color: ${({ accent }) => accent};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+`;
+
+const StyledResultErr = styled.p`
+  margin: 0;
+  padding: 10px 12px;
+  font-size: 12px;
+  color: rgba(241, 222, 198, 0.45);
+`;
+
+const StyledTypingWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: 100%;
+`;
+
+const StyledTypingRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  color: ${theme.lightFont};
+  font-size: 15px;
+`;
+
+const StyledTypingLabel = styled.span<{ accent: string }>`
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: ${({ accent }) => accent};
+  width: 52px;
+  flex-shrink: 0;
+`;
+
+const StyledTypingDivider = styled.div<{ accent: string }>`
+  height: 1px;
+  background: ${({ accent }) => accent}30;
+`;
+
+const StyledTypingInlineInput = styled.input<{ accent: string }>`
+  flex: 1;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid ${({ accent }) => accent}60;
+  padding: 2px 4px;
+  font-size: 15px;
+  font-family: inherit;
+  color: ${theme.lightFont};
+  outline: none;
+  transition: border-color 0.2s;
+
+  &::placeholder {
+    color: rgba(241, 222, 198, 0.3);
+    font-style: italic;
+  }
+
+  &:focus {
+    border-bottom-color: ${({ accent }) => accent};
   }
 `;
 

@@ -106,7 +106,7 @@ const CoinAvatar = styled(Image)`
 
 const CoinBack = styled.div`
   ${coinFaceBase}
-  background: #008080;
+  background: var(--hero-teal);
   border: 4px solid ${theme.lightFont};
   box-shadow: 0 0 32px rgba(241, 222, 198, 0.3);
   transform: rotateY(180deg);

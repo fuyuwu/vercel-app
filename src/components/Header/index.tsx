@@ -3,6 +3,7 @@
 import React from "react";
 import styled from "styled-components";
 import { theme } from "../../core";
+import ThemeToggle from "../ThemeToggle";
 
 interface NavItem {
   label: string;
@@ -23,6 +24,7 @@ const Header: React.FC<IHeaderProps> = ({ scrolled = false, navItems = [] }) => 
             {label}
           </StyledNavLink>
         ))}
+        <ThemeToggle />
       </StyledNav>
     </StyledHeader>
   );

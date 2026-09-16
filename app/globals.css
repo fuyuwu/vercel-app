@@ -20,6 +20,7 @@ a {
 
 :root {
   --primary-main: #008080;
+  --hero-teal: #008080;
   --primary-default: #FF9900;
   --dark-font: #1A2A40;
   --light-font: #F1DEC6;
@@ -30,6 +31,16 @@ a {
   --cream-card: #FFFFFF;
   --content-text: #1A2A40;
   --content-text-sub: rgba(26, 42, 64, 0.55);
+}
+
+:root[data-theme="dark"] {
+  --hero-teal: #0E3D3B;
+  --opacity: #20242A;
+  --cream: #14181C;
+  --cream-border: rgba(241, 222, 198, 0.14);
+  --cream-card: #1E242B;
+  --content-text: #F5EBDD;
+  --content-text-sub: rgba(245, 235, 221, 0.6);
 }
 
 /* Custom Scrollbar */

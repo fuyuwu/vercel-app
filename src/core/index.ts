@@ -24,6 +24,7 @@ export const theme = {
   darkFont: "var(--dark-font)",
   lightFont: "var(--light-font)",
   mainTheme: 'var(--primary-main)',
+  heroTeal: 'var(--hero-teal)',
   normalFont: 'var(--primary-default)',
   opacityBg: 'var(--opacity)',
 };

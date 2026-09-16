@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: SITE_TITLE,
   description: SITE_DESCRIPTION,
-  icons: { icon: '/favicon.ico' },
+  icons: { icon: '/fu.ico' },
   openGraph: {
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
@@ -45,9 +45,24 @@ export const metadata: Metadata = {
   },
 };
 
+const THEME_INIT_SCRIPT = `
+  (function () {
+    try {
+      var stored = localStorage.getItem('theme');
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (stored === 'dark' || (!stored && prefersDark)) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    } catch (e) {}
+  })();
+`;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="zh-TW" className={`${kiwiMaru.variable} ${playfairDisplay.variable}`}>
+    <html lang="zh-TW" className={`${kiwiMaru.variable} ${playfairDisplay.variable}`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+      </head>
       <body>
         <StyledComponentsRegistry>
           <ReduxProvider>
