@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import styled from "styled-components";
-import { theme } from "../../core";
 
 import luxonsImg from "../../core/images/luxons.png";
 import innoImg from "../../core/images/inno.png";
@@ -16,8 +16,8 @@ const experiences = [
     company: "雷速網絡科技",
     role: "Frontend Engineer",
     cover: false,
-    highlight: "優化彈窗流程與共用搜尋機制，引入 AI 輔助開發，效率提升 40%",
-    techs: ["Vue 3", "TypeScript", "Vite", "Tailwind CSS", "Vant"],
+    highlight: "處理大型迭代模組，開發及優化多重彈窗流程與共用搜尋機制",
+    techs: ["Vue 2/3", "TypeScript", "Tailwind CSS", "Vant"],
   },
   {
     period: "2021 — 2023",
@@ -25,7 +25,7 @@ const experiences = [
     company: "伊諾科技",
     role: "Frontend Engineer",
     cover: false,
-    highlight: "串接 WebSocket 動畫通知，產出跨業主可複用表單元件，降低重工成本",
+    highlight: "串接 WebSocket 動畫通知，撰寫可複用表單組件，提高開發效率",
     techs: ["React", "GraphQL", "Apollo", "TypeScript", "Tailwind CSS"],
   },
   {
@@ -34,7 +34,7 @@ const experiences = [
     company: "量算科技",
     role: "Frontend Engineer",
     cover: false,
-    highlight: "建立多角色權限管理系統及完整共用元件庫，統一全站 UI 一致性",
+    highlight: "主導引入 Storybook 統一全站 UI，建立多角色權限管理系統及完整共用元件庫",
     techs: ["React", "Redux", "Hooks", "styled-components", "Storybook"],
   },
   {
@@ -43,174 +43,196 @@ const experiences = [
     company: "雄獅資訊科技",
     role: "Frontend Engineer",
     cover: true,
-    highlight: "參與 React Native 旅遊票券 App，完成票券細節頁與共通元件建置",
+    highlight: "開發共同多功能元件建置，參與 React Native 旅遊票券 App，完成票券細節頁",
     techs: ["React", "React Native", "TypeScript", "SCSS"],
   },
 ];
 
 const Experience: React.FC = () => {
-  const [selected, setSelected] = useState<number | null>(null);
-  const logoRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const [arrowLeft, setArrowLeft] = useState(0);
+  const timelineRef = useRef<HTMLDivElement>(null);
+  const [inView, setInView] = useState(false);
 
-  const handleSelect = (i: number, el: HTMLButtonElement | null) => {
-    if (selected === i) {
-      setSelected(null);
-      return;
-    }
-    setSelected(i);
-    if (el) {
-      const rect = el.getBoundingClientRect();
-      const parent = el.closest('[data-logo-row]') as HTMLElement;
-      const parentRect = parent?.getBoundingClientRect();
-      setArrowLeft(rect.left - (parentRect?.left ?? 0) + rect.width / 2);
-    }
-  };
+  useEffect(() => {
+    const el = timelineRef.current;
+    if (!el) return;
 
-  const exp = selected !== null ? experiences[selected] : null;
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setInView(true);
+            io.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   return (
-    <StyledWrap>
-      {/* Logo 橫排 */}
-      <StyledLogoRow data-logo-row>
-        {experiences.map((item, i) => (
-          <StyledLogoBtn
-            key={i}
-            ref={el => { logoRefs.current[i] = el; }}
-            active={selected === i}
-            onClick={() => handleSelect(i, logoRefs.current[i])}
-          >
-            <StyledLogo
-              src={typeof item.logo === 'string' ? item.logo : item.logo.src}
-              alt={item.company}
-              active={selected === i}
-              cover={item.cover}
-            />
-          </StyledLogoBtn>
-        ))}
-      </StyledLogoRow>
-
-      {/* 對話框內容 */}
-      <StyledBubbleWrap isOpen={selected !== null}>
-        <div>
-          {exp && (
-            <>
-              <StyledArrow left={arrowLeft} />
-              <StyledBubble>
-                <StyledBubbleTop>
-                  <div>
-                    <StyledCompany>{exp.company}</StyledCompany>
-                    <StyledRole>{exp.role}</StyledRole>
-                  </div>
-                  <StyledPeriod>{exp.period}</StyledPeriod>
-                </StyledBubbleTop>
-                <StyledHighlight>{exp.highlight}</StyledHighlight>
-                <StyledTechRow>
-                  {exp.techs.map(t => <StyledTech key={t}>{t}</StyledTech>)}
-                </StyledTechRow>
-              </StyledBubble>
-            </>
-          )}
-        </div>
-      </StyledBubbleWrap>
-    </StyledWrap>
+    <StyledTimeline ref={timelineRef}>
+      <StyledLine />
+      <StyledLineProgress inView={inView} />
+      {experiences.map((item, i) => {
+        const delay = 200 + i * 180;
+        return (
+          <StyledItem key={item.company} inView={inView} delay={delay}>
+            <StyledNode>
+              <StyledNodeLogo
+                src={item.logo}
+                alt={item.company}
+                $cover={item.cover}
+                width={item.cover ? 70 : 52}
+                height={item.cover ? 70 : 52}
+              />
+            </StyledNode>
+            <StyledCard>
+              <StyledCardTop>
+                <div>
+                  <StyledCompany>{item.company}</StyledCompany>
+                  <StyledRole>{item.role}</StyledRole>
+                </div>
+                <StyledPeriod>{item.period}</StyledPeriod>
+              </StyledCardTop>
+              <StyledHighlight>{item.highlight}</StyledHighlight>
+              <StyledTechRow>
+                {item.techs.map(t => <StyledTech key={t}>{t}</StyledTech>)}
+              </StyledTechRow>
+            </StyledCard>
+          </StyledItem>
+        );
+      })}
+    </StyledTimeline>
   );
 };
 
 /* ─── Styled ─── */
 
-const StyledWrap = styled.div`
+const NODE_SIZE = 70;
+const NODE_SIZE_MOBILE = 56;
+
+const StyledTimeline = styled.div`
+  position: relative;
+  box-sizing: border-box;
   width: 100%;
+  padding-left: ${NODE_SIZE_MOBILE + 20}px;
+
+  @media screen and (min-width: 600px) {
+    padding-left: ${NODE_SIZE + 26}px;
+  }
 `;
 
-const StyledLogoRow = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  gap: 12px;
-  padding: 8px 0;
+const StyledLine = styled.div`
+  position: absolute;
+  top: ${NODE_SIZE_MOBILE / 2}px;
+  bottom: ${NODE_SIZE_MOBILE / 2}px;
+  left: ${NODE_SIZE_MOBILE / 2 - 1}px;
+  width: 2px;
+  background: rgba(241, 222, 198, 0.12);
+
+  @media screen and (min-width: 600px) {
+    top: ${NODE_SIZE / 2}px;
+    bottom: ${NODE_SIZE / 2}px;
+    left: ${NODE_SIZE / 2 - 1}px;
+  }
 `;
 
-const StyledLogoBtn = styled.button<{ active: boolean }>`
-  width: 120px;
-  height: 120px;
+const StyledLineProgress = styled.div<{ inView: boolean }>`
+  position: absolute;
+  top: ${NODE_SIZE_MOBILE / 2}px;
+  bottom: ${NODE_SIZE_MOBILE / 2}px;
+  left: ${NODE_SIZE_MOBILE / 2 - 1}px;
+  width: 2px;
+  background: rgba(241, 222, 198, 0.55);
+  transform-origin: top;
+  transform: scaleY(${({ inView }) => (inView ? 1 : 0)});
+  transition: transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+
+  @media screen and (min-width: 600px) {
+    top: ${NODE_SIZE / 2}px;
+    bottom: ${NODE_SIZE / 2}px;
+    left: ${NODE_SIZE / 2 - 1}px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+`;
+
+const StyledItem = styled.div<{ inView: boolean; delay: number }>`
+  position: relative;
+  padding-bottom: 36px;
+  opacity: ${({ inView }) => (inView ? 1 : 0)};
+  transform: translateX(${({ inView }) => (inView ? 0 : -16)}px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  transition-delay: ${({ delay }) => delay}ms;
+
+  &:last-child {
+    padding-bottom: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+    transform: none;
+  }
+`;
+
+const StyledNode = styled.div`
+  position: absolute;
+  left: -${NODE_SIZE_MOBILE + 20}px;
+  top: 0;
+  width: ${NODE_SIZE_MOBILE}px;
+  height: ${NODE_SIZE_MOBILE}px;
   border-radius: 50%;
-  background: ${({ active }) => active ? 'rgba(241,222,198,0.15)' : 'rgba(0,0,0,0.15)'};
-  border: 2px solid ${({ active }) => active ? 'rgba(241,222,198,0.5)' : 'rgba(241,222,198,0.1)'};
-  box-shadow: ${({ active }) => active ? '0 0 0 4px rgba(241,222,198,0.1)' : 'none'};
+  background: rgba(0, 0, 0, 0.15);
+  border: 2px solid rgba(241, 222, 198, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  transform: ${({ active }) => active ? 'translateY(-6px)' : 'none'};
-  padding: 0;
   overflow: hidden;
+  flex-shrink: 0;
 
-  &:hover {
-    background: rgba(241,222,198,0.12);
-    border-color: rgba(241,222,198,0.3);
-    transform: translateY(-3px);
+  @media screen and (min-width: 600px) {
+    left: -${NODE_SIZE + 26}px;
+    width: ${NODE_SIZE}px;
+    height: ${NODE_SIZE}px;
   }
 `;
 
-const StyledLogo = styled.img<{ active: boolean; cover?: boolean }>`
-  width: ${({ cover }) => cover ? '100%' : '75%'};
-  height: ${({ cover }) => cover ? '100%' : '75%'};
-  object-fit: ${({ cover }) => cover ? 'cover' : 'contain'};
-  opacity: ${({ active }) => active ? 1 : 0.65};
-  transition: opacity 0.25s ease;
+const StyledNodeLogo = styled(Image)<{ $cover?: boolean }>`
+  object-fit: ${({ $cover }) => ($cover ? "cover" : "contain")};
 `;
 
-const StyledBubbleWrap = styled.div<{ isOpen: boolean }>`
-  display: grid;
-  grid-template-rows: ${({ isOpen }) => isOpen ? '1fr' : '0fr'};
-  transition: grid-template-rows 0.35s ease;
-  margin-top: 8px;
-
-  & > div {
-    overflow: hidden;
-  }
-`;
-
-const StyledArrow = styled.div<{ left: number }>`
-  width: 0;
-  height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-bottom: 10px solid rgba(241,222,198,0.12);
-  margin-left: ${({ left }) => left - 10}px;
-  margin-bottom: -1px;
-  transition: margin-left 0.3s ease;
-`;
-
-const StyledBubble = styled.div`
-  background: rgba(0,0,0,0.2);
-  border: 1px solid rgba(241,222,198,0.15);
+const StyledCard = styled.div`
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(241, 222, 198, 0.15);
   border-radius: 16px;
-  padding: 24px 28px;
+  padding: 20px 24px;
 `;
 
-const StyledBubbleTop = styled.div`
+const StyledCardTop = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   gap: 12px;
+  flex-wrap: wrap;
 `;
 
 const StyledCompany = styled.p`
   margin: 0 0 4px;
   font-size: 16px;
   font-weight: 700;
-  color: rgba(241,222,198,0.9);
+  color: rgba(241, 222, 198, 0.9);
   letter-spacing: 0.5px;
 `;
 
 const StyledRole = styled.p`
   margin: 0;
   font-size: 12px;
-  color: rgba(241,222,198,0.45);
+  color: rgba(241, 222, 198, 0.45);
   letter-spacing: 0.5px;
 `;
 
@@ -218,7 +240,7 @@ const StyledPeriod = styled.span`
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 1.5px;
-  color: rgba(241,222,198,0.4);
+  color: rgba(241, 222, 198, 0.4);
   white-space: nowrap;
 `;
 
@@ -226,7 +248,7 @@ const StyledHighlight = styled.p`
   margin: 0 0 16px;
   font-size: 14px;
   line-height: 1.8;
-  color: rgba(241,222,198,0.7);
+  color: rgba(241, 222, 198, 0.7);
   font-style: italic;
 `;
 
@@ -241,9 +263,9 @@ const StyledTech = styled.span`
   font-weight: 600;
   padding: 3px 10px;
   border-radius: 20px;
-  background: rgba(241,222,198,0.08);
-  color: rgba(241,222,198,0.65);
-  border: 1px solid rgba(241,222,198,0.15);
+  background: rgba(241, 222, 198, 0.08);
+  color: rgba(241, 222, 198, 0.65);
+  border: 1px solid rgba(241, 222, 198, 0.15);
   white-space: nowrap;
   letter-spacing: 0.3px;
 `;

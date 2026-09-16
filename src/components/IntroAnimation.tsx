@@ -1,28 +1,37 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
 import styled, { keyframes, css } from 'styled-components';
 import { theme } from '../core';
 
 interface IntroAnimationProps {
-  onFinish: () => void;
+  /** Fires as soon as the coin flip ends, before the overlay fade-out finishes */
+  onCoinDone: () => void;
+  /** Fires after the overlay has fully faded out, so it can be unmounted */
+  onExited: () => void;
 }
 
-const IntroAnimation: React.FC<IntroAnimationProps> = ({ onFinish }) => {
+const FADE_MS = 450;
+
+const IntroAnimation: React.FC<IntroAnimationProps> = ({ onCoinDone, onExited }) => {
   const [fading, setFading] = useState(false);
 
   useEffect(() => {
-    const t1 = setTimeout(() => setFading(true), 2000);
-    const t2 = setTimeout(() => onFinish(), 2000 + 700);
+    const t1 = setTimeout(() => {
+      onCoinDone();
+      setFading(true);
+    }, 2000);
+    const t2 = setTimeout(() => onExited(), 2000 + FADE_MS);
     return () => { clearTimeout(t1); clearTimeout(t2); };
-  }, [onFinish]);
+  }, [onCoinDone, onExited]);
 
   return (
     <Overlay fading={fading}>
       <CoinScene>
         <Coin>
           <CoinFront>
-            <CoinAvatar src="/avatar.jpg" alt="FuFu" />
+            <CoinAvatar src="/avatar.jpg" alt="FuFu" fill sizes="160px" priority />
           </CoinFront>
           <CoinBack>Fu</CoinBack>
         </Coin>
@@ -55,7 +64,8 @@ const Overlay = styled.div<{ fading: boolean }>`
   justify-content: center;
 
   ${({ fading }) => fading && css`
-    animation: ${overlayFadeOut} 0.7s ease forwards;
+    pointer-events: none;
+    animation: ${overlayFadeOut} ${FADE_MS}ms ease forwards;
   `}
 `;
 
@@ -89,23 +99,21 @@ const CoinFront = styled.div`
   transform: rotateY(0deg);
 `;
 
-const CoinAvatar = styled.img`
-  width: 100%;
-  height: 100%;
+const CoinAvatar = styled(Image)`
   object-fit: cover;
   object-position: center top;
 `;
 
 const CoinBack = styled.div`
   ${coinFaceBase}
-  background: #008080;
+  background: var(--hero-teal);
   border: 4px solid ${theme.lightFont};
   box-shadow: 0 0 32px rgba(241, 222, 198, 0.3);
   transform: rotateY(180deg);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Kiwi Maru', serif;
+  font-family: var(--font-kiwi-maru), serif;
   font-size: 52px;
   font-weight: 700;
   color: ${theme.lightFont};

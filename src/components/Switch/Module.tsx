@@ -14,11 +14,9 @@ export interface ISwitchProps extends ICommonProps {
   text?: string[];
 }
 
-const Module: React.FC<ISwitchProps> = (props) => {
+const Module: React.FC<ISwitchProps> = ({ onClick = () => {}, ...props }) => {
   const handlerClick = () => {
-    if (props.onClick) {
-      props.onClick();
-    }
+    onClick();
   };
   return (
     <>
@@ -48,10 +46,6 @@ const Module: React.FC<ISwitchProps> = (props) => {
       </StyledSwitch>
     </>
   );
-};
-
-Module.defaultProps = {
-  onClick: () => {},
 };
 
 export default Module;

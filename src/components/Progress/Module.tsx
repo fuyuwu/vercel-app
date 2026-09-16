@@ -24,10 +24,6 @@ const Progress: React.FC<IProgress> = (props) => {
     </StyledBlock>
   );
 };
-Progress.defaultProps = {
-  color: "#aaa",
-  max: 100,
-};
 const StyledBlock = styled.div`
   width: calc(100 % - 90px);
   /* flex: 1; */

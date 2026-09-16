@@ -29,7 +29,7 @@ const getMoment = (): "day" | "night" => {
 
 const detectCityFromIp = async (): Promise<ICity> => {
   try {
-    // ip-api.com 不允許 localhost 來源，換成 ipapi.co
+    // ip-api.com blocks localhost origins, use ipapi.co instead
     const res = await fetch("https://ipapi.co/json/");
     const data: { city: string; region: string } = await res.json();
     const keyword = `${data.city} ${data.region}`;

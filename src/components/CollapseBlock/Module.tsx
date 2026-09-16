@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Fold, Unfold } from "../Icons";
 import styled from "styled-components";
 
@@ -11,12 +11,7 @@ interface ICollapseBlockProps {
 }
 
 const CollapseBlock: React.FC<ICollapseBlockProps> = (props) => {
-  const [active, setActive] = useState<boolean>(false);
-  useEffect(() => {
-    if (props.defaultState === "open") {
-      setActive(true);
-    }
-  }, []);
+  const [active, setActive] = useState<boolean>(props.defaultState === "open");
   return (
     <div>
       <StyledBlock>
@@ -73,6 +68,3 @@ const StyledTitle = styled.span`
   font-weight: bold;
 `;
 export default CollapseBlock;
-CollapseBlock.defaultProps = {
-  defaultState: "close",
-};

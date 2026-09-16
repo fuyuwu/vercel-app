@@ -233,13 +233,13 @@ const StyledTimelineCenter = styled.div`
   height: 100%;
   min-height: 100%;
   
-  /* 最後一個項目不顯示連接線 */
+  /* Hide the connector on the last item */
   &:last-child::after {
     display: none;
   }
 `;
 
-/* 創建從球體到內容的連接線 */
+/* Connector line from the dot to the content */
 const StyledContentConnector = styled.div<{ isEven: boolean }>`
   position: absolute;
   top: 50%;
@@ -251,20 +251,20 @@ const StyledContentConnector = styled.div<{ isEven: boolean }>`
   background: ${theme.darkFont};
   z-index: 1;
   
-  /* 左側連接線 */
+  /* Left connector */
   ${props => !props.isEven && `
     left: 50%;
     transform: translateY(-50%);
   `}
   
-  /* 右側連接線 */
+  /* Right connector */
   ${props => props.isEven && `
     right: 50%;
     transform: translateY(-50%);
   `}
 `;
 
-/* 垂直時間線連接器 */
+/* Vertical timeline connector */
 const StyledVerticalConnector = styled.div`
   position: absolute;
   top: 60px;
