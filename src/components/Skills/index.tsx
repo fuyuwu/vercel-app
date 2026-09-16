@@ -76,7 +76,7 @@ const Skills: React.FC = () => {
             <StyledCategoryLabel accent="#1A2A40">Frontend</StyledCategoryLabel>
           </StyledCategoryHeader>
           <StyledStorybookPreviewLink href="https://component-storybook.vercel.app" target="_blank" rel="noreferrer">
-            <StyledStorybookPreviewImage src="/storybook-intro-2.png" alt="Storybook introduction page" width={1000} height={700} />
+            <StyledStorybookPreviewImage src="/storybook-switch.png" alt="Storybook Switch component demo" width={1000} height={700} />
             <StyledStorybookPreviewOverlay>Open in Storybook ↗</StyledStorybookPreviewOverlay>
           </StyledStorybookPreviewLink>
         </StyledFrontendCard>
