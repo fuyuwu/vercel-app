@@ -34,10 +34,12 @@ const skillCategories = [
 ];
 
 const humanLangs = [
-  { icon: <Taiwan width={32} height={32} />, label: "Native", percent: 100 },
-  { icon: <Japan width={32} height={32} />, label: "日本語", percent: 80, badge: "JLPT N1" },
-  { icon: <USA width={32} height={32} />, label: "Intermediate", percent: 50 },
+  { icon: <Taiwan width={32} height={32} />, percent: 100 },
+  { icon: <Japan width={32} height={32} />, percent: 100, badge: "JLPT N1" },
+  { icon: <USA width={32} height={32} />, percent: 50 },
 ];
+
+const LANG_ACCENT = "#1A2A40";
 
 const RING_SIZE = 88;
 const RING_STROKE = 6;
@@ -109,15 +111,15 @@ const Skills: React.FC = () => {
         ))}
 
           <StyledLangCard>
-            <StyledCategoryHeader accent="#e49826">
-              <StyledAccentBar accent="#e49826" />
-              <StyledCategoryLabel accent="#e49826">Languages</StyledCategoryLabel>
+            <StyledCategoryHeader accent={LANG_ACCENT}>
+              <StyledAccentBar accent={LANG_ACCENT} />
+              <StyledCategoryLabel accent={LANG_ACCENT}>Languages</StyledCategoryLabel>
             </StyledCategoryHeader>
             <StyledLangList ref={langListRef}>
               {humanLangs.map((lang, i) => {
                 const delay = i * 150;
                 return (
-                  <StyledLangItem key={lang.label}>
+                  <StyledLangItem key={i}>
                     <StyledRingWrap>
                       <StyledRingSvg viewBox={`0 0 ${RING_SIZE} ${RING_SIZE}`}>
                         <StyledRingTrack cx={RING_SIZE / 2} cy={RING_SIZE / 2} r={RING_RADIUS} />
@@ -135,7 +137,7 @@ const Skills: React.FC = () => {
                       </StyledRingFlag>
                     </StyledRingWrap>
                     <StyledLangMeta>
-                      <StyledLangSub>{lang.label}</StyledLangSub>
+                      {/* <StyledLangSub>{lang.label}</StyledLangSub> */}
                       <StyledLangPercent>{lang.badge ?? `${lang.percent}%`}</StyledLangPercent>
                     </StyledLangMeta>
                   </StyledLangItem>
@@ -262,7 +264,7 @@ const StyledSkillTag = styled.span<{ color?: string }>`
 
 const StyledLangCard = styled.div`
   ${cardBase}
-  border-top: 3px solid #e49826;
+  border-top: 3px solid ${LANG_ACCENT};
   grid-column: 1 / -1;
 `;
 
@@ -308,7 +310,7 @@ const StyledRingTrack = styled.circle`
 
 const StyledRingProgress = styled.circle<{ percent: number; inView: boolean; delay: number }>`
   fill: none;
-  stroke: #e49826;
+  stroke: ${LANG_ACCENT};
   stroke-width: ${RING_STROKE};
   stroke-linecap: round;
   stroke-dasharray: ${RING_CIRCUMFERENCE};
@@ -358,7 +360,7 @@ const StyledLangSub = styled.p`
 const StyledLangPercent = styled.span`
   font-size: 12px;
   font-weight: 700;
-  color: #e49826;
+  color: ${LANG_ACCENT};
 `;
 
 export default Skills;

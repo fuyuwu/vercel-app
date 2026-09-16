@@ -128,10 +128,17 @@ const StyledWrap = styled.div`
 
 const StyledLogoRow = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-around;
-  gap: 12px;
+  justify-content: center;
+  gap: 16px;
   padding: 8px 0;
+
+  @media screen and (min-width: 600px) {
+    flex-direction: row;
+    justify-content: space-around;
+    gap: 12px;
+  }
 `;
 
 const StyledLogoBtn = styled.button<{ active: boolean }>`
