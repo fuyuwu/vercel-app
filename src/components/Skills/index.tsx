@@ -35,7 +35,7 @@ const skillCategories = [
 
 const humanLangs = [
   { icon: <Taiwan width={32} height={32} />, label: "Native", percent: 100 },
-  { icon: <Japan width={32} height={32} />, label: "JLPT N1", percent: 80 },
+  { icon: <Japan width={32} height={32} />, label: "日本語", percent: 80, badge: "JLPT N1" },
   { icon: <USA width={32} height={32} />, label: "Intermediate", percent: 50 },
 ];
 
@@ -136,7 +136,7 @@ const Skills: React.FC = () => {
                     </StyledRingWrap>
                     <StyledLangMeta>
                       <StyledLangSub>{lang.label}</StyledLangSub>
-                      <StyledLangPercent>{lang.percent}%</StyledLangPercent>
+                      <StyledLangPercent>{lang.badge ?? `${lang.percent}%`}</StyledLangPercent>
                     </StyledLangMeta>
                   </StyledLangItem>
                 );
