@@ -34,10 +34,17 @@ const skillCategories = [
 ];
 
 const humanLangs = [
-  { icon: <Taiwan width={28} height={28} />, label: "Native", percent: 100 },
-  { icon: <Japan width={28} height={28} />, label: "JLPT N1", percent: 80 },
-  { icon: <USA width={28} height={28} />, label: "Intermediate", percent: 50 },
+  { icon: <Taiwan width={32} height={32} />, label: "Native", percent: 100 },
+  { icon: <Japan width={32} height={32} />, label: "JLPT N1", percent: 80 },
+  { icon: <USA width={32} height={32} />, label: "Intermediate", percent: 50 },
 ];
+
+const RING_SIZE = 88;
+const RING_STROKE = 6;
+const RING_RADIUS = (RING_SIZE - RING_STROKE) / 2;
+const RING_CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS;
+/** Matches StyledRingProgress's transition-duration, so the flag fades in right as the ring finishes drawing */
+const RING_DURATION_MS = 1000;
 
 const Skills: React.FC = () => {
   const langListRef = useRef<HTMLDivElement>(null);
@@ -107,20 +114,33 @@ const Skills: React.FC = () => {
               <StyledCategoryLabel accent="#e49826">Languages</StyledCategoryLabel>
             </StyledCategoryHeader>
             <StyledLangList ref={langListRef}>
-              {humanLangs.map((lang, i) => (
-                <StyledLangItem key={lang.label}>
-                  <StyledLangIcon>{lang.icon}</StyledLangIcon>
-                  <StyledLangMeta>
-                    <StyledLangSub>{lang.label}</StyledLangSub>
-                  </StyledLangMeta>
-                  <StyledLangBarWrap>
-                    <StyledTrack>
-                      <StyledFill percent={lang.percent} inView={barsInView} delay={i * 150} />
-                    </StyledTrack>
-                  </StyledLangBarWrap>
-                  <StyledLangPercent>{lang.percent}%</StyledLangPercent>
-                </StyledLangItem>
-              ))}
+              {humanLangs.map((lang, i) => {
+                const delay = i * 150;
+                return (
+                  <StyledLangItem key={lang.label}>
+                    <StyledRingWrap>
+                      <StyledRingSvg viewBox={`0 0 ${RING_SIZE} ${RING_SIZE}`}>
+                        <StyledRingTrack cx={RING_SIZE / 2} cy={RING_SIZE / 2} r={RING_RADIUS} />
+                        <StyledRingProgress
+                          cx={RING_SIZE / 2}
+                          cy={RING_SIZE / 2}
+                          r={RING_RADIUS}
+                          percent={lang.percent}
+                          inView={barsInView}
+                          delay={delay}
+                        />
+                      </StyledRingSvg>
+                      <StyledRingFlag inView={barsInView} delay={delay + RING_DURATION_MS}>
+                        {lang.icon}
+                      </StyledRingFlag>
+                    </StyledRingWrap>
+                    <StyledLangMeta>
+                      <StyledLangSub>{lang.label}</StyledLangSub>
+                      <StyledLangPercent>{lang.percent}%</StyledLangPercent>
+                    </StyledLangMeta>
+                  </StyledLangItem>
+                );
+              })}
             </StyledLangList>
           </StyledLangCard>
 
@@ -249,57 +269,52 @@ const StyledLangCard = styled.div`
 
 const StyledLangList = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 28px;
 
   @media screen and (min-width: 600px) {
-    flex-direction: row;
-    gap: 24px;
+    gap: 40px;
   }
 `;
 
 const StyledLangItem = styled.div`
-  flex: 1;
-  min-width: 0;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+  width: 96px;
 `;
 
-const StyledLangIcon = styled.div`
+const StyledRingWrap = styled.div`
+  position: relative;
+  width: ${RING_SIZE}px;
+  height: ${RING_SIZE}px;
   flex-shrink: 0;
-  line-height: 0;
 `;
 
-const StyledLangMeta = styled.div`
-  flex-shrink: 0;
-`;
-
-const StyledLangSub = styled.p`
-  margin: 2px 0 0;
-  font-size: 11px;
-  color: var(--content-text-sub);
-  letter-spacing: 0.3px;
-`;
-
-const StyledLangBarWrap = styled.div`
-  flex: 1;
-  min-width: 0;
-`;
-
-const StyledTrack = styled.div`
-  height: 4px;
-  border-radius: 99px;
-  background: var(--cream-border);
-  overflow: hidden;
-`;
-
-const StyledFill = styled.div<{ percent: number; inView: boolean; delay: number }>`
+const StyledRingSvg = styled.svg`
+  width: 100%;
   height: 100%;
-  width: ${({ inView, percent }) => (inView ? percent : 0)}%;
-  border-radius: 99px;
-  background: #e49826;
-  transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
+  /* start progress at 12 o'clock instead of 3 o'clock */
+  transform: rotate(-90deg);
+`;
+
+const StyledRingTrack = styled.circle`
+  fill: none;
+  stroke: var(--cream-border);
+  stroke-width: ${RING_STROKE};
+`;
+
+const StyledRingProgress = styled.circle<{ percent: number; inView: boolean; delay: number }>`
+  fill: none;
+  stroke: #e49826;
+  stroke-width: ${RING_STROKE};
+  stroke-linecap: round;
+  stroke-dasharray: ${RING_CIRCUMFERENCE};
+  stroke-dashoffset: ${({ inView, percent }) =>
+    RING_CIRCUMFERENCE * (1 - (inView ? percent : 0) / 100)};
+  transition: stroke-dashoffset ${RING_DURATION_MS}ms cubic-bezier(0.16, 1, 0.3, 1);
   transition-delay: ${({ delay }) => delay}ms;
 
   @media (prefers-reduced-motion: reduce) {
@@ -307,12 +322,43 @@ const StyledFill = styled.div<{ percent: number; inView: boolean; delay: number 
   }
 `;
 
+const StyledRingFlag = styled.div<{ inView: boolean; delay: number }>`
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: ${({ inView }) => (inView ? 1 : 0)};
+  transform: ${({ inView }) => (inView ? "scale(1)" : "scale(0.6)")};
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  transition-delay: ${({ delay }) => delay}ms;
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+    transform: none;
+  }
+`;
+
+const StyledLangMeta = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+`;
+
+const StyledLangSub = styled.p`
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--content-text);
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+`;
+
 const StyledLangPercent = styled.span`
   font-size: 12px;
   font-weight: 700;
-  color: var(--content-text-sub);
-  flex-shrink: 0;
-  text-align: right;
+  color: #e49826;
 `;
 
 export default Skills;
