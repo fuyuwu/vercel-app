@@ -10,7 +10,7 @@ const frontendGroups = [
     skills: ["Vue 2", "Vue 3", "Pinia", "Options API", "Composition API", "Vite 5", "TypeScript", "JavaScript (ES6+)"],
   },
   {
-    color: "#61DAFB",
+    color: "#315B8C",
     skills: ["React", "Hooks", "TypeScript", "JavaScript (ES6+)", "Redux", "React-Redux", "React-hook-form", "React Native", "Webpack", "Storybook", "CSS-in-JS"],
   },
 ];
@@ -44,7 +44,7 @@ const humanLangs = [
   { icon: <USA width={32} height={32} />, percent: 50 },
 ];
 
-const LANG_ACCENT = "#1A2A40";
+const LANG_ACCENT = "#F2765E";
 
 const RING_SIZE = 88;
 const RING_STROKE = 6;
@@ -142,8 +142,7 @@ const Skills: React.FC = () => {
                       </StyledRingFlag>
                     </StyledRingWrap>
                     <StyledLangMeta>
-                      {/* <StyledLangSub>{lang.label}</StyledLangSub> */}
-                      <StyledLangPercent>{lang.badge ?? `${lang.percent}%`}</StyledLangPercent>
+                      {lang.badge && <StyledLangPercent>{lang.badge}</StyledLangPercent>}
                     </StyledLangMeta>
                   </StyledLangItem>
                 );
@@ -351,15 +350,6 @@ const StyledLangMeta = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 2px;
-`;
-
-const StyledLangSub = styled.p`
-  margin: 0;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--content-text);
-  letter-spacing: 0.2px;
-  white-space: nowrap;
 `;
 
 const StyledLangPercent = styled.span`
