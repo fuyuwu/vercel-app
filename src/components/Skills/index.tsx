@@ -1,6 +1,6 @@
 'use client';
 
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { Taiwan, Japan, USA } from "../Icons";
 
@@ -40,6 +40,28 @@ const humanLangs = [
 ];
 
 const Skills: React.FC = () => {
+  const langListRef = useRef<HTMLDivElement>(null);
+  const [barsInView, setBarsInView] = useState(false);
+
+  useEffect(() => {
+    const el = langListRef.current;
+    if (!el) return;
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setBarsInView(true);
+            io.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.4 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   return (
     <StyledWrap>
       <StyledCategoryGrid>
@@ -84,8 +106,8 @@ const Skills: React.FC = () => {
               <StyledAccentBar accent="#e49826" />
               <StyledCategoryLabel accent="#e49826">Languages</StyledCategoryLabel>
             </StyledCategoryHeader>
-            <StyledLangList>
-              {humanLangs.map((lang) => (
+            <StyledLangList ref={langListRef}>
+              {humanLangs.map((lang, i) => (
                 <StyledLangItem key={lang.label}>
                   <StyledLangIcon>{lang.icon}</StyledLangIcon>
                   <StyledLangMeta>
@@ -93,7 +115,7 @@ const Skills: React.FC = () => {
                   </StyledLangMeta>
                   <StyledLangBarWrap>
                     <StyledTrack>
-                      <StyledFill percent={lang.percent} />
+                      <StyledFill percent={lang.percent} inView={barsInView} delay={i * 150} />
                     </StyledTrack>
                   </StyledLangBarWrap>
                   <StyledLangPercent>{lang.percent}%</StyledLangPercent>
@@ -272,11 +294,17 @@ const StyledTrack = styled.div`
   overflow: hidden;
 `;
 
-const StyledFill = styled.div<{ percent: number }>`
+const StyledFill = styled.div<{ percent: number; inView: boolean; delay: number }>`
   height: 100%;
-  width: ${({ percent }) => percent}%;
+  width: ${({ inView, percent }) => (inView ? percent : 0)}%;
   border-radius: 99px;
   background: #e49826;
+  transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: ${({ delay }) => delay}ms;
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
 `;
 
 const StyledLangPercent = styled.span`
