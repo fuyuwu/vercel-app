@@ -31,6 +31,11 @@ const skillCategories = [
     accent: "#6D6875",
     skills: ["UI Flow", "Wireframe", "Prototype", "Adobe XD", "Google Analytics", "SEO"],
   },
+  {
+    label: "AI",
+    accent: "var(--primary-main)",
+    skills: ["Claude Code", "AI-Assisted Development", "Prompt Engineering", "Agentic Coding", "MCP"],
+  },
 ];
 
 const humanLangs = [
