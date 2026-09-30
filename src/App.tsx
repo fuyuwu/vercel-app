@@ -15,11 +15,12 @@ import IntroAnimation from "./components/IntroAnimation";
 import DoodleBackground from "./components/DoodleBackground";
 import PawTrail from "./components/PawTrail";
 import Reveal from "./components/Reveal";
+import { BOOK_ICON, BULB_ICON, TROPHY_ICON } from "./components/Header/navIcons";
 
 const NAV_ITEMS = [
-  { label: "Portfolio",  href: "#portfolio" },
-  { label: "Experience", href: "#experience" },
-  { label: "Skills",     href: "#skills" },
+  { label: "Portfolio",  href: "#portfolio",  icon: BOOK_ICON },
+  { label: "Experience", href: "#experience", icon: TROPHY_ICON },
+  { label: "Skills",     href: "#skills",     icon: BULB_ICON },
 ];
 
 const App: React.FC = () => {
