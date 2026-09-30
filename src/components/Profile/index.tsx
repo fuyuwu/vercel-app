@@ -2,6 +2,7 @@
 
 import React from "react";
 import styled from "styled-components";
+import OutOfTokens from "./OutOfTokens";
 
 /* ── QA Hub Featured Card ── */
 
@@ -18,6 +19,8 @@ const FEATURED_PROJECT = {
   liveUrl: "https://web-production-88c3f.up.railway.app",
   githubUrl: "https://github.com/fuyuwu/qa-hub",
   accent: "#6366f1",
+  /** Live demo is down because its API tokens ran out; flip back to false once topped up */
+  outOfTokens: true,
 };
 
 /* ── Component ── */
@@ -69,7 +72,10 @@ const Profile: React.FC = () => {
             title={FEATURED_PROJECT.title}
             loading="lazy"
             sandbox="allow-scripts allow-same-origin allow-forms"
+            aria-hidden={FEATURED_PROJECT.outOfTokens || undefined}
+            tabIndex={FEATURED_PROJECT.outOfTokens ? -1 : undefined}
           />
+          {FEATURED_PROJECT.outOfTokens && <OutOfTokens />}
         </StyledFeaturedPreview>
       </StyledFeaturedCard>
 
