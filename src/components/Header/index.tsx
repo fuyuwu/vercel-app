@@ -4,10 +4,14 @@ import React from "react";
 import styled from "styled-components";
 import { theme } from "../../core";
 import ThemeToggle from "../ThemeToggle";
+import PixelSprite from "../PatrolDog/PixelSprite";
+import { NAV_ICON_PALETTE } from "./navIcons";
 
 interface NavItem {
   label: string;
   href: string;
+  /** Pixel icon rows; when set, the icon replaces the text and the label moves to aria-label */
+  icon?: string[];
 }
 
 interface IHeaderProps {
@@ -19,11 +23,17 @@ const Header: React.FC<IHeaderProps> = ({ scrolled = false, navItems = [] }) => 
   return (
     <StyledHeader scrolled={scrolled}>
       <StyledNav>
-        {navItems.map(({ label, href }) => (
-          <StyledNavLink key={href} href={href}>
-            {label}
-          </StyledNavLink>
-        ))}
+        {navItems.map(({ label, href, icon }) =>
+          icon ? (
+            <StyledNavLink key={href} href={href} aria-label={label} title={label}>
+              <PixelSprite rows={icon} palette={NAV_ICON_PALETTE} scale={2} />
+            </StyledNavLink>
+          ) : (
+            <StyledNavLink key={href} href={href}>
+              {label}
+            </StyledNavLink>
+          ),
+        )}
         <ThemeToggle />
       </StyledNav>
     </StyledHeader>
@@ -60,7 +70,17 @@ const StyledNavLink = styled.a`
   text-transform: uppercase;
   color: rgba(241, 222, 198, 0.6);
   text-decoration: none;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
   transition: color 0.2s;
+
+  /* Grow the tap target to 44px around the 24px icons without shifting the layout */
+  &::before {
+    content: "";
+    position: absolute;
+    inset: -10px;
+  }
 
   &:hover {
     color: rgba(241, 222, 198, 1);

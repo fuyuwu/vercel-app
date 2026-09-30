@@ -21,6 +21,11 @@ const skillCategories = [
     accent: "#C9184A",
     skills: ["Tailwind CSS", "SASS/SCSS", "styled-components", "Element-ui", "Element Plus", "Vant", "CSS Module", "CSS3", "Ant Design", "Material Design"],
   },
+  {
+    label: "Testing",
+    accent: "#2D9C4A",
+    skills: ["Playwright", "Cypress", "Vitest", "Testing Library"],
+  },
   // {
   //   label: "UI / UX",
   //   accent: "#6D6875",
@@ -149,7 +154,7 @@ const StyledCategoryGrid = styled.div`
     grid-template-columns: repeat(2, 1fr);
   }
   @media screen and (min-width: 980px) {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     max-width: 960px;
     margin-left: auto;
     margin-right: auto;
