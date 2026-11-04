@@ -71,7 +71,7 @@ const Profile: React.FC = () => {
             src={FEATURED_PROJECT.liveUrl}
             title={FEATURED_PROJECT.title}
             loading="lazy"
-            sandbox="allow-scripts allow-same-origin allow-forms"
+            sandbox="allow-scripts allow-same-origin allow-forms allow-modals"
             aria-hidden={FEATURED_PROJECT.outOfTokens || undefined}
             tabIndex={FEATURED_PROJECT.outOfTokens ? -1 : undefined}
           />
