@@ -14,7 +14,7 @@ const skillCategories = [
   {
     label: "Backend & Git",
     accent: "#0077B6",
-    skills: ["Apollo Client", "GraphQL", "RESTful API", "WebSocket", "Git"],
+    skills: ["Node.js", "Apollo Client", "GraphQL", "RESTful API", "WebSocket", "Git"],
   },
   {
     label: "Styling",
